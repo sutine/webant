@@ -1,10 +1,13 @@
 package org.webant.plugin.mahua.proccessor
 
+import java.nio.charset.Charset
 import java.util.Date
 
+import com.google.gson.JsonParser
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DateUtils
+import org.apache.http.client.fluent.Response
 import org.webant.commons.utils.DateFormatUtils
 import org.webant.plugin.mahua.data.JokeDetailData
 import org.webant.worker.processor.HtmlPageProcessor
@@ -49,6 +52,40 @@ class JokeDetailProcessor extends HtmlPageProcessor[JokeDetailData] {
       detail.funType = "text"
     }
 
+    getLikeHateCount(detail, System.currentTimeMillis())
     detail
   }
+
+  def getLikeHateCount(detail: JokeDetailData, time: Long): JokeDetailData = {
+    val url = s"http://user.mahua.com/ajax/joke/checkJokesDynamic?callback=jQuery&joke_ids=${detail.srcId}&_=$time"
+
+    val resp: Response = org.apache.http.client.fluent.Request.Get(url)
+      .addHeader("Accept", "text/html,application/xhtml+xml,application/json;q=0.9,image/webp,*/*;q=0.8")
+      .addHeader("Accept-Encoding", "gzip, deflate, sdch")
+      .addHeader("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6")
+      .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36")
+      .addHeader("Upgrade-Insecure-Requests", "1")
+      .addHeader("Proxy-Connection", "keep-alive")
+      .addHeader("DNT", "1")
+      .execute
+    val content = resp.returnContent.asString(Charset.forName("UTF-8"))
+    if (StringUtils.isBlank(content)) return detail
+
+    val start = content.indexOf("(")
+    val end = content.lastIndexOf(")")
+    val body = StringUtils.substring(content, start + 1, end)
+    if (StringUtils.isBlank(body)) return detail
+
+    val parser = new JsonParser
+    val result = parser.parse(body).getAsJsonObject
+    if (!result.has("data")) return detail
+
+    val data = result.get("data").getAsJsonObject
+    detail.likeNum = data.getAsJsonObject(detail.srcId).getAsJsonObject("upDown").getAsJsonObject("count").get("up").getAsInt
+    detail.hateNum = data.getAsJsonObject(detail.srcId).getAsJsonObject("upDown").getAsJsonObject("count").get("down").getAsInt
+    detail.commentNum = data.getAsJsonObject(detail.srcId).getAsJsonObject("comment").get("count").getAsInt
+
+    detail
+  }
+
 }
