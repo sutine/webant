@@ -154,7 +154,6 @@ public class WorkerClient {
                     break;
                 else {
                     System.out.println("unknowned command!");
-                    System.out.print(promotion);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
