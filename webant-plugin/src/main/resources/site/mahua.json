@@ -89,11 +89,7 @@
       "regex": "http://www.mahua.com/newjokes/index_\\d*.htm"
     },
     {
-      "className": "org.webant.plugin.mahua.proccessor.VoteUpDownListProcessor"
-    },
-    {
       "className": "org.webant.plugin.mahua.proccessor.JokeDetailProcessor",
-      "regex": "http://www.mahua.com/xiaohua/\\d*.htm",
       "http": {
         "method": "POST",
         "connectTimeout": 15000,
