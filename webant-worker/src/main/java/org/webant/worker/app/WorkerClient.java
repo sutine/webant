@@ -10,13 +10,6 @@ import java.util.Scanner;
  */
 public class WorkerClient {
     public static void main(String[] args) {
-//        try {
-//            WorkerJmxClient.connect();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return;
-//        }
-
         console();
     }
 
