@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--站点配置文件-->
+<site>
+    <!--站点id，创建时由程序自动生成-->
+    <id>dad7069e-44ff-4fbf-8265-315hnewcell4</id>
+    <!--站点名称-->
+    <name>麻花笑话网</name>
+    <!--站点描述-->
+    <description>麻花笑话网</description>
+   	<!-- 深度 -->
+    <!--<maxDeep>11</maxDeep>-->
+	<!-- 线程数限制 -->
+	<!--<maxThread>1</maxThread>-->
+    
+	<!--站点和种子地址，支持一个站点同时爬取多个种子的数据-->
+	<seeds>
+		<url>http://www.mahua.com</url>
+	</seeds>
+
+	<!--爬取两个页面的间隔时间，用于控制爬取网页的频度-->
+	<pageInterval>2000</pageInterval>
+
+	<!--站点的全局配置，如不同页面有不同的配置，可由相应的processor配置覆盖-->
+	<http>
+		<!--连接超时时间-->
+		<connectionTimeout>15000</connectionTimeout>
+		<!--请求超时时间-->
+		<soTimeout>10000</soTimeout>
+		<encoding>utf-8</encoding>
+		<!-- 下载异常时马上重新尝试的次数（不会将url添加到队列） -->
+		<retryTimes>3</retryTimes>
+		<!-- 下载异常失败之后，重试的次数（将url重新添加队列中） -->
+		<cycleRetryTimes>8</cycleRetryTimes>
+		<contentType>text/xml; charset=utf-8</contentType>
+		<proxy>false</proxy>
+
+		<headers>
+			<cookie></cookie>
+			<userAgent>Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0</userAgent>
+		</headers>
+	</http>
+
+	<processors type="java" url="file:///D:\workspace\fpwebant\webant-plugins\cq315house-ant\target\cq315house-ant-0.0.1.jar">
+	   	<!-- java类别的插件配置,url表示jar包所在的路径，支持本地以及网络jar地址 -->
+		<processor>
+			<regex>http://www.mahua.com/newjokes/index_\d*.htm</regex>
+			<encoding>utf-8</encoding><!-- 页面的编码 -->
+			<interval>3000</interval><!-- 两个页面之间爬取的时间间隔 -->
+			<linkType>list</linkType><!-- 页面类型，列表页、详情页等 -->
+			<className>org.webant.worker.mahua.proccessor.JokeListProcessor</className><!-- 处理器类名 -->
+		</processor>
+		
+		<processor>
+			<regex>http://www.mahua.com/xiaohua/\d*.htm</regex>
+			<encoding>utf-8</encoding>
+			<interval>3000</interval>
+			<linkType>detail</linkType>
+			<className>org.webant.worker.mahua.proccessor.JokeDetailProcessor</className>
+		</processor>
+	</processors>
+</site>

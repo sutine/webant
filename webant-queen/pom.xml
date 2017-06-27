@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.webant</groupId>
+        <artifactId>webant</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>webant-queen</artifactId>
+    <packaging>war</packaging>
+    <name>webant queen pom</name>
+
+    <dependencies>
+        <!-- 项目模块：webant-commons -->
+        <dependency>
+            <groupId>org.webant</groupId>
+            <artifactId>webant-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>com.jfinal</groupId>-->
+            <!--<artifactId>jetty-server</artifactId>-->
+            <!--<version>8.1.8</version>-->
+            <!--&lt;!&ndash;-->
+                <!--此处的 scope 值为 compile 仅为支持 IDEA 下启动项目-->
+                <!--打 war 包时需要改成 provided，以免将一些无用的 jar 打进去-->
+            <!--&ndash;&gt;-->
+            <!--<scope>compile</scope>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>jfinal</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>log4j</groupId>-->
+            <!--<artifactId>log4j</artifactId>-->
+            <!--<version>1.2.16</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>mysql</groupId>-->
+            <!--<artifactId>mysql-connector-java</artifactId>-->
+            <!--<version>5.1.20</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.29</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>cos</artifactId>
+            <version>26Dec2008</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.tomcat</groupId>-->
+        <!--<artifactId>tomcat-websocket-api</artifactId>-->
+        <!--<version>7.0.47</version>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xlightweb</groupId>
+            <artifactId>xlightweb</artifactId>
+            <version>2.12.2</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <resources>
+            <resource>
+                <targetPath>./</targetPath>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.scala</exclude>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/</path>
+                    <port>8080</port>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <finalName>${project.build.finalName}</finalName>
+                    <server>tomcat7</server>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <!--<goal>run</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>

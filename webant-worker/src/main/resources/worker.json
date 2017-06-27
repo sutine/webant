@@ -1,0 +1,17 @@
+{
+  "serverHost": "localhost",
+  "serverPort": 1099,
+  "threadNum": 32,
+  "dataDir": "./data",
+  "queen": {
+    "url": "url"
+  },
+  "taskMonitor": {
+    "dir": "./task",
+    "interval": 500
+  },
+  "siteMonitor": {
+    "dir": "./site",
+    "interval": 500
+  }
+}

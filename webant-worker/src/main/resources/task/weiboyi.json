@@ -1,0 +1,7 @@
+{
+  "id": "task_weiboyi",
+  "name": "微播易",
+  "description": "微播易",
+  "priority": 4,
+  "sites": ["site_weiboyi"]
+}

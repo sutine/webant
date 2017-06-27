@@ -1,7 +1,3 @@
-# webant
-a distribution crawler.
-
-
 mvn Commands:
 mvn clean package -DskipTests
 mvn clean appassembler:assemble

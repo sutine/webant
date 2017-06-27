@@ -1,0 +1,7 @@
+{
+  "id": "task_toutiao",
+  "name": "今日头条",
+  "description": "今日头条",
+  "priority": 4,
+  "sites": ["site_toutiao"]
+}

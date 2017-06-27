@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.webant</groupId>
+        <artifactId>webant</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>webant-soldier</artifactId>
+    <packaging>jar</packaging>
+    <name>webant soldier pom</name>
+
+    <dependencies>
+        <!-- 项目模块：snsant-commons -->
+        <dependency>
+            <groupId>org.webant</groupId>
+            <artifactId>webant-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>${sqljdbc4.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <resources>
+            <resource>
+                <targetPath>./</targetPath>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.scala</exclude>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configurationDirectory>conf</configurationDirectory>
+                    <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
+                    <copyConfigurationDirectory>true</copyConfigurationDirectory>
+                    <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <repositoryName>lib</repositoryName>
+                    <assembleDirectory>${project.build.directory}/${project.artifactId}-${project.version}
+                    </assembleDirectory>
+                    <extraJvmArguments>-Xms512m</extraJvmArguments>
+                    <binFileExtensions>
+                        <unix>.sh</unix>
+                    </binFileExtensions>
+                    <platforms>
+                        <platform>windows</platform>
+                        <platform>unix</platform>
+                    </platforms>
+                    <programs>
+                        <program>
+                            <mainClass>org.webant.worker.SoldierApp</mainClass>
+                            <name>start</name>
+                        </program>
+                    </programs>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>
