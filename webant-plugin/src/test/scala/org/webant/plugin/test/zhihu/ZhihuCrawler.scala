@@ -5,16 +5,31 @@ import java.nio.charset.Charset
 
 import org.apache.http.client.fluent.Response
 import org.apache.http.entity.ContentType
+import org.junit.{After, Before, Test}
+import org.scalatest.junit.AssertionsForJUnit
 
-object ZhihuCrawler {
+class ZhihuCrawler extends AssertionsForJUnit {
 
-  def main(args: Array[String]) {
-    crawl(20, 20)
+  @Before
+  def init(): Unit = {
   }
 
+  @After
+  def exit() {
+  }
+
+  @Test
+  def testRegex(): Unit = {
+    val regex = "https://www.zhihu.com/api/v4/members/[0-9a-zA-Z-]*/answers?[\\w\\W]*"
+    val url = "https://www.zhihu.com/api/v4/members/ma-en-32/answers?include=data%5B*%5D.is_normal%2Cis_collapsed%2Ccollapse_reason%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Creview_info%2Crelationship.is_authorized%2Cvoting%2Cis_author%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B*%5D.author.badge%5B%3F(type%3Dbest_answerer)%5D.topics&offset=20&limit=20&sort_by=created"
+
+    println(url.matches(regex))
+  }
+
+  @Test
   @throws[IOException]
-  private def crawl(start: Int, size: Int) {
-    val url: String = "https://www.zhihu.com/api/v4/members/sgai/answers?include=data%5B*%5D.is_normal%2Cis_collapsed%2Ccollapse_reason%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Creview_info%2Crelationship.is_authorized%2Cvoting%2Cis_author%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B*%5D.author.badge%5B%3F(type%3Dbest_answerer)%5D.topics&offset=20&limit=20&sort_by=created"
+  def crawl() {
+    val url: String = "https://www.zhihu.com/api/v4/members/huang-jie-rui-23/answers?offset=0&limit=20&sort_by=created&include=data[*].is_normal,is_collapsed,collapse_reason,suggest_edit,comment_count,can_comment,content,voteup_count,reshipment_settings,comment_permission,mark_infos,created_time,updated_time,review_info,relationship.is_authorized,voting,is_author,is_thanked,is_nothelp,upvoted_followees;data[*].author.badge[?(type=best_answerer)].topics"
     val body: String = "offset=20&limit=20&sort_by=created&include=data[*].is_normal,is_collapsed,collapse_reason,suggest_edit,comment_count,can_comment,content,voteup_count,reshipment_settings,comment_permission,mark_infos,created_time,updated_time,review_info,relationship.is_authorized,voting,is_author,is_thanked,is_nothelp,upvoted_followees;data[*].author.badge[?(type=best_answerer)].topics"
     val referer: String = "https://www.zhihu.com/people/sgai/answers"
     val resp: Response = org.apache.http.client.fluent.Request.Get(url)
@@ -28,7 +43,7 @@ object ZhihuCrawler {
       .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
       .addHeader("x-udid", "AIBCCu2_-wuPTv6gpIWSY62GJJWv1Q6X7vM=")
       .execute
-    val result: String = resp.returnContent.asString(Charset.forName("GBK"))
-    val fileName: String = "D:/cache/weiboyi/pages/data_" + start + "_" + size + ".json"
+    val result = resp.returnContent.asString(Charset.forName("GBK"))
+    println(result)
   }
 }

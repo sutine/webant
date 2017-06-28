@@ -141,7 +141,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
       affectRowCount = stores.map(store => store.upsert(list)).sum
     } catch {
       case e: Exception =>
-        logger.error(e.getMessage())
+        logger.error(e.getMessage)
     }
 
     affectRowCount
@@ -154,7 +154,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
       affectRowCount = stores.map(store => store.upsert(data)).sum
     } catch {
       case e: Exception =>
-        logger.error(e.getMessage())
+        logger.error(e.getMessage)
     }
 
     affectRowCount

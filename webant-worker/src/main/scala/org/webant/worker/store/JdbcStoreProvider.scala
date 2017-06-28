@@ -36,7 +36,7 @@ trait JdbcStoreProvider[T <: HttpDataEntity] extends IStore[T] {
       "  data text DEFAULT NULL," +
       "  srcId varchar(64) DEFAULT NULL," +
       "  source varchar(64) DEFAULT NULL," +
-      "  srcUrl varchar(255) DEFAULT NULL," +
+      "  srcUrl varchar(1024) DEFAULT NULL," +
       "  crawlTime datetime DEFAULT NULL," +
       "  dataVersion int(11) DEFAULT NULL," +
       "  dataCreateTime datetime DEFAULT NULL," +
@@ -70,7 +70,7 @@ trait JdbcStoreProvider[T <: HttpDataEntity] extends IStore[T] {
       affectRowCount = runner.update(conn, sql, values: _*)
     } catch {
       case e: Exception =>
-        logger.error(e.getMessage())
+        logger.error(e.getMessage)
     }
 
     affectRowCount

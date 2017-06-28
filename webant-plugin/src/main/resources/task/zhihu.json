@@ -1,0 +1,7 @@
+{
+  "id": "task_zhihu",
+  "name": "知乎",
+  "description": "知乎",
+  "priority": 4,
+  "sites": ["site_zhihu"]
+}

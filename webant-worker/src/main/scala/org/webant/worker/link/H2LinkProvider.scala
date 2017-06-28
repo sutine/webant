@@ -101,6 +101,11 @@ class H2LinkProvider extends JdbcLinkProvider {
   }
 
   override def upsert(links: Iterable[Link]): Int = {
+    if (links == null || links.isEmpty) return 0
+
+    // todo batch save
+    links.map(link => upsert(link)).sum
+/*
     // no reflection, simple and fast
     val placeholders = links.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
     val sql = s"insert into $table (id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, " +
@@ -111,6 +116,7 @@ class H2LinkProvider extends JdbcLinkProvider {
     val values = links.flatMap(link => Array(link.getId, link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime,
       link.getStatus, link.getDataVersion, link.getDataCreateTime, link.getDataUpdateTime, link.getDataDeleteTime)).toArray
     runner.update(conn, sql, values: _*)
+*/
   }
 
   private def read(status: String, size: Int): Iterable[Link] = {

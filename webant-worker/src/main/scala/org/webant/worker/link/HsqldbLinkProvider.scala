@@ -34,8 +34,8 @@ class HsqldbLinkProvider extends JdbcLinkProvider {
       "  `id` varchar(64) NOT NULL," +
       "  `taskId` varchar(64) DEFAULT NULL," +
       "  `siteId` varchar(64) DEFAULT NULL," +
-      "  `url` varchar(255) DEFAULT NULL," +
-      "  `referer` varchar(255) DEFAULT NULL," +
+      "  `url` varchar(1024) DEFAULT NULL," +
+      "  `referer` varchar(1024) DEFAULT NULL," +
       "  `priority` smallint(255) DEFAULT NULL," +
       "  `lastCrawlTime` datetime DEFAULT NULL," +
       "  `status` varchar(32) DEFAULT NULL," +
