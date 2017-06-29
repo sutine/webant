@@ -7,6 +7,7 @@ import org.apache.http.client.fluent.Response
 import org.apache.http.entity.ContentType
 import org.junit.{After, Before, Test}
 import org.scalatest.junit.AssertionsForJUnit
+import org.webant.plugin.zhihu.proccessor.{AnswersProcessor, ZhihuSeedProcessor}
 
 class ZhihuCrawler extends AssertionsForJUnit {
 
@@ -16,6 +17,15 @@ class ZhihuCrawler extends AssertionsForJUnit {
 
   @After
   def exit() {
+  }
+
+  @Test
+  def testLoadIds(): Unit = {
+    val seed = new ZhihuSeedProcessor
+    val answer = new AnswersProcessor
+    val ids = seed.links()
+    val remainIds = ids.filter(answer.accept)
+    println(remainIds.size)
   }
 
   @Test

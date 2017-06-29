@@ -1,7 +1,7 @@
 {
   "serverHost": "localhost",
   "serverPort": 1099,
-  "threadNum": 32,
+  "threadNum": 64,
   "dataDir": "./data",
   "queen": {
     "url": "url"

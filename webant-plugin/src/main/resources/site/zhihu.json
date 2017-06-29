@@ -6,7 +6,7 @@
     "https://www.zhihu.com/"
   ],
   "priority": 4,
-  "interval": 2000,
+  "interval": 500,
   "incrementInterval": 600000,
   "http": {
     "method": "GET",
@@ -28,12 +28,12 @@
     }
   },
   "linkProvider": {
-    "className": "org.webant.worker.link.H2LinkProvider",
+    "className": "org.webant.worker.link.MysqlLinkProvider",
     "params": {
-      "url": "jdbc:h2:./data/h2/webant;MODE=MYSQL",
-      "username": "webant",
-      "password": "webant",
-      "batch": 20
+      "url": "jdbc:mysql://localhost:3306/webant?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+      "username": "bill",
+      "password": "sutine",
+      "batch": 100
     }
   },
   "processors": [
@@ -55,8 +55,8 @@
           "className": "org.webant.worker.store.MysqlStore",
           "params": {
             "url": "jdbc:mysql://localhost:3306/zhihu?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
-            "username": "webant",
-            "password": "webant"
+            "username": "bill",
+            "password": "sutine"
           }
         }
       ]

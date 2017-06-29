@@ -14,11 +14,11 @@ class MysqlLinkProvider extends JdbcLinkProvider {
 
   override def init(params: java.util.Map[String, Object]): Boolean = {
     if (!super.init(params)) {
-      logger.error("init MysqlLinkProvider failed!")
+      logger.error(s"init ${getClass.getSimpleName} failed!")
       return false
     }
 
-    logger.info(s"init MysqlLinkProvider success!")
+    logger.info(s"init ${getClass.getSimpleName} success!")
     createTable()
   }
 
@@ -42,7 +42,7 @@ class MysqlLinkProvider extends JdbcLinkProvider {
 
   private def read(status: String, size: Int): Iterable[Link] = {
     val sql = "SELECT id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, dataCreateTime, " +
-      "dataUpdateTime, dataDeleteTime FROM link WHERE status = ? ORDER by dataCreateTime desc LIMIT ?, ?"
+      s"dataUpdateTime, dataDeleteTime FROM $table WHERE status = ? ORDER by dataCreateTime desc LIMIT ?, ?"
 
     val pageNo: Integer = 0
     val pageSize: Integer = if (size <= 0 || size > 1000) 1000 else size
@@ -54,7 +54,7 @@ class MysqlLinkProvider extends JdbcLinkProvider {
       conn.setAutoCommit(false)
       links = runner.query(conn, sql, new BeanListHandler[Link](classOf[Link]), selectParams: _*).asScala
       if (links.nonEmpty) {
-        val updateSql = "update link set status = ?, dataVersion = dataVersion + 1, dataUpdateTime = now() where id = ?"
+        val updateSql = s"update $table set status = ?, dataVersion = dataVersion + 1, dataUpdateTime = now() where id = ?"
         val updateParams = links.map(link => {
           Array[Object](WebantConstants.LINK_STATUS_PENDING, link.getId)
         }).toArray
@@ -74,7 +74,7 @@ class MysqlLinkProvider extends JdbcLinkProvider {
 
   override def upsert(link: Link): Int = {
     // no reflection, simple and fast
-    val sql = "insert into link ( id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, dataCreateTime, " +
+    val sql = s"insert into $table ( id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, dataCreateTime, " +
       "dataUpdateTime, dataDeleteTime ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE " +
       "taskId = ?, siteId = ?, url = ?, referer = ?, priority = ?, lastCrawlTime = ?, status = ?, dataVersion = dataVersion + 1, dataUpdateTime = now()"
     val values = Array[Object](
@@ -87,15 +87,22 @@ class MysqlLinkProvider extends JdbcLinkProvider {
   }
 
   override def upsert(links: Iterable[Link]): Int = {
-    // no reflection, simple and fast
-    val placeholders = links.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
-    val sql = "insert into link (id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, " +
-      s"dataCreateTime, dataUpdateTime, dataDeleteTime) values $placeholders ON DUPLICATE KEY UPDATE " +
-      //      "priority = values(priority), lastCrawlTime = values(lastCrawlTime), status = values(status), " +
-      "dataVersion = dataVersion + 1, dataUpdateTime = now()"
+    if (links == null || links.isEmpty) return 0
 
-    val values = links.flatMap(link => Array(link.getId, link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime,
-      link.getStatus, link.getDataVersion, link.getDataCreateTime, link.getDataUpdateTime, link.getDataDeleteTime)).toArray
-    runner.update(conn, sql, values: _*)
+    // todo batch save
+    links.map(link => upsert(link)).sum
+
+    /*
+        // no reflection, simple and fast
+        val placeholders = links.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
+        val sql = s"insert into $table (id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, " +
+          s"dataCreateTime, dataUpdateTime, dataDeleteTime) values $placeholders ON DUPLICATE KEY UPDATE " +
+          //      "priority = values(priority), lastCrawlTime = values(lastCrawlTime), status = values(status), " +
+          "dataVersion = dataVersion + 1, dataUpdateTime = now()"
+
+        val values = links.flatMap(link => Array(link.getId, link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime,
+          link.getStatus, link.getDataVersion, link.getDataCreateTime, link.getDataUpdateTime, link.getDataDeleteTime)).toArray
+        runner.update(conn, sql, values: _*)
+    */
   }
 }

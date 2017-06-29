@@ -11,7 +11,7 @@ import org.webant.worker.processor.JsonPageProcessor
 import scala.collection.JavaConverters._
 
 class AnswersProcessor extends JsonPageProcessor[AnswerDetailData] {
-  regex = "https://www.zhihu.com/api/v4/members/[0-9a-zA-Z-]*/answers?[\\w\\W]*"
+  regex = "https://www.zhihu.com/api/v4/members/[0-9a-zA-Z-_.]*/answers?[\\w\\W]*"
 
   override protected def links(): Iterable[String] = {
     val parser = new JsonParser

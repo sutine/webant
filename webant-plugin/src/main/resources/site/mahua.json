@@ -115,16 +115,16 @@
           "className": "org.webant.plugin.mahua.store.JokeDetailStore",
           "params": {
             "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
-            "username": "webant",
-            "password": "webant"
+            "username": "bill",
+            "password": "sutine"
           }
         },
         {
           "className": "org.webant.plugin.mahua.store.FunStore",
           "params": {
             "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
-            "username": "webant",
-            "password": "webant"
+            "username": "bill",
+            "password": "sutine"
           }
         }
 /*
