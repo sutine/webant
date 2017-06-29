@@ -94,10 +94,9 @@ class DerbyLinkProvider extends JdbcLinkProvider {
       }
       conn.commit()
     } catch {
-      case e: Exception => {
+      case e: Exception =>
         conn.rollback()
         e.printStackTrace()
-      }
     }
 
     rs
@@ -118,7 +117,7 @@ class DerbyLinkProvider extends JdbcLinkProvider {
     if (link == null) return 0
     val fieldNames = BeanUtils.getDeclaredFields(link).map(_.getName)
     val columns = fieldNames.mkString("(", ", ", ")")
-    val placeholders = fieldNames.map(i => "?").mkString("(", ",", ")")
+    val placeholders = fieldNames.map(_ => "?").mkString("(", ",", ")")
     val values = fieldNames.map(fieldName => FieldUtils.readField(link, fieldName, true))
 
     val sql = s"insert into link $columns values $placeholders"
@@ -131,7 +130,7 @@ class DerbyLinkProvider extends JdbcLinkProvider {
 
     val fieldNames = BeanUtils.getDeclaredFields(links.head).map(_.getName)
     val columns = fieldNames.mkString("(", ", ", ")")
-    val placeholders = fieldNames.map(i => "?").mkString("(", ",", ")")
+    val placeholders = fieldNames.map(_ => "?").mkString("(", ",", ")")
     val sql = s"insert into link $columns values $placeholders"
 
     val params = links.map(link => {
@@ -160,7 +159,7 @@ class DerbyLinkProvider extends JdbcLinkProvider {
     if (link == null) return 0
     val fieldNames = BeanUtils.getDeclaredFields(link).map(_.getName)
     val columns = fieldNames.mkString("(", ", ", ")")
-    val placeholders = fieldNames.map(i => "?").mkString("(", ",", ")")
+    val placeholders = fieldNames.map(_ => "?").mkString("(", ",", ")")
     val values = fieldNames.map(fieldName => FieldUtils.readField(link, fieldName, true))
     val excludes = Set("id", "dataVersion", "dataCreateTime", "dataUpdateTime", "dataDeleteTime")
     val filterFieldNames = fieldNames.filter(!excludes.contains(_))
@@ -178,9 +177,8 @@ class DerbyLinkProvider extends JdbcLinkProvider {
       try
         conn.close()
       catch {
-        case e: SQLException => {
+        case e: SQLException =>
           e.printStackTrace()
-        }
       }
       conn = null
     }

@@ -9,7 +9,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
 import org.webant.commons.utils.WebantConstants
-import org.webant.worker.config.{ConfigManager, ProcessorConfig, SiteConfig}
+import org.webant.worker.config.{ProcessorConfig, SiteConfig}
 import org.webant.worker.exception.{HttpRequestException, ParseContentException}
 import org.webant.worker.http.{HttpDataEntity, HttpResponse}
 import org.webant.worker.link.ILinkProvider
@@ -66,13 +66,13 @@ class HttpSiteProcessor(linkProvider: ILinkProvider, siteConfig: SiteConfig) ext
     }
     catch {
       case NonFatal(e: HttpRequestException) =>
-        logger.error(s"crawl url failed! url: ${link.getUrl}. ${e.getMessage()}")
+        logger.error(s"crawl url failed! url: ${link.getUrl}. ${e.getMessage}")
       case NonFatal(e: ParseContentException) =>
-        logger.error(s"parse content failed! url: ${link.getUrl}. ${e.getMessage()}")
+        logger.error(s"parse content failed! url: ${link.getUrl}. ${e.getMessage}")
       case NonFatal(e: SocketTimeoutException) =>
-        logger.error(s"connect to server time out, crawl failed! url: ${link.getUrl}. ${e.getMessage()}")
+        logger.error(s"connect to server time out, crawl failed! url: ${link.getUrl}. ${e.getMessage}")
       case e: Exception =>
-        logger.error(s"anything error, crawl failed! url: ${link.getUrl}. ${e.getMessage()}")
+        logger.error(s"anything error, crawl failed! url: ${link.getUrl}. ${e.getMessage}")
     }
     finally {
       //      close()

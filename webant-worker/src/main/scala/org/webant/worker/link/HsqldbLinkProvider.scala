@@ -112,7 +112,7 @@ class HsqldbLinkProvider extends JdbcLinkProvider {
 
   override def upsert(links: Iterable[Link]): Int = {
     // no reflection, simple and fast
-    val placeholders = links.map(link => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
+    val placeholders = links.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
     val sql = s"""insert into link ("id", "taskId", "siteId", "url", "referer", "priority", "lastCrawlTime", "status", "dataVersion", "dataCreateTime",
                 |"dataUpdateTime", "dataDeleteTime" ) values $placeholders ON DUPLICATE KEY UPDATE
                 |"dataVersion" = "dataVersion" + 1, "dataUpdateTime" = now()""".stripMargin
@@ -124,7 +124,7 @@ class HsqldbLinkProvider extends JdbcLinkProvider {
 
   private def update(links: Iterable[Link]): Int = {
     // no reflection, simple and fast
-    val placeholders = links.map(link => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
+    val placeholders = links.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
     val sql = s"""insert into link ("id", "taskId", "siteId", "url", "referer", "priority", "lastCrawlTime", "status", "dataVersion", "dataCreateTime",
                   |"dataUpdateTime", "dataDeleteTime" ) values $placeholders ON DUPLICATE KEY UPDATE
                   |"priority" = values("priority"), "lastCrawlTime" = values("lastCrawlTime"), "status" = values("status"),

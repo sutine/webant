@@ -26,13 +26,13 @@ public class WorkerClient {
 
             cmd = cmd.trim().toLowerCase();
 
-            if (!cmd.startsWith("connect") && !WorkerJmxClient.isConnected()) {
+            if (!(cmd.startsWith("c") || cmd.startsWith("conn") || cmd.startsWith("connect")) && !WorkerJmxClient.isConnected()) {
                 System.out.println("lost connection! please connect to server first.");
                 continue;
             }
 
             try {
-                if (cmd.startsWith("connect")) {
+                if (cmd.startsWith("c") || cmd.startsWith("conn") || cmd.startsWith("connect")) {
                     String[] items = cmd.split(" ");
                     if (items.length == 1) System.out.println(WorkerJmxClient.connect());
                     else if (items.length == 2) System.out.println(WorkerJmxClient.connect(items[1], "1099"));
@@ -90,7 +90,7 @@ public class WorkerClient {
                     }
                     else if (items.length >= 3) System.out.println(WorkerJmxClient.stop(items[1], items[2]));
                 }
-                else if (cmd.startsWith("pause")) {
+                else if (cmd.startsWith("pause") || cmd.startsWith("pause")) {
                     String[] items = cmd.split(" ");
                     if (items.length == 1) {
                         String[][] result = WorkerJmxClient.pause();
@@ -108,7 +108,7 @@ public class WorkerClient {
                     }
                     else if (items.length >= 3) System.out.println(WorkerJmxClient.pause(items[1], items[2]));
                 }
-                else if (cmd.startsWith("recrawl")) {
+                else if (cmd.startsWith("reset") || cmd.startsWith("recrawl")) {
                     String[] items = cmd.split(" ");
                     if (items.length == 1) {
                         String[][] result = WorkerJmxClient.recrawl();
@@ -126,7 +126,7 @@ public class WorkerClient {
                     }
                     else if (items.length >= 3) System.out.println(WorkerJmxClient.recrawl(items[1], items[2]));
                 }
-                else if (cmd.startsWith("progress")) {
+                else if (cmd.startsWith("p") || cmd.startsWith("progress")) {
                     String[] items = cmd.split(" ");
                     if (items.length == 1) System.out.println(WorkerJmxClient.progress());
                     else if (items.length == 2) System.out.println(WorkerJmxClient.progress(items[1]));

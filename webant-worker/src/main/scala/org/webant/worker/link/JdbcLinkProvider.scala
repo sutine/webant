@@ -91,7 +91,7 @@ trait JdbcLinkProvider extends ILinkProvider {
     if (link == null) return 0
     val fieldNames = BeanUtils.getDeclaredFields(link).map(_.getName)
     val columns = fieldNames.mkString("(", ", ", ")")
-    val placeholders = fieldNames.map(i => "?").mkString("(", ",", ")")
+    val placeholders = fieldNames.map(_ => "?").mkString("(", ",", ")")
     val values = fieldNames.map(fieldName => FieldUtils.readField(link, fieldName, true))
     val excludes = Set("id", "dataVersion", "dataCreateTime", "dataUpdateTime", "dataDeleteTime")
     val filterFieldNames = fieldNames.filter(!excludes.contains(_))
@@ -109,7 +109,7 @@ trait JdbcLinkProvider extends ILinkProvider {
 
     val fieldNames = BeanUtils.getDeclaredFields(links.head).map(_.getName)
     val columns = fieldNames.mkString("(", ",", ")")
-    val placeholders = links.map(link => fieldNames.map(i => "?").mkString("(", ",", ")")).mkString(", ")
+    val placeholders = links.map(_ => fieldNames.map(_ => "?").mkString("(", ",", ")")).mkString(", ")
     val values = links.flatMap(link => fieldNames.map(fieldName => FieldUtils.readField(link, fieldName, true))).toArray
     //    val pairs = fieldNames.map(fieldName => s"$fieldName = values($fieldName)").mkString(", ")
 
