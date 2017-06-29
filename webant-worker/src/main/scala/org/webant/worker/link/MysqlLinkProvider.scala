@@ -89,20 +89,16 @@ class MysqlLinkProvider extends JdbcLinkProvider {
   override def upsert(links: Iterable[Link]): Int = {
     if (links == null || links.isEmpty) return 0
 
-    // todo batch save
-    links.map(link => upsert(link)).sum
+    // no reflection, simple and fast
+    // links.toArray.map can work, links.map can not work, it may be a bug in scala map()
+    val placeholders = links.toArray.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
+    val sql = s"insert into $table (id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, " +
+      s"dataCreateTime, dataUpdateTime, dataDeleteTime) values $placeholders ON DUPLICATE KEY UPDATE " +
+      //      "priority = values(priority), lastCrawlTime = values(lastCrawlTime), status = values(status), " +
+      "dataVersion = dataVersion + 1, dataUpdateTime = now()"
 
-    /*
-        // no reflection, simple and fast
-        val placeholders = links.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
-        val sql = s"insert into $table (id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, " +
-          s"dataCreateTime, dataUpdateTime, dataDeleteTime) values $placeholders ON DUPLICATE KEY UPDATE " +
-          //      "priority = values(priority), lastCrawlTime = values(lastCrawlTime), status = values(status), " +
-          "dataVersion = dataVersion + 1, dataUpdateTime = now()"
-
-        val values = links.flatMap(link => Array(link.getId, link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime,
-          link.getStatus, link.getDataVersion, link.getDataCreateTime, link.getDataUpdateTime, link.getDataDeleteTime)).toArray
-        runner.update(conn, sql, values: _*)
-    */
+    val values = links.toArray.flatMap(link => Array(link.getId, link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime,
+      link.getStatus, link.getDataVersion, link.getDataCreateTime, link.getDataUpdateTime, link.getDataDeleteTime))
+    runner.update(conn, sql, values: _*)
   }
 }

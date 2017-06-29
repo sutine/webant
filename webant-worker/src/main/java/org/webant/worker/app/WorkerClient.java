@@ -37,7 +37,7 @@ public class WorkerClient {
                     if (items.length == 1) System.out.println(WorkerJmxClient.connect());
                     else if (items.length == 2) System.out.println(WorkerJmxClient.connect(items[1], "1099"));
                     else if (items.length >= 3) System.out.println(WorkerJmxClient.connect(items[1], items[2]));
-                } else if (cmd.startsWith("list")) {
+                } else if (cmd.startsWith("l") || cmd.startsWith("ls") || cmd.startsWith("ll") || cmd.startsWith("list")) {
                     String[] items = cmd.split(" ");
                     if (items.length == 1) {
                         String[][] result = WorkerJmxClient.list();
