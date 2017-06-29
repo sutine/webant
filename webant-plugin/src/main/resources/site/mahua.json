@@ -112,6 +112,17 @@
       },
       "store": [
         {
+          "className": "org.webant.worker.store.ElasticSearchStore",
+          "params": {
+            "clusterName": "es",
+            "host": "localhost",
+            "port": "9300",
+            "index": "mahua",
+            "type": "detail"
+          }
+        }
+/*
+        {
           "className": "org.webant.plugin.mahua.store.JokeDetailStore",
           "params": {
             "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
@@ -127,7 +138,7 @@
             "password": "sutine"
           }
         }
-/*
+
         {
           "className": "org.webant.worker.store.H2Store",
           "params": {

@@ -4,12 +4,13 @@ import java.net.{InetAddress, UnknownHostException}
 
 import org.apache.commons.collections.MapUtils
 import org.apache.commons.lang3.StringUtils
-import org.elasticsearch.action.index.IndexRequestBuilder
+import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.support.WriteRequest
-import org.elasticsearch.action.update.UpdateRequestBuilder
+import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.transport.InetSocketTransportAddress
+import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.transport.client.PreBuiltTransportClient
 import org.webant.commons.utils.JsonUtils
 import org.webant.worker.http.HttpDataEntity
@@ -17,25 +18,27 @@ import org.webant.worker.http.HttpDataEntity
 class ElasticSearchStore[T <: HttpDataEntity] extends IStore[T] {
 
   private var client: Client = _
+  private var index: String = _
+  private var `type`: String = "default"
 
   override def init(params: java.util.Map[String, Object]): Boolean = {
     if (!params.containsKey("host") || !params.containsKey("port"))
       return false
 
+    val clusterName = MapUtils.getString(params, "clusterName")
     val host = MapUtils.getString(params, "host")
     val port = MapUtils.getInteger(params, "port", 9300)
+    index = MapUtils.getString(params, "index")
+    `type` = MapUtils.getString(params, "type", "default")
 
     val settings = Settings.builder
-/*
-    config.foreach{
-      case (key, value) =>
-        if (!"host".equalsIgnoreCase(key) && !"port".equalsIgnoreCase(key))
-          settings.put(key, value)
-    }
-*/
+      .put("cluster.name", clusterName)
+      .put("client.transport.ping_timeout", "10s")
+      .put("transport.ping_schedule", "5s")
+      .build
 
     try
-      client = new PreBuiltTransportClient(settings.build())
+      client = new PreBuiltTransportClient(settings)
         .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port))
     catch {
       case e: UnknownHostException =>
@@ -52,41 +55,22 @@ class ElasticSearchStore[T <: HttpDataEntity] extends IStore[T] {
 
   override def upsert(data: T): Int = {
     require(data != null)
-    upsertEs("test", "default", data.id, null, JsonUtils.toJson(data), isRefresh = false)
-    1
+    upsertEs(data.id, null, JsonUtils.toJson(data), isRefresh = false)
   }
 
-  private def saveEs(index: String, `type`: String, id: String, parentId: String, json: String, isRefresh: Boolean): IndexRequestBuilder = {
-    if (StringUtils.isBlank(json)) return null
-    //调用.setRefresh(true)设置实时索引，即该doc一提交马上能被搜索到
-    val request = client.prepareIndex(index, `type`)
-    request.setSource(json)
-    if (isRefresh) request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
-    if (StringUtils.isNotBlank(parentId)) request.setParent(parentId)
-    if (StringUtils.isNotBlank(id)) request.setId(id)
-//    request.execute.actionGet
-    request
-  }
+  private def upsertEs(id: String, parentId: String, json: String, isRefresh: Boolean): Int = {
+    val indexRequest = new IndexRequest(index, `type`)
+      .source(json, XContentFactory.xContentType(json))
+    if (isRefresh) indexRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
+    if (StringUtils.isNotBlank(parentId)) indexRequest.parent(parentId)
+    if (StringUtils.isNotBlank(id)) indexRequest.id(id)
 
-  private def updateEs(index: String, `type`: String, id: String, parentId: String, json: String, isRefresh: Boolean): UpdateRequestBuilder = {
-    if (StringUtils.isBlank(json)) return null
-    //调用.setRefresh(true)设置实时索引，即该doc一提交马上能被搜索到
-    val request = client.prepareUpdate(index, `type`, id)
-    request.setDoc(json)
-    if (isRefresh) request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
-    if (StringUtils.isNotBlank(parentId)) request.setParent(parentId)
-    if (StringUtils.isNotBlank(id)) request.setId(id)
-//    request.execute.actionGet
-    request
-  }
+    val updateRequest = new UpdateRequest(index, `type`, id)
+      .doc(json, XContentFactory.xContentType(json))
+      .upsert(indexRequest)
+    if (isRefresh) updateRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
 
-  private def upsertEs(index: String, `type`: String, id: String, parentId: String, json: String, isRefresh: Boolean): Int = {
-    if (StringUtils.isBlank(json)) return 0
-    //调用.setRefresh(true)设置实时索引，即该doc一提交马上能被搜索到
-    val request = updateEs(index, `type`, id, parentId, json, isRefresh)
-    val indexRequest = saveEs(index, `type`, id, parentId, json, isRefresh)
-    request.setUpsert(indexRequest)
-    val version = request.execute.actionGet.getVersion
+    val version = client.update(updateRequest).get.getVersion
     if (version > 0) 1 else 0
   }
 

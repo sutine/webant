@@ -17,7 +17,7 @@
 
     <properties>
         <mybatis.version>3.3.1</mybatis.version>
-        <elasticsearch.version>5.4.1</elasticsearch.version>
+        <elasticsearch.version>5.4.3</elasticsearch.version>
         <!--ES依赖的guava版本号，与parent项目的guava版本号不同，在这里单独定义-->
         <es.guava.version>18.0</es.guava.version>
     </properties>
