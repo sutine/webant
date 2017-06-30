@@ -42,7 +42,7 @@ class HttpSiteProcessor(linkProvider: ILinkProvider, siteConfig: SiteConfig) ext
       if (processor == null)
         return resp
 
-      resp = processor.process(link.getUrl, link.getBody)
+      resp = processor.process(link)
 
       if (resp != null && resp.links != null) {
         // save success link

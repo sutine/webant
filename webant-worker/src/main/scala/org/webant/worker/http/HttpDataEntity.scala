@@ -16,6 +16,10 @@ class HttpDataEntity extends Serializable {
   @BeanProperty
   var srcUrl: String = _
   @BeanProperty
+  var taskId: String = _
+  @BeanProperty
+  var siteId: String = _
+  @BeanProperty
   var crawlTime: Date = _
   @BeanProperty
   var dataVersion: java.lang.Integer = 1

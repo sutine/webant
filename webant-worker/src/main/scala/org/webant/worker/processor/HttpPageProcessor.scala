@@ -7,6 +7,7 @@ import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
 import org.apache.http.util.EntityUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.Link
 import org.webant.commons.utils.Retry
 import org.webant.worker.config.HttpConfig
 import org.webant.worker.http.{HttpDataEntity, HttpResponse}
@@ -24,11 +25,11 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
 
   def accept(url: String): Boolean = url.matches(regex)
 
-  final def process(url: String, body: String): HttpResponse[T] = {
+  final def process(link: Link): HttpResponse[T] = {
     var response = new HttpResponse[T]
 
     try {
-      response = fetch(url, body)
+      response = fetch(link.getUrl, link.getBody)
 
       if (response == null || response.fail || StringUtils.isBlank(response.content))
         return response
@@ -37,13 +38,17 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
 
       response.list = list()
       response.list.foreach(data => {
-        data.srcUrl = url
+        data.srcUrl = link.getUrl
+        data.taskId = link.getTaskId
+        data.siteId = link.getSiteId
         data.crawlTime = new Date()
       })
 
       response.data = data()
       if (response.data != null) {
-        response.data.srcUrl = url
+        response.data.srcUrl = link.getUrl
+        response.data.taskId = link.getTaskId
+        response.data.siteId = link.getSiteId
         response.data.crawlTime = new Date
       }
 
