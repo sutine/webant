@@ -1,7 +1,7 @@
 package org.webant.worker.processor
 
 import org.apache.commons.lang3.StringUtils
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.entity.HttpDataEntity
 
 import scala.reflect.ClassTag
 

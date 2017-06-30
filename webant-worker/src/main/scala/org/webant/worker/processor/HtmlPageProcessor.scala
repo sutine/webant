@@ -3,7 +3,7 @@ package org.webant.worker.processor
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.entity.HttpDataEntity
 
 import scala.collection.JavaConverters._
 import scala.reflect.ClassTag

@@ -3,7 +3,7 @@ package org.webant.worker.test;
 import com.sleepycat.je.DatabaseException;
 import org.junit.Before;
 import org.junit.Test;
-import org.webant.worker.http.HttpDataEntity;
+import org.webant.commons.entity.HttpDataEntity;
 import org.webant.commons.berkeleydb.BerkeleydbDatabaseObjectImpl;
 
 import static org.junit.Assert.assertEquals;

@@ -7,8 +7,8 @@ import org.apache.commons.dbutils.QueryRunner
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.reflect.FieldUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.HttpDataEntity
 import org.webant.commons.utils.BeanUtils
-import org.webant.worker.http.HttpDataEntity
 
 trait JdbcStoreProvider[T <: HttpDataEntity] extends IStore[T] {
   private val logger = LogManager.getLogger(classOf[JdbcStoreProvider[T]])

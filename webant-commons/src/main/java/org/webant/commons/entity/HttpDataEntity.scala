@@ -1,12 +1,14 @@
-package org.webant.worker.http
+package org.webant.commons.entity
 
 import java.util.Date
 
-import org.webant.commons.utils.BeanUtils
+import org.webant.commons.elasticsearch.annotation.{DocId, DocParentId}
 
 import scala.beans.BeanProperty
 
 class HttpDataEntity extends Serializable {
+  @DocId
+  @DocParentId("parentId")
   @BeanProperty
   var id: String = _
   @BeanProperty

@@ -1,6 +1,6 @@
 package org.webant.plugin.toutiao.data
 
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.entity.HttpDataEntity
 
 import scala.beans.BeanProperty
 

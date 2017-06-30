@@ -4,10 +4,10 @@ import akka.actor._
 import akka.routing.RoundRobinPool
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
-import org.webant.commons.entity.Link
+import org.webant.commons.entity.{HttpDataEntity, Link}
 import org.webant.commons.utils.WebantConstants
 import org.webant.worker.config.ConfigManager
-import org.webant.worker.http.{HttpDataEntity, HttpResponse}
+import org.webant.worker.http.HttpResponse
 
 
 sealed trait WorkerMessage

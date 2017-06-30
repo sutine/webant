@@ -1,7 +1,10 @@
 package org.webant.plugin.zhihu.data
 
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.elasticsearch.annotation.{Index, Type}
+import org.webant.commons.entity.HttpDataEntity
 
+@Index("webant")
+@Type("data")
 class AnswerDetailData extends HttpDataEntity {
   var relationship: Relationship = _
   var mark_infos: Array[MarkInfos] = _

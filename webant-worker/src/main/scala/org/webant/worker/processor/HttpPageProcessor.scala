@@ -7,10 +7,10 @@ import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
 import org.apache.http.util.EntityUtils
 import org.apache.log4j.LogManager
-import org.webant.commons.entity.Link
+import org.webant.commons.entity.{HttpDataEntity, Link}
 import org.webant.commons.utils.Retry
 import org.webant.worker.config.HttpConfig
-import org.webant.worker.http.{HttpDataEntity, HttpResponse}
+import org.webant.worker.http.HttpResponse
 import org.webant.worker.store.IStore
 
 import scala.collection.JavaConverters._

@@ -1,6 +1,7 @@
 package org.webant.worker.http
 
 import org.apache.http.HttpStatus
+import org.webant.commons.entity.HttpDataEntity
 
 class HttpResponse[T <: HttpDataEntity] {
   var code: Int = _

@@ -5,8 +5,8 @@ import java.io.File
 import org.apache.commons.collections.MapUtils
 import org.apache.commons.io.FileUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.HttpDataEntity
 import org.webant.commons.utils.JsonUtils
-import org.webant.worker.http.HttpDataEntity
 
 class JsonStore[T <: HttpDataEntity] extends IStore[T] {
   private val logger = LogManager.getLogger(classOf[JsonStore[HttpDataEntity]])

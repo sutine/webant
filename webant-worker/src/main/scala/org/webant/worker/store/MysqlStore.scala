@@ -1,8 +1,8 @@
 package org.webant.worker.store
 
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.HttpDataEntity
 import org.webant.commons.utils.JsonUtils
-import org.webant.worker.http.HttpDataEntity
 
 class MysqlStore[T <: HttpDataEntity] extends JdbcStoreProvider[T] {
   private val logger = LogManager.getLogger(classOf[MysqlStore[HttpDataEntity]])
@@ -39,7 +39,7 @@ class MysqlStore[T <: HttpDataEntity] extends JdbcStoreProvider[T] {
       affectRowCount = runner.update(conn, sql, values: _*)
     } catch {
       case e: Exception =>
-        logger.error(e.getMessage())
+        logger.error(e.getMessage)
     }
 
     affectRowCount
@@ -61,7 +61,7 @@ class MysqlStore[T <: HttpDataEntity] extends JdbcStoreProvider[T] {
       affectRowCount = runner.update(conn, sql, values: _*)
     } catch {
       case e: Exception =>
-        logger.error(e.getMessage())
+        logger.error(e.getMessage)
     }
 
     affectRowCount

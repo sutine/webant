@@ -2,7 +2,7 @@ package org.webant.plugin.mahua.data
 
 import java.util.Date
 
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.entity.HttpDataEntity
 
 import scala.beans.BeanProperty
 

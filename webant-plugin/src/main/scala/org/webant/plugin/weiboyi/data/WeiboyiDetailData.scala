@@ -2,7 +2,7 @@ package org.webant.plugin.weiboyi.data
 
 import java.sql.Date
 
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.entity.HttpDataEntity
 
 import scala.beans.BeanProperty
 

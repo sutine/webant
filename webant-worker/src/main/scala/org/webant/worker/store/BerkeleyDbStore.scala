@@ -5,7 +5,7 @@ import java.io.File
 import org.apache.commons.collections.MapUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.berkeleydb.{BerkeleydbDao, BerkeleydbDatabaseObjectImpl}
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.entity.HttpDataEntity
 
 class BerkeleyDbStore[T <: HttpDataEntity] extends IStore[T] {
   private val logger = LogManager.getLogger(classOf[BerkeleyDbStore[HttpDataEntity]])

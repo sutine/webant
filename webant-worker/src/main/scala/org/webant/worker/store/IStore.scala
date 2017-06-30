@@ -1,6 +1,6 @@
 package org.webant.worker.store
 
-import org.webant.worker.http.HttpDataEntity
+import org.webant.commons.entity.HttpDataEntity
 
 trait IStore[T <: HttpDataEntity] {
   def init(params: java.util.Map[String, Object]): Boolean = ???
