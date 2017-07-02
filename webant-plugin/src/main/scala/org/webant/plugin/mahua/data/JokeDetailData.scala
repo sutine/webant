@@ -2,10 +2,13 @@ package org.webant.plugin.mahua.data
 
 import java.util.Date
 
+import org.webant.commons.elasticsearch.annotation.{Index, Type}
 import org.webant.commons.entity.HttpDataEntity
 
 import scala.beans.BeanProperty
 
+@Index("webant")
+@Type("data")
 class JokeDetailData extends HttpDataEntity {
   @BeanProperty
   var userName: String = _

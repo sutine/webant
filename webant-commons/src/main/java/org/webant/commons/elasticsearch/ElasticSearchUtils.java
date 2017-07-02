@@ -1,8 +1,10 @@
 package org.webant.commons.elasticsearch;
 
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.update.UpdateRequest;
@@ -31,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 public class ElasticSearchUtils<T extends HttpDataEntity> {
     private static Logger logger = LoggerFactory.getLogger(ElasticSearchUtils.class);
     private static Client client;
+    private long timeout = 5000;
 
     public boolean init(String clusterName, String host, int port) throws UnknownHostException {
         Settings settings = Settings.builder()
@@ -43,6 +46,16 @@ public class ElasticSearchUtils<T extends HttpDataEntity> {
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
 
         return true;
+    }
+
+    public T get(String id) {
+        if (StringUtils.isBlank(id))
+            return null;
+
+        GetRequest getRequest = new GetRequest().id(id);
+        String source = client.get(getRequest).actionGet(timeout).getSourceAsString();
+        T data = JsonUtils.fromJson(source, new TypeToken<T>() {}.getType());
+        return data;
     }
 
     private IndexRequest buildIndexRequest(T data, Boolean isRefresh) throws ElasticSearchException {
@@ -73,7 +86,7 @@ public class ElasticSearchUtils<T extends HttpDataEntity> {
         String json = JsonUtils.toJson(data);
         IndexRequest indexRequest = buildIndexRequest(data, isRefresh);
 
-        UpdateRequest updateRequest = new UpdateRequest(getIndex(data), getType(data), getDocParentId(data))
+        UpdateRequest updateRequest = new UpdateRequest(getIndex(data), getType(data), getDocId(data))
                 .doc(json, XContentFactory.xContentType(json))
                 .upsert(indexRequest);
 
@@ -96,7 +109,7 @@ public class ElasticSearchUtils<T extends HttpDataEntity> {
             bulkRequest.add(indexRequest);
         }
 
-        BulkResponse bulkResponse = bulkRequest.get(TimeValue.timeValueMillis(5000));
+        BulkResponse bulkResponse = bulkRequest.get(TimeValue.timeValueMillis(timeout));
         if (bulkResponse.hasFailures()) {
             logger.error("batch save failed! error" + bulkResponse.buildFailureMessage());
         }
@@ -106,7 +119,7 @@ public class ElasticSearchUtils<T extends HttpDataEntity> {
 
     public int save(T data, boolean isRefresh) throws ElasticSearchException {
         IndexRequest indexRequest = buildIndexRequest(data, isRefresh);
-        long version = client.index(indexRequest).actionGet(5000).getVersion();
+        long version = client.index(indexRequest).actionGet(timeout).getVersion();
         if (version > 0)
             return 1;
         else
@@ -123,7 +136,7 @@ public class ElasticSearchUtils<T extends HttpDataEntity> {
             bulkRequest.add(updateRequest);
         }
 
-        BulkResponse bulkResponse = bulkRequest.get(TimeValue.timeValueMillis(5000));
+        BulkResponse bulkResponse = bulkRequest.get(TimeValue.timeValueMillis(timeout));
         if (bulkResponse.hasFailures()) {
             logger.error("batch update failed! error" + bulkResponse.buildFailureMessage());
         }
