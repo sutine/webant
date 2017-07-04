@@ -15,26 +15,35 @@ class BudejieDetailProcessor extends HtmlPageProcessor[BudejieDetailData] {
   override def data(): BudejieDetailData = {
     val detail = new BudejieDetailData
     val id = doc.select("#hidPid").attr("value")
-    val jokeType = doc.select("dl.mahua-view").first().attr("joke-type")
+    var jokeType = "text"
+    if (!doc.select(".j-r-list-c-img").isEmpty)
+      jokeType = "image"
+    else if (!doc.select(".j-video-c").isEmpty)
+      jokeType = "video"
+    else
+      jokeType = "text"
 
     require(StringUtils.isNotBlank(id))
-    require(StringUtils.isNotBlank(jokeType))
+//    require(StringUtils.isNotBlank(jokeType))
 
     detail.id = DigestUtils.md5Hex(s"mahua_$id")
 
-    detail.profileUrl = doc.select(".j-list-user .u-img a").attr("href")
-    detail.avatarUrl = doc.select(".j-list-user .u-img a img").attr("data-original")
-    detail.userName = doc.select(".j-list-user .u-txt a").text()
-    val publishTime = doc.select(".j-list-user .u-txt .u-time").text()
+    detail.profileUrl = doc.select(".j-list-user .u-img a").attr("href").trim
+    detail.avatarUrl = doc.select(".j-list-user .u-img a img").attr("data-original").trim
+    detail.userName = doc.select(".j-list-user .u-txt a").text().trim
+    val publishTime = doc.select(".j-list-user .u-txt .u-time").text().trim
     detail.publishTime = DateUtils.parseDate(publishTime, DateFormatUtils.DATE_TIME_FORMAT)
-    detail.title = doc.select(".j-r-list-c .j-r-list-c-desc").text()
-    detail.imgUrl = doc.select(".content-text img").attr("src")
-    detail.likeNum = doc.select(".j-r-list-tool .j-r-list-tool-l-up").text().toInt
-    detail.hateNum = doc.select(".j-r-list-tool .j-r-list-tool-l-down").text().toInt
+    detail.title = doc.select(".j-r-list-c .j-r-list-c-desc").text().trim
+    detail.imgUrl = doc.select(".content-text img").attr("src").trim
+    val likeNum = doc.select(".j-r-list-tool .j-r-list-tool-l-up span").text()
+    val hateNum = doc.select(".j-r-list-tool .j-r-list-tool-l-down span").text()
 //    detail.shareNum = doc.select(".j-r-list-tool .j-r-list-tool-ct-share-c").text().replace(" ", "")
-    detail.commentNum = doc.select(".j-r-list-tool .j-r-list-tool-l-comment").text().toInt
+    val comment = doc.select(".j-r-list-tool .j-r-list-tool-l-comment span").text()
+    detail.likeNum = if (StringUtils.isNotBlank(likeNum)) likeNum.trim.toInt else 0
+    detail.hateNum = if (StringUtils.isNotBlank(hateNum)) hateNum.trim.toInt else 0
+    detail.commentNum = if (StringUtils.isNotBlank(comment)) comment.trim.toInt else 0
 
-    detail.source = "mahua.com"
+    detail.source = "budejie.com"
     detail.srcId = id
     detail.crawlTime = new Date
 

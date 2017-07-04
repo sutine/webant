@@ -61,6 +61,32 @@ class BudejieCrawlerTest extends AssertionsForJUnit {
   }
 
   @Test
+  def testList(): Unit = {
+    val url = "http://www.budejie.com/2"
+
+    val resp = org.apache.http.client.fluent.Request.Get(url)
+      //      .bodyString(body, ContentType.APPLICATION_FORM_URLENCODED)
+      .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+      .addHeader("Accept-Encoding", "gzip, deflate")
+      .addHeader("Accept-Language", "zh-CN,zh;q=0.8")
+      .addHeader("Cache-Control", "max-age=0")
+      .addHeader("Connection", "keep-alive")
+      .addHeader("Cookie", "Hm_lvt_7c9f93d0379a9a7eb9fb60319911385f=1498616724; Hm_lpvt_7c9f93d0379a9a7eb9fb60319911385f=1499168114; tma=43102518.35365908.1498616723801.1498616723801.1499163828444.2; tmd=40.43102518.35365908.1498616723801.; _ga=GA1.2.815839684.1498616724; _gid=GA1.2.2061677000.1499163828; bfd_g=a7b902420a01410f00004010000020a15948e500")
+      .addHeader("If-Modified-Since", "Tue, 04 Jul 2017 11:18:04 GMT")
+      .addHeader("Upgrade-Insecure-Requests", "1")
+      .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
+      .execute
+    val result = resp.returnContent.asString(Charset.forName("UTF-8"))
+    val doc = Jsoup.parse(result)
+
+    doc.setBaseUri("http://www.budejie.com/")
+    val pages = doc.select("a").asScala.map(_.absUrl("href")).filter(StringUtils.isNotBlank(_)).distinct
+//    val pages = doc.select("a[href]").asScala.map(_.attr("abs:href")).filter(StringUtils.isNotBlank(_))
+
+    println(pages)
+  }
+
+  @Test
   @throws[IOException]
   def crawl() {
     val url = "http://www.budejie.com/detail-25610758.html"

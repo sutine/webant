@@ -1,5 +1,6 @@
 package org.webant.worker.processor
 
+import java.net.URL
 import java.util.Date
 
 import org.apache.commons.lang3.StringUtils
@@ -22,6 +23,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
   var regex: String = _
   var stores: Iterable[IStore[HttpDataEntity]] = _
   var http: HttpConfig = _
+  var baseUri: String = _
 
   def accept(url: String): Boolean = url.matches(regex)
 
@@ -34,6 +36,8 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
       if (response == null || response.fail || StringUtils.isBlank(response.content))
         return response
 
+      val url = new URL(link.getUrl)
+      baseUri = s"${url.getProtocol}://${url.getHost}"
       parse(response.content)
 
       response.list = list()

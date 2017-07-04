@@ -13,6 +13,7 @@ class HtmlPageProcessor[T <: HttpDataEntity : ClassTag] extends HttpPageProcesso
 
   protected override def parse(content: String): Unit = {
     doc = Jsoup.parse(content)
+    doc.setBaseUri(baseUri)
   }
 
   protected override def links(): Iterable[String] = {
