@@ -4,7 +4,6 @@ import java.io.IOException
 import java.nio.charset.Charset
 
 import org.apache.http.client.fluent.Response
-import org.apache.http.entity.ContentType
 import org.junit.{After, Before, Test}
 import org.scalatest.junit.AssertionsForJUnit
 import org.webant.plugin.zhihu.proccessor.{AnswersProcessor, ZhihuSeedProcessor}

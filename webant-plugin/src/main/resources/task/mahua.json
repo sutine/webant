@@ -3,5 +3,5 @@
   "name": "麻花笑话网",
   "description": "麻花笑话网",
   "priority": 4,
-  "sites": ["site_mahua"]
+  "sites": ["site_mahua", "site_budejie"]
 }

@@ -36,7 +36,7 @@ object WorkerJmxServer {
         |
         |****************************************************************
       """.stripMargin
-    println(webant)
+    logger.info(webant)
 
     LocateRegistry.createRegistry(ConfigManager.getWorkerConfig.serverPort)
     val mbeanServer = MBeanServerFactory.createMBeanServer

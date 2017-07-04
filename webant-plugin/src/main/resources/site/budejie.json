@@ -1,0 +1,165 @@
+{
+  "id": "site_budejie",
+  "name": "百思不得姐",
+  "description": "百思不得姐",
+  "seeds": [
+    "http://www.budejie.com/"
+  ],
+  "priority": 4,
+  "interval": 2000,
+  "incrementInterval": 600000,
+  "http": {
+    "method": "GET",
+    "connectTimeout": 15000,
+    "socketTimeout": 10000,
+    "encoding": "utf-8",
+    "retryTimes": 3,
+    "cycleRetryTimes": 8,
+    "contentType": "text/xml; charset=utf-8",
+    "proxy": false,
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "zh-CN,zh;q=0.8",
+      "Cache-Control": "max-age=0",
+      "Connection": "keep-alive",
+      "Cookie": "Hm_lvt_7c9f93d0379a9a7eb9fb60319911385f=1498616724; Hm_lpvt_7c9f93d0379a9a7eb9fb60319911385f=1499168114; tma=43102518.35365908.1498616723801.1498616723801.1499163828444.2; tmd=40.43102518.35365908.1498616723801.; _ga=GA1.2.815839684.1498616724; _gid=GA1.2.2061677000.1499163828; bfd_g=a7b902420a01410f00004010000020a15948e500",
+      "If-Modified-Since": "Tue, 04 Jul 2017 11:18:04 GMT",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+    }
+  },
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.SqlitelLinkProvider",
+    "params": {
+      "url": "jdbc:sqlite:data/webant.db",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+*/
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.DerbyLinkProvider",
+    "params": {
+      "url": "jdbc:derby:data/derby/webant;create=true",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+*/
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.HsqldbLinkProvider",
+    "params": {
+      "url": "jdbc:hsqldb:file:./data/hsqldb/webant;sql.syntax_mys=true",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+*/
+  "linkProvider": {
+    "className": "org.webant.worker.link.H2LinkProvider",
+    "params": {
+      "url": "jdbc:h2:./data/h2/webant;MODE=MYSQL",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.MysqlLinkProvider",
+    "params": {
+      "url": "jdbc:mysql://localhost:3306/webant?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+      "username": "bill",
+      "password": "sutine",
+      "batch": 20
+    }
+  },
+*/
+  "processors": [
+    {
+      "className": "org.webant.plugin.budejie.proccessor.BudejieSeedProcessor"
+    },
+    {
+      "regex": "http://www.budejie.com/\\d*"
+    },
+    {
+      "className": "org.webant.plugin.budejie.proccessor.BudejieDetailProcessor",
+      "http": {
+        "method": "POST",
+        "connectTimeout": 15000,
+        "socketTimeout": 10000,
+        "encoding": "utf-8",
+        "retryTimes": 3,
+        "cycleRetryTimes": 8,
+        "contentType": "text/xml; charset=utf-8",
+        "proxy": false,
+        "headers": {
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+          "Accept-Encoding": "gzip, deflate, sdch",
+          "Accept-Language": "zh-CN,zh;q=0.8",
+          "Cache-Control": "max-age=0",
+          "cookie": "UM_distinctid=15bde680426215-0dd1f2a838eeff-67f1a39-144000-15bde680427480; MH_UP_JOKES=%2C1664724%2C; CNZZDATA1000005254=1002886654-1494081766-%7C1494781843; Hm_lvt_035fdfc559009c734b7c7e6bdd54bc20=1494085011; Hm_lpvt_035fdfc559009c734b7c7e6bdd54bc20=1494783080",
+          "Proxy-Connection": "keep-alive",
+          "Upgrade-Insecure-Requests": "1",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
+        }
+      },
+      "store": [
+        {
+          "className": "org.webant.worker.store.ElasticSearchStore",
+          "params": {
+            "clusterName": "es",
+            "host": "localhost",
+            "port": "9300"
+          }
+        }
+/*
+        {
+          "className": "org.webant.plugin.mahua.store.JokeDetailStore",
+          "params": {
+            "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+            "username": "bill",
+            "password": "sutine"
+          }
+        },
+        {
+          "className": "org.webant.plugin.mahua.store.FunStore",
+          "params": {
+            "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+            "username": "bill",
+            "password": "sutine"
+          }
+        }
+
+        {
+          "className": "org.webant.worker.store.H2Store",
+          "params": {
+            "url": "jdbc:h2:./data/h2/data;MODE=MYSQL",
+            "username": "webant",
+            "password": "webant"
+          }
+        },
+        {
+          "className": "org.webant.worker.store.JsonStore",
+          "params": {
+            "dir": "./data/json"
+          }
+        },
+        {
+          "className": "org.webant.worker.store.BerkeleyDbStore",
+          "params": {
+            "dir": "./data/bdb"
+          }
+        }
+*/
+      ]
+    }
+  ]
+}
