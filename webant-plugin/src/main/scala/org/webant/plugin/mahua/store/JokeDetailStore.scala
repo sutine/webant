@@ -2,20 +2,20 @@ package org.webant.plugin.mahua.store
 
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
-import org.webant.plugin.mahua.data.JokeDetailData
+import org.webant.plugin.fun.data.FunData
 import org.webant.worker.store.MysqlStore
 
-class JokeDetailStore extends MysqlStore[JokeDetailData] {
+class JokeDetailStore extends MysqlStore[FunData] {
   private val logger = LogManager.getLogger(classOf[JokeDetailStore])
 
-  override def upsert(list: Iterable[JokeDetailData]): Int = {
+  override def upsert(list: Iterable[FunData]): Int = {
     require(conn != null)
     if (list == null || list.isEmpty) return 0
 
     list.map(upsert).sum
   }
 
-  override def upsert(data: JokeDetailData): Int = {
+  override def upsert(data: FunData): Int = {
     require(conn != null)
     if (data == null) return 0
 

@@ -8,14 +8,14 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DateUtils
 import org.apache.http.client.fluent.Response
 import org.webant.commons.utils.DateFormatUtils
-import org.webant.plugin.mahua.data.JokeDetailData
+import org.webant.plugin.fun.data.FunData
 import org.webant.worker.processor.HtmlPageProcessor
 
-class JokeDetailProcessor extends HtmlPageProcessor[JokeDetailData] {
+class MahuaDetailProcessor extends HtmlPageProcessor[FunData] {
   regex = "http://www.mahua.com/xiaohua/\\d*.htm"
 
-  override def data(): JokeDetailData = {
-    val detail = new JokeDetailData
+  override def data(): FunData = {
+    val detail = new FunData
     val srcId = doc.select("dl.mahua-view").first().attr("mahua")
     val jokeType = doc.select("dl.mahua-view").first().attr("joke-type")
 
@@ -53,7 +53,7 @@ class JokeDetailProcessor extends HtmlPageProcessor[JokeDetailData] {
     detail
   }
 
-  def getLikeHateCount(detail: JokeDetailData, time: Long): JokeDetailData = {
+  def getLikeHateCount(detail: FunData, time: Long): FunData = {
     val url = s"http://user.mahua.com/ajax/joke/checkJokesDynamic?callback=jQuery&joke_ids=${detail.srcId}&_=$time"
 
     val resp: Response = org.apache.http.client.fluent.Request.Get(url)

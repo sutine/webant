@@ -89,9 +89,9 @@
       "regex": "http://www.mahua.com/newjokes/index_\\d*.htm"
     },
     {
-      "className": "org.webant.plugin.mahua.proccessor.JokeDetailProcessor",
+      "className": "org.webant.plugin.mahua.proccessor.MahuaDetailProcessor",
       "http": {
-        "method": "POST",
+        "method": "GET",
         "connectTimeout": 15000,
         "socketTimeout": 10000,
         "encoding": "utf-8",

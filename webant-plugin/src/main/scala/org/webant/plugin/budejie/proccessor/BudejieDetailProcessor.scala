@@ -6,16 +6,16 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DateUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.utils.DateFormatUtils
-import org.webant.plugin.budejie.data.BudejieDetailData
+import org.webant.plugin.fun.data.FunData
 import org.webant.worker.processor.HtmlPageProcessor
 
-class BudejieDetailProcessor extends HtmlPageProcessor[BudejieDetailData] {
+class BudejieDetailProcessor extends HtmlPageProcessor[FunData] {
   private val logger = LogManager.getLogger(classOf[BudejieDetailProcessor])
 
   regex = "http://www.budejie.com/detail-\\d*.html"
 
-  override def data(): BudejieDetailData = {
-    val detail = new BudejieDetailData
+  override def data(): FunData = {
+    val detail = new FunData
     val srcId = doc.select(".j-r-list-tool").attr("data-id")
     val funType = doc.select(".j-r-list-tool").attr("data-type")
 
