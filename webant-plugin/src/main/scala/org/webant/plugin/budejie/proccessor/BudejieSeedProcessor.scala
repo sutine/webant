@@ -1,13 +1,12 @@
 package org.webant.plugin.budejie.proccessor
 
 import org.apache.commons.lang3.StringUtils
-import org.apache.log4j.LogManager
 import org.webant.plugin.budejie.data.BudejieDetailData
 import org.webant.worker.processor.HtmlPageProcessor
+
 import scala.collection.JavaConverters._
 
 class BudejieSeedProcessor extends HtmlPageProcessor[BudejieDetailData] {
-  private val logger = LogManager.getLogger(classOf[BudejieSeedProcessor])
   regex = "http://www.budejie.com/"
 
   override def links(): Iterable[String] = {

@@ -3,6 +3,7 @@ package org.webant.worker.processor
 import java.net.URL
 import java.util.Date
 
+import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
@@ -23,7 +24,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
   var regex: String = _
   var stores: Iterable[IStore[HttpDataEntity]] = _
   var http: HttpConfig = _
-  var baseUri: String = _
+  var url: URL = _
 
   def accept(url: String): Boolean = url.matches(regex)
 
@@ -36,8 +37,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
       if (response == null || response.fail || StringUtils.isBlank(response.content))
         return response
 
-      val url = new URL(link.getUrl)
-      baseUri = s"${url.getProtocol}://${url.getHost}"
+      url = new URL(link.getUrl)
       parse(response.content)
 
       response.list = list()
@@ -50,6 +50,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
 
       response.data = data()
       if (response.data != null) {
+        response.data.id = DigestUtils.md5Hex(s"${link.getTaskId}_${link.getSiteId}_${response.data.srcId}")
         response.data.srcUrl = link.getUrl
         response.data.taskId = link.getTaskId
         response.data.siteId = link.getSiteId

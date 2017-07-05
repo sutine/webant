@@ -77,9 +77,9 @@ class BudejieCrawlerTest extends AssertionsForJUnit {
       .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
       .execute
     val result = resp.returnContent.asString(Charset.forName("UTF-8"))
-    val doc = Jsoup.parse(result)
+    val doc = Jsoup.parse(result, url)
 
-    doc.setBaseUri("http://www.budejie.com/")
+//    doc.setBaseUri("http://www.budejie.com/")
     val pages = doc.select("a").asScala.map(_.absUrl("href")).filter(StringUtils.isNotBlank(_)).distinct
 //    val pages = doc.select("a[href]").asScala.map(_.attr("abs:href")).filter(StringUtils.isNotBlank(_))
 
@@ -89,7 +89,7 @@ class BudejieCrawlerTest extends AssertionsForJUnit {
   @Test
   @throws[IOException]
   def crawl() {
-    val url = "http://www.budejie.com/detail-25610758.html"
+    val url = "http://www.budejie.com/detail-25625224.html"
 
     val resp = org.apache.http.client.fluent.Request.Get(url)
 //      .bodyString(body, ContentType.APPLICATION_FORM_URLENCODED)
@@ -104,7 +104,7 @@ class BudejieCrawlerTest extends AssertionsForJUnit {
       .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
       .execute
     val result = resp.returnContent.asString(Charset.forName("UTF-8"))
-    val doc = Jsoup.parse(result)
+    val doc = Jsoup.parse(result, url)
 
     val id = doc.select("#hidPid").attr("value")
     val profileUrl = doc.select(".j-list-user .u-img a").attr("href")
@@ -118,7 +118,7 @@ class BudejieCrawlerTest extends AssertionsForJUnit {
     val shareNum = doc.select(".j-r-list-tool .j-r-list-tool-ct-share-c").text().replace(" ", "")
     val commentNum = doc.select(".j-r-list-tool .j-r-list-tool-l-comment").text()
 
-    val pages = doc.select(".m-page")
+    val pages = doc.select("a").asScala.map(a => a.attr("href")).filter(StringUtils.isNumeric(_))
 
     System.out.println(title)
   }

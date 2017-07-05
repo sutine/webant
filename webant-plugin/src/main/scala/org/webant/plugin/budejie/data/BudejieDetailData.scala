@@ -29,11 +29,21 @@ class BudejieDetailData extends HttpDataEntity {
   @BeanProperty
   var imgHeight: Integer = _
   @BeanProperty
+  var videoUrl: String = _
+  @BeanProperty
+  var videoCaptureUrl: String = _
+  @BeanProperty
+  var videoDuration: String = _
+  @BeanProperty
   var likeNum: Integer = _
   @BeanProperty
   var hateNum: Integer = _
   @BeanProperty
   var commentNum: Integer = _
+  @BeanProperty
+  var shareNum: Integer = _
+  @BeanProperty
+  var rewardNum: Integer = _
   @BeanProperty
   var funType: String = _
 }

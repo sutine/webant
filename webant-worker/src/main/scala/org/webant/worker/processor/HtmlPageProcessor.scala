@@ -12,8 +12,7 @@ class HtmlPageProcessor[T <: HttpDataEntity : ClassTag] extends HttpPageProcesso
   protected var doc: Document = _
 
   protected override def parse(content: String): Unit = {
-    doc = Jsoup.parse(content)
-    doc.setBaseUri(baseUri)
+    doc = Jsoup.parse(content, url.toExternalForm)
   }
 
   protected override def links(): Iterable[String] = {

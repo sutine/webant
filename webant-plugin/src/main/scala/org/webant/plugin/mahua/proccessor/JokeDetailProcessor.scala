@@ -4,7 +4,6 @@ import java.nio.charset.Charset
 import java.util.Date
 
 import com.google.gson.JsonParser
-import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DateUtils
 import org.apache.http.client.fluent.Response
@@ -17,13 +16,11 @@ class JokeDetailProcessor extends HtmlPageProcessor[JokeDetailData] {
 
   override def data(): JokeDetailData = {
     val detail = new JokeDetailData
-    val id = doc.select("dl.mahua-view").first().attr("mahua")
+    val srcId = doc.select("dl.mahua-view").first().attr("mahua")
     val jokeType = doc.select("dl.mahua-view").first().attr("joke-type")
 
-    require(StringUtils.isNotBlank(id))
+    require(StringUtils.isNotBlank(srcId))
     require(StringUtils.isNotBlank(jokeType))
-
-    detail.id = DigestUtils.md5Hex(s"mahua_$id")
 
     detail.avatarUrl = doc.select("dl dt a img").first().attr("src")
     detail.userName = doc.select("dl dt p.joke-uname a").text()
@@ -37,7 +34,7 @@ class JokeDetailProcessor extends HtmlPageProcessor[JokeDetailData] {
     detail.commentNum = doc.select("dd.operation div.operation-btn a.comment").text().toInt
 
     detail.source = "mahua.com"
-    detail.srcId = id
+    detail.srcId = srcId
     detail.crawlTime = new Date
 
     if ("pic" == jokeType || "gif" == jokeType) {
