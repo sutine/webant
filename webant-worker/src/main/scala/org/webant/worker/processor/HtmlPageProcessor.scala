@@ -18,5 +18,4 @@ class HtmlPageProcessor[T <: HttpDataEntity : ClassTag] extends HttpPageProcesso
   protected override def links(): Iterable[String] = {
     doc.select("a").asScala.map(_.absUrl("href")).filter(StringUtils.isNotBlank(_)).distinct
   }
-
 }

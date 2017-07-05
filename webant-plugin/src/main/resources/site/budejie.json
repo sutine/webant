@@ -84,7 +84,7 @@
 */
   "processors": [
     {
-      "className": "org.webant.plugin.budejie.proccessor.BudejieSeedProcessor"
+      "regex": "http://www.budejie.com/"
     },
     {
       "regex": "http://www.budejie.com/\\d*"

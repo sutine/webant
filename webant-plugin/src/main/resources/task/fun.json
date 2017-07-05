@@ -1,0 +1,7 @@
+{
+  "id": "task_fun",
+  "name": "幽默笑话",
+  "description": "采集幽默笑话网站",
+  "priority": 4,
+  "sites": ["site_mahua", "site_budejie", "site_qiushibaike"]
+}

@@ -3,6 +3,7 @@ package org.webant.plugin.test.qiushibaike
 import java.io.IOException
 import java.nio.charset.Charset
 
+import org.apache.commons.lang3.StringUtils
 import org.jsoup.Jsoup
 import org.junit.{After, Before, Test}
 import org.scalatest.junit.AssertionsForJUnit
@@ -19,46 +20,80 @@ class QiushibaikeCrawlerTest extends AssertionsForJUnit {
 
   @Test
   def testRegex(): Unit = {
-    val regex = "https://www.zhihu.com/api/v4/members/[0-9a-zA-Z-]*/answers?[\\w\\W]*"
-    val url = "https://www.zhihu.com/api/v4/members/ma-en-32/answers?include=data%5B*%5D.is_normal%2Cis_collapsed%2Ccollapse_reason%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Creview_info%2Crelationship.is_authorized%2Cvoting%2Cis_author%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B*%5D.author.badge%5B%3F(type%3Dbest_answerer)%5D.topics&offset=20&limit=20&sort_by=created"
+    val regex = "https://www.qiushibaike.com/article/\\d*"
+    val url = "https://www.qiushibaike.com/article/118986739"
 
     println(url.matches(regex))
   }
 
   @Test
   @throws[IOException]
-  def crawl() {
-    val url = "https://www.qiushibaike.com/article/118790265"
-    val body = "web_csrf_token=undefined&mode=1&typelogin=1%2F&piccode=7ug2&username=snsant&password=1qa%40WS3ed"
-    val referer = "http://chuanbo.weiboyi.com/"
+  def testCrawlUser() {
+    val url = "https://www.qiushibaike.com/users/20524321/articles/"
 
     val resp = org.apache.http.client.fluent.Request.Get(url)
-      //      .bodyString(body, ContentType.APPLICATION_FORM_URLENCODED)
-      //      .addHeader("Proxy-Connection", "keep-alive")
-      //      .addHeader("Pragma", "no-cache")
-      //      .addHeader("Cache-Control", "no-cache")
-      //      .addHeader("Accept", "*/*")
-      //      .addHeader("Accept-Encoding", "gzip, deflate")
-      //      .addHeader("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6")
-      //      .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36")
-      //      .addHeader("X-Requested-With", "XMLHttpRequest")
-      //      .addHeader("Cookie", "PHPSESSID=er4h7nvttver6s02saamnsosu3; TRACK_DETECTED=1.0.1; TRACK_BROWSER_ID=4a734947754705a34ad87b86f200ed5b; Hm_lvt_29d7c655e7d1db886d67d7b9b3846aca=1498049922; Hm_lpvt_29d7c655e7d1db886d67d7b9b3846aca=1498898314; Hm_lvt_9a2792b12b6388cfcc41e508c781a8be=1498049923; Hm_lpvt_9a2792b12b6388cfcc41e508c781a8be=1498898315; aLastLoginTime=1498898312; loginHistoryRecorded=0; TRACK_USER_ID=422902; TRACK_IDENTIFY_AT=2017-07-01T08%3A39%3A14.856Z; TRACK_SESSION_ID=f7c48941cd7630221917d85997c07284; Hm_lvt_5ff3a7941ce54a1ba102742f48f181ab=1498098069,1498202058,1498898237,1498898356; Hm_lpvt_5ff3a7941ce54a1ba102742f48f181ab=1498898356; _gscu_867320846=9804992204kk0467; _gscs_867320846=t98898213bi5bcy16|pv:5; _gscbrs_867320846=1; username=; rememberusername=")
-      //      .addHeader("DNT", "1")
-      //      .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-      //      .addHeader("Referer", referer)
-      //      .addHeader("Origin", "http://chuanbo.weiboyi.com")
-      //      .addHeader("Host", "chuanbo.weiboyi.com")
-      //      .addHeader("Proxy-Connection", "keep-alive")
+      .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+      .addHeader("Accept-Encoding", "gzip, deflate, br")
+      .addHeader("Accept-Language", "zh-CN,zh;q=0.8")
+      .addHeader("Cache-Control", "max-age=0")
+      .addHeader("Connection", "keep-alive")
+      .addHeader("Cookie", "_xsrf=2|e112fdcf|96807aea7c64004411315ab1b484fe4b|1499159470; _qqq_uuid_=\"2|1:0|10:1499159470|10:_qqq_uuid_|56:NjM1MjdjYzgwNGI1MmVkN2MxYzFmMGRiNWExNGI4ZjZhMmQwNTVlZg==|2b431da262fc63a66aba8776a565d9a7f6c8154695bf48d404f716aab3bd8ef8\"; callback_url=/new4/session%3Fsrc%3Dwx%26code%3D003yx7Ki179dny09o3Ki1uJjKi1yx7KB%26state%3D; __cur_art_index=9281; _ga=GA1.2.1637544603.1499159508; _gid=GA1.2.1389000090.1499159508; Hm_lvt_2670efbdd59c7e3ed3749b458cafaa37=1499159508; Hm_lpvt_2670efbdd59c7e3ed3749b458cafaa37=1499241085")
+      .addHeader("If-None-Match", "214c5dee29e2857db74399d3101ba0167088461c")
+      .addHeader("Host", "www.qiushibaike.com")
+      .addHeader("Referer", url)
+      .addHeader("Upgrade-Insecure-Requests", "1")
+      .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
       .execute
     val result = resp.returnContent.asString(Charset.forName("UTF-8"))
-    val doc = Jsoup.parse(result)
-    val profileUrl = doc.select(".newArticleHead a").attr("href")
+    val doc = Jsoup.parse(result, url)
+    val profileUrl = doc.select(".newArticleHead a").first().absUrl("href")
     val avatarUrl = doc.select(".newArticleHead img").attr("src")
     val userName = doc.select(".newArticleHead .touch-user-name-a").text()
     val title = doc.select(".content-text").text()
     val imgUrl = doc.select(".content-text img").attr("src")
     val likeNum = doc.select(".article_info .laugh-comment").attr("data-votes")
     val commentNum = doc.select(".article_info .comments").text().split(" ")(0)
-    System.out.println(title)
+    println(title)
+  }
+
+  @Test
+  @throws[IOException]
+  def crawl() {
+    val url = "https://www.qiushibaike.com/article/118790265"
+
+    val resp = org.apache.http.client.fluent.Request.Get(url)
+      .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+      .addHeader("Accept-Encoding", "gzip, deflate, br")
+      .addHeader("Accept-Language", "zh-CN,zh;q=0.8")
+      .addHeader("Cache-Control", "max-age=0")
+      .addHeader("Connection", "keep-alive")
+      .addHeader("Cookie", "_xsrf=2|e112fdcf|96807aea7c64004411315ab1b484fe4b|1499159470; _qqq_uuid_=\"2|1:0|10:1499159470|10:_qqq_uuid_|56:NjM1MjdjYzgwNGI1MmVkN2MxYzFmMGRiNWExNGI4ZjZhMmQwNTVlZg==|2b431da262fc63a66aba8776a565d9a7f6c8154695bf48d404f716aab3bd8ef8\"; callback_url=/new4/session%3Fsrc%3Dwx%26code%3D003yx7Ki179dny09o3Ki1uJjKi1yx7KB%26state%3D; __cur_art_index=9281; _ga=GA1.2.1637544603.1499159508; _gid=GA1.2.1389000090.1499159508; Hm_lvt_2670efbdd59c7e3ed3749b458cafaa37=1499159508; Hm_lpvt_2670efbdd59c7e3ed3749b458cafaa37=1499241085")
+      .addHeader("If-None-Match", "214c5dee29e2857db74399d3101ba0167088461c")
+      .addHeader("Host", "www.qiushibaike.com")
+      .addHeader("Referer", url)
+      .addHeader("Upgrade-Insecure-Requests", "1")
+      .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
+      .execute
+    val result = resp.returnContent.asString(Charset.forName("UTF-8"))
+    val doc = Jsoup.parse(result, url)
+    val srcId = StringUtils.substringAfter(url, "/article/")
+    val content = doc.select("#single-next-link .content").text()
+    val imgUrl = doc.select("#single-next-link img").first().absUrl("src")
+    val title = doc.select("#single-next-link img").first().attr("alt")
+    val profileUrl = doc.select(s"#qiushi_tag_$srcId a").first().absUrl("href")
+    val avatarUrl = doc.select(s"#qiushi_tag_$srcId img").first().absUrl("src")
+    val userName = doc.select(s"#qiushi_tag_$srcId img").first().attr("alt")
+    val likeNum = doc.select(".stats-vote .number").text()
+    val commentNum = doc.select(".stats-comments .number").text()
+    val voteUp = doc.select(s"#vote-up-$srcId .number").text()
+    val voteDown = doc.select(s"#vote-dn-$srcId .number").text()
+
+
+//    val profileUrl = doc.select(".newArticleHead a").first().absUrl("href")
+//    val avatarUrl = doc.select(".newArticleHead img").attr("src")
+//    val userName = doc.select(".newArticleHead .touch-user-name-a").text()
+//    val title = doc.select(".content-text").text()
+//    val imgUrl = doc.select(".content-text img").attr("src")
+    println(title)
   }
 }
