@@ -6,6 +6,7 @@ import org.apache.commons.dbutils.handlers._
 import org.apache.commons.lang3.reflect.FieldUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
+import org.webant.commons.link.JdbcLinkProvider
 import org.webant.commons.utils.BeanUtils
 
 import scala.collection.JavaConverters._

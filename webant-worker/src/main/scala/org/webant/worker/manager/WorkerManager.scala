@@ -1,9 +1,9 @@
 package org.webant.worker.manager
 
+import org.webant.commons.link.Progress
 import org.webant.commons.utils.JsonUtils
 import org.webant.worker.WorkerReactor
 import org.webant.worker.config.{ConfigManager, SiteConfig, TaskConfig}
-import org.webant.worker.link.Progress
 
 class WorkerManager {
   var isRunning = false

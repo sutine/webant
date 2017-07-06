@@ -1,33 +1,22 @@
-package org.webant.worker.store
-
-import java.util
+package org.webant.extension.store
 
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.HttpDataEntity
 import org.webant.commons.store.JdbcStoreProvider
 import org.webant.commons.utils.JsonUtils
 
-class H2Store[T <: HttpDataEntity] extends JdbcStoreProvider[T] {
-  private val logger = LogManager.getLogger(classOf[H2Store[HttpDataEntity]])
+class MysqlStore[T <: HttpDataEntity] extends JdbcStoreProvider[T] {
+  private val logger = LogManager.getLogger(classOf[MysqlStore[HttpDataEntity]])
 
-  DRIVER = "org.h2.Driver"
-
-  def init(): Boolean = {
-    val params = new util.HashMap[String, Object]()
-    params.put("url", "jdbc:h2:./data/h2/data;MODE=MYSQL")
-    params.put("username", "webant")
-    params.put("password", "webant")
-
-    init(params)
-  }
+  DRIVER = "com.mysql.jdbc.Driver"
 
   override def init(params: java.util.Map[String, Object]): Boolean = {
     if (!super.init(params)) {
-      logger.error("init H2Store failed!")
+      logger.error(s"init ${getClass.getSimpleName} failed!")
       return false
     }
 
-    logger.info(s"init H2Store success!")
+    logger.info(s"init ${getClass.getSimpleName} success!")
     createTable()
   }
 

@@ -2,7 +2,7 @@ package org.webant.commons.entity
 
 import java.util.Date
 
-import org.webant.commons.elasticsearch.annotation.{DocId, DocParentId}
+import org.webant.commons.annotation.{DocId, DocParentId}
 
 import scala.beans.BeanProperty
 

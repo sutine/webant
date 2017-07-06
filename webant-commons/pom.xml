@@ -15,66 +15,30 @@
     <packaging>jar</packaging>
     <name>webant commons pom</name>
 
-    <properties>
-        <mybatis.version>3.3.1</mybatis.version>
-        <elasticsearch.version>5.4.3</elasticsearch.version>
-        <!--ES依赖的guava版本号，与parent项目的guava版本号不同，在这里单独定义-->
-        <es.guava.version>18.0</es.guava.version>
-    </properties>
-
     <dependencies>
-        <!-- commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
         </dependency>
 
-        <!-- commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
 
-        <!-- akka-actor -->
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-actor_2.11</artifactId>
-            <version>2.3.4</version>
         </dependency>
 
-        <!-- commons-dbutils -->
         <dependency>
             <groupId>commons-dbutils</groupId>
             <artifactId>commons-dbutils</artifactId>
-            <version>${commons-dbutils.version}</version>
         </dependency>
 
-        <!-- JDBC datasource -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>${druid.version}</version>
-        </dependency>
-
-        <!-- gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-
-        <!-- xstream -->
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>${xstream.version}</version>
-        </dependency>
-
-        <!-- httpclient -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
         </dependency>
 
         <dependency>
@@ -82,29 +46,9 @@
             <artifactId>fluent-hc</artifactId>
         </dependency>
 
-        <!-- commons-beanutils -->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-        </dependency>
-
-        <!-- MySQL Connector -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-        <!-- elasticsearch -->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>transport</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sleepycat</groupId>
-            <artifactId>je</artifactId>
-            <version>3.3.75</version>
         </dependency>
     </dependencies>
 
@@ -130,9 +74,5 @@
                 </excludes>
             </resource>
         </resources>
-
-        <plugins>
-        </plugins>
-
     </build>
 </project>

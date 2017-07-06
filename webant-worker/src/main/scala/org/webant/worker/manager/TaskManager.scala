@@ -1,7 +1,7 @@
 package org.webant.worker.manager
 
+import org.webant.commons.link.Progress
 import org.webant.worker.config.ConfigManager
-import org.webant.worker.link.Progress
 
 class TaskManager(taskId: String) {
   private var isRunning = false

@@ -3,8 +3,8 @@ package org.webant.worker.console
 import javax.management.{AttributeChangeNotification, NotificationBroadcasterSupport}
 
 import org.apache.log4j.LogManager
+import org.webant.commons.link.Progress
 import org.webant.worker.config.{SiteConfig, TaskConfig}
-import org.webant.worker.link.Progress
 import org.webant.worker.manager.WorkerManager
 
 class ConsoleOperation extends NotificationBroadcasterSupport with ConsoleOperationMBean {

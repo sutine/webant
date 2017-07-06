@@ -5,7 +5,6 @@ import java.net.{MalformedURLException, URL, URLClassLoader}
 import java.util.jar.JarFile
 
 import org.apache.commons.lang3.StringUtils
-import org.apache.http.protocol.HttpProcessor
 import org.apache.log4j.LogManager
 import org.webant.worker.annotation.ProcessorName
 

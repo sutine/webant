@@ -8,10 +8,10 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.{HttpDataEntity, Link}
+import org.webant.commons.link.ILinkProvider
 import org.webant.worker.config.{ProcessorConfig, SiteConfig}
 import org.webant.worker.exception.{HttpRequestException, ParseContentException}
 import org.webant.worker.http.HttpResponse
-import org.webant.worker.link.ILinkProvider
 import org.webant.worker.store.StoreFactory
 
 import scala.util.control.NonFatal

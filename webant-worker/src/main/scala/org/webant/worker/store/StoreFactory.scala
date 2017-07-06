@@ -3,6 +3,7 @@ package org.webant.worker.store
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.HttpDataEntity
+import org.webant.commons.store.IStore
 import org.webant.worker.config.{ProcessorConfig, StoreProvider}
 
 import scala.collection.parallel.immutable

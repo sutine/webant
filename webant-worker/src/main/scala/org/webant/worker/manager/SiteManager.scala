@@ -6,9 +6,10 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
+import org.webant.commons.link.{ILinkProvider, Progress}
 import org.webant.worker.WorkerReactor
 import org.webant.worker.config.ConfigManager
-import org.webant.worker.link.{H2LinkProvider, ILinkProvider, Progress}
+import org.webant.worker.link.H2LinkProvider
 import org.webant.worker.processor.HttpSiteProcessor
 import org.webant.worker.store.StoreFactory
 
