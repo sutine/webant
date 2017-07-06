@@ -90,7 +90,7 @@
       "regex": "http://www.budejie.com/\\d*"
     },
     {
-      "className": "org.webant.plugin.budejie.proccessor.BudejieDetailProcessor",
+      "className": "org.webant.plugin.budejie.processor.BudejieDetailProcessor",
       "http": {
         "method": "POST",
         "connectTimeout": 15000,

@@ -1,4 +1,4 @@
-package org.webant.plugin.weiboyi.proccessor
+package org.webant.plugin.weiboyi.processor
 
 import com.google.gson.{GsonBuilder, JsonParser}
 import org.webant.commons.utils.DateFormatUtils

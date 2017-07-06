@@ -5,7 +5,6 @@ import java.sql.SQLException
 import org.apache.commons.dbutils.handlers.BeanListHandler
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
-import org.webant.commons.utils.WebantConstants
 
 import scala.collection.JavaConverters._
 
@@ -58,7 +57,7 @@ class HsqldbLinkProvider extends JdbcLinkProvider {
   }
 
   override def read(): Iterable[Link] = {
-    read(WebantConstants.LINK_STATUS_INIT, batch)
+    read(Link.LINK_STATUS_INIT, batch)
   }
 
   private def read(status: String, size: Int): Iterable[Link] = {
@@ -76,7 +75,7 @@ class HsqldbLinkProvider extends JdbcLinkProvider {
       links = runner.query(conn, sql, new BeanListHandler[Link](classOf[Link]), selectParams: _*).asScala
       if (links.nonEmpty) {
         val pending = links.map(link => {
-          link.setStatus(WebantConstants.LINK_STATUS_PENDING)
+          link.setStatus(Link.LINK_STATUS_PENDING)
           link
         })
 

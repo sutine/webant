@@ -1,4 +1,4 @@
-package org.webant.plugin.budejie.proccessor
+package org.webant.plugin.budejie.processor
 
 import java.util.Date
 

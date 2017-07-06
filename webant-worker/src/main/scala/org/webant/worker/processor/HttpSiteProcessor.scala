@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.{HttpDataEntity, Link}
-import org.webant.commons.utils.WebantConstants
 import org.webant.worker.config.{ProcessorConfig, SiteConfig}
 import org.webant.worker.exception.{HttpRequestException, ParseContentException}
 import org.webant.worker.http.HttpResponse
@@ -46,7 +45,7 @@ class HttpSiteProcessor(linkProvider: ILinkProvider, siteConfig: SiteConfig) ext
 
       if (resp != null && resp.links != null) {
         // save success link
-        link.setStatus(WebantConstants.LINK_STATUS_SUCCESS)
+        link.setStatus(Link.LINK_STATUS_SUCCESS)
         linkProvider.write(link)
         // save accept links
         val accepts = resp.links.filter(accept).map(url => new Link(DigestUtils.md5Hex(url), link.getTaskId, link.getSiteId, url, link.getUrl, new Date()))
@@ -57,7 +56,7 @@ class HttpSiteProcessor(linkProvider: ILinkProvider, siteConfig: SiteConfig) ext
           s"srcId: ${if (resp.data == null) "" else resp.data.srcId}, data list number: ${resp.list.size}, link number: ${accepts.size}, " +
           s"elapse: ${DurationFormatUtils.formatDuration(System.currentTimeMillis() - start, "HH:mm:ss.SSS")}.")
       } else {
-        link.setStatus(WebantConstants.LINK_STATUS_FAIL)
+        link.setStatus(Link.LINK_STATUS_FAIL)
         linkProvider.write(link)
 
         logger.error(s"crawl failed. link: ${link.getUrl}, code: ${resp.code}, message: ${resp.message}, " +

@@ -1,10 +1,12 @@
 package org.webant.commons.entity;
 
-import org.webant.commons.utils.WebantConstants;
-
 import java.util.Date;
 
 public class Link {
+    public final static String LINK_STATUS_INIT = "init";
+    public final static String LINK_STATUS_PENDING = "pending";
+    public final static String LINK_STATUS_SUCCESS = "success";
+    public final static String LINK_STATUS_FAIL = "fail";
     private String id;
     private String taskId;
     private String siteId;
@@ -13,7 +15,7 @@ public class Link {
     private String referer;
     private Integer priority = 4;
     private Date lastCrawlTime;
-    private String status = WebantConstants.LINK_STATUS_INIT;
+    private String status = LINK_STATUS_INIT;
     private Integer dataVersion = 1;
     private Date dataCreateTime = new Date();
     private Date dataUpdateTime = new Date();

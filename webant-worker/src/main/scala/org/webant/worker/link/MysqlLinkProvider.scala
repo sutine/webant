@@ -3,7 +3,6 @@ package org.webant.worker.link
 import org.apache.commons.dbutils.handlers.BeanListHandler
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
-import org.webant.commons.utils.WebantConstants
 
 import scala.collection.JavaConverters._
 
@@ -24,7 +23,7 @@ class MysqlLinkProvider extends JdbcLinkProvider {
 
   override def read(): Iterable[Link] = {
     try {
-      read(WebantConstants.LINK_STATUS_INIT, batch)
+      read(Link.LINK_STATUS_INIT, batch)
     } catch {
       case e: Exception =>
         e.printStackTrace()
@@ -56,7 +55,7 @@ class MysqlLinkProvider extends JdbcLinkProvider {
       if (links.nonEmpty) {
         val updateSql = s"update $table set status = ?, dataVersion = dataVersion + 1, dataUpdateTime = now() where id = ?"
         val updateParams = links.map(link => {
-          Array[Object](WebantConstants.LINK_STATUS_PENDING, link.getId)
+          Array[Object](Link.LINK_STATUS_PENDING, link.getId)
         }).toArray
 
         runner.batch(conn, updateSql, updateParams)

@@ -5,7 +5,7 @@ import java.nio.charset.Charset
 
 import org.junit.{After, Before, Test}
 import org.scalatest.junit.AssertionsForJUnit
-import org.webant.plugin.zhihu.proccessor.{AnswersProcessor, ZhihuSeedProcessor}
+import org.webant.plugin.zhihu.processor.{AnswersProcessor, ZhihuSeedProcessor}
 
 class GuShiWenCrawlerTest extends AssertionsForJUnit {
 

@@ -5,7 +5,6 @@ import akka.routing.RoundRobinPool
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.{HttpDataEntity, Link}
-import org.webant.commons.utils.WebantConstants
 import org.webant.worker.config.ConfigManager
 import org.webant.worker.http.HttpResponse
 
@@ -17,7 +16,6 @@ case class ResponseMessage(srcLink: Link, resp: HttpResponse[HttpDataEntity]) ex
 case class ResultMessage(link: Link, resp: HttpResponse[HttpDataEntity])
 
 class Worker extends Actor {
-  private val logger = LogManager.getLogger(classOf[Worker])
 
   def receive: PartialFunction[Any, Unit] = {
     case LinkMessage(link) =>
@@ -67,9 +65,9 @@ class Listener extends Actor {
   def receive = {
     case ResultMessage(srcLink, resp) =>
       if (resp != null && resp.links != null && resp.links.nonEmpty) {
-        srcLink.setStatus(WebantConstants.LINK_STATUS_SUCCESS)
+        srcLink.setStatus(Link.LINK_STATUS_SUCCESS)
       } else {
-        srcLink.setStatus(WebantConstants.LINK_STATUS_FAIL)
+        srcLink.setStatus(Link.LINK_STATUS_FAIL)
       }
   }
 }

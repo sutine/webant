@@ -6,7 +6,7 @@ import java.nio.charset.Charset
 import org.apache.http.client.fluent.Response
 import org.junit.{After, Before, Test}
 import org.scalatest.junit.AssertionsForJUnit
-import org.webant.plugin.zhihu.proccessor.{AnswersProcessor, ZhihuSeedProcessor}
+import org.webant.plugin.zhihu.processor.{AnswersProcessor, ZhihuSeedProcessor}
 
 class ZhihuCrawler extends AssertionsForJUnit {
 

@@ -9,7 +9,8 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.reflect.FieldUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
-import org.webant.commons.utils.{BeanUtils, WebantConstants}
+import org.webant.commons.utils.BeanUtils
+
 import scala.collection.JavaConverters._
 
 trait JdbcLinkProvider extends ILinkProvider {
@@ -134,10 +135,10 @@ trait JdbcLinkProvider extends ILinkProvider {
     val result = runner.query(conn, sql, new ArrayListHandler())
 
     val counts = result.asScala.map(item => (item(0).asInstanceOf[String], item(1).asInstanceOf[Long])).toMap
-    val init = if (counts.contains(WebantConstants.LINK_STATUS_INIT)) counts(WebantConstants.LINK_STATUS_INIT) else 0
-    val pending = if (counts.contains(WebantConstants.LINK_STATUS_PENDING)) counts(WebantConstants.LINK_STATUS_PENDING) else 0
-    val success = if (counts.contains(WebantConstants.LINK_STATUS_SUCCESS)) counts(WebantConstants.LINK_STATUS_SUCCESS) else 0
-    val fail = if (counts.contains(WebantConstants.LINK_STATUS_FAIL)) counts(WebantConstants.LINK_STATUS_FAIL) else 0
+    val init = if (counts.contains(Link.LINK_STATUS_INIT)) counts(Link.LINK_STATUS_INIT) else 0
+    val pending = if (counts.contains(Link.LINK_STATUS_PENDING)) counts(Link.LINK_STATUS_PENDING) else 0
+    val success = if (counts.contains(Link.LINK_STATUS_SUCCESS)) counts(Link.LINK_STATUS_SUCCESS) else 0
+    val fail = if (counts.contains(Link.LINK_STATUS_FAIL)) counts(Link.LINK_STATUS_FAIL) else 0
 
     Progress(t, init, pending, success, fail)
   }

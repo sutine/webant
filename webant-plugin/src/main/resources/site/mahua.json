@@ -3,7 +3,7 @@
   "name": "麻花笑话网",
   "description": "麻花笑话网",
   "seeds": [
-    "http://www.mahua.com"
+    "http://www.mahua.com/"
   ],
   "priority": 4,
   "interval": 2000,
@@ -83,13 +83,13 @@
 */
   "processors": [
     {
-      "regex": "http://www.mahua.com"
+      "regex": "http://www.mahua.com/?"
     },
     {
       "regex": "http://www.mahua.com/newjokes/index_\\d*.htm"
     },
     {
-      "className": "org.webant.plugin.mahua.proccessor.MahuaDetailProcessor",
+      "className": "org.webant.plugin.mahua.processor.MahuaDetailProcessor",
       "http": {
         "method": "GET",
         "connectTimeout": 15000,

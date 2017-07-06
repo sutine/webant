@@ -1,4 +1,4 @@
-package org.webant.plugin.qiushibaike.proccessor
+package org.webant.plugin.qiushibaike.processor
 
 import java.util.Date
 

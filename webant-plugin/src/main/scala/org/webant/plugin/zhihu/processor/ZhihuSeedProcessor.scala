@@ -1,4 +1,4 @@
-package org.webant.plugin.zhihu.proccessor
+package org.webant.plugin.zhihu.processor
 
 import org.apache.log4j.LogManager
 import org.webant.plugin.weiboyi.data.WeiboyiDetailData

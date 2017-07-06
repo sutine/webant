@@ -118,7 +118,7 @@ public class WorkerConsole {
                         new PageProcessorBuilder().regex("http://www.mahua.com/newjokes/index_\\d*.htm")
                                 .build(),
                         new PageProcessorBuilder().regex("http://www.mahua.com/xiaohua/\\d*.htm")
-                                .className("org.webant.workerConsole.mahua.proccessor.JokeDetailProcessor")
+                                .className("org.webant.workerConsole.mahua.processor.JokeDetailProcessor")
                                 .build()
 //                .stores(new HashMap<String, String>[] {
 //                })

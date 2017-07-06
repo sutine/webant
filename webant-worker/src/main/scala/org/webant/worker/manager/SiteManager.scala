@@ -6,7 +6,6 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
-import org.webant.commons.utils.WebantConstants
 import org.webant.worker.WorkerReactor
 import org.webant.worker.config.ConfigManager
 import org.webant.worker.link.{H2LinkProvider, ILinkProvider, Progress}
@@ -117,9 +116,9 @@ class SiteManager(taskId: String, siteId: String) {
     val siteConfig = ConfigManager.getSiteConfig(siteId)
     var info = ""
     try {
-      linkProvider.resetToInit(WebantConstants.LINK_STATUS_PENDING)
-      linkProvider.resetToInit(WebantConstants.LINK_STATUS_SUCCESS)
-      linkProvider.resetToInit(WebantConstants.LINK_STATUS_FAIL)
+      linkProvider.resetToInit(Link.LINK_STATUS_PENDING)
+      linkProvider.resetToInit(Link.LINK_STATUS_SUCCESS)
+      linkProvider.resetToInit(Link.LINK_STATUS_FAIL)
       info = s"reset site ${siteConfig.name}(${siteConfig.id}) to recrawl success."
       logger.info(info)
     } catch {
@@ -217,11 +216,11 @@ class SiteManager(taskId: String, siteId: String) {
               noopCount = 0
             } else {
               noopCount += 1
-              val pendingCount = linkProvider.count(WebantConstants.LINK_STATUS_PENDING)
+              val pendingCount = linkProvider.count(Link.LINK_STATUS_PENDING)
               if (pendingCount != lastPendingCount)
                 lastPendingCount = pendingCount
               else if (pendingCount != 0)
-                linkProvider.resetToInit(WebantConstants.LINK_STATUS_PENDING)
+                linkProvider.resetToInit(Link.LINK_STATUS_PENDING)
             }
 
             if (noopCount == 10 && interval < intervalMax) {

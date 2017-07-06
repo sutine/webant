@@ -1,4 +1,4 @@
-package org.webant.plugin.weiboyi.proccessor
+package org.webant.plugin.weiboyi.processor
 
 import com.google.gson.JsonParser
 import org.apache.log4j.LogManager

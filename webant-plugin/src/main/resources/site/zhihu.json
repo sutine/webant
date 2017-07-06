@@ -38,10 +38,10 @@
   },
   "processors": [
     {
-      "className": "org.webant.plugin.zhihu.proccessor.ZhihuSeedProcessor"
+      "className": "org.webant.plugin.zhihu.processor.ZhihuSeedProcessor"
     },
     {
-      "className": "org.webant.plugin.zhihu.proccessor.AnswersProcessor",
+      "className": "org.webant.plugin.zhihu.processor.AnswersProcessor",
       "store": [
         {
           "className": "org.webant.worker.store.ElasticSearchStore",

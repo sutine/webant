@@ -6,7 +6,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler
 import org.apache.commons.lang3.reflect.FieldUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
-import org.webant.commons.utils.{BeanUtils, WebantConstants}
+import org.webant.commons.utils.BeanUtils
 
 import scala.collection.JavaConverters._
 
@@ -58,10 +58,10 @@ class SqlitelLinkProvider extends JdbcLinkProvider {
   }
 
   override def read(): Iterable[Link] = {
-    val links = read(WebantConstants.LINK_STATUS_INIT, batch)
+    val links = read(Link.LINK_STATUS_INIT, batch)
     if (links.nonEmpty) {
       val pending = links.map(link => {
-        link.setStatus(WebantConstants.LINK_STATUS_PENDING)
+        link.setStatus(Link.LINK_STATUS_PENDING)
         link
       })
 
@@ -90,7 +90,7 @@ class SqlitelLinkProvider extends JdbcLinkProvider {
       if (rs.nonEmpty) {
         val updateSql = "update link set status = ? where id = ?"
         val updateParams = rs.map(link => {
-          Array[Object](WebantConstants.LINK_STATUS_PENDING, link.getId)
+          Array[Object](Link.LINK_STATUS_PENDING, link.getId)
         }).toArray
 
         runner.batch(conn, updateSql, updateParams)

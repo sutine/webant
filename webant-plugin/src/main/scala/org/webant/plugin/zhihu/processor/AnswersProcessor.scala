@@ -1,4 +1,4 @@
-package org.webant.plugin.zhihu.proccessor
+package org.webant.plugin.zhihu.processor
 
 import java.util.Date
 

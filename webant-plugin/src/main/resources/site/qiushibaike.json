@@ -40,13 +40,13 @@
   },
   "processors": [
     {
-      "regex": "https://www.qiushibaike.com/"
+      "regex": "https://www.qiushibaike.com/?"
     },
     {
       "regex": "https://www.qiushibaike.com/hot/page/\\d*/?s=4997496"
     },
     {
-      "className": "org.webant.plugin.qiushibaike.proccessor.QiushibaikeDetailProcessor",
+      "className": "org.webant.plugin.qiushibaike.processor.QiushibaikeDetailProcessor",
       "store": [
         {
           "className": "org.webant.worker.store.ElasticSearchStore",

@@ -40,10 +40,10 @@
   },
   "processors": [
     {
-      "className": "org.webant.plugin.weiboyi.proccessor.WeiboyiSeedProcessor"
+      "className": "org.webant.plugin.weiboyi.processor.WeiboyiSeedProcessor"
     },
     {
-      "className": "org.webant.plugin.weiboyi.proccessor.WeiboyiListProcessor",
+      "className": "org.webant.plugin.weiboyi.processor.WeiboyiListProcessor",
       "store": [
         {
           "className": "org.webant.worker.store.H2Store",
