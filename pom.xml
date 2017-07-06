@@ -16,7 +16,6 @@
         <module>webant-worker</module>
 		<module>webant-soldier</module>
 		<module>webant-extension</module>
-		<module>webant-plugin</module>
     </modules>
 
     <properties>
