@@ -1,0 +1,62 @@
+{
+  "id": "site_kuaidaili",
+  "name": "快代理",
+  "description": "快代理",
+  "seeds": [
+    "http://www.kuaidaili.com"
+  ],
+  "priority": 4,
+  "interval": 2000,
+  "incrementInterval": 600000,
+  "http": {
+    "method": "GET",
+    "connectTimeout": 15000,
+    "socketTimeout": 10000,
+    "encoding": "utf-8",
+    "retryTimes": 3,
+    "cycleRetryTimes": 8,
+    "contentType": "text/xml; charset=utf-8",
+    "proxy": false,
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "zh-CN,zh;q=0.8",
+      "Cache-Control": "max-age=0",
+      "Connection": "keep-alive",
+      "Cookie": "_xsrf=2|e112fdcf|96807aea7c64004411315ab1b484fe4b|1499159470; _qqq_uuid_=\"2|1:0|10:1499159470|10:_qqq_uuid_|56:NjM1MjdjYzgwNGI1MmVkN2MxYzFmMGRiNWExNGI4ZjZhMmQwNTVlZg==|2b431da262fc63a66aba8776a565d9a7f6c8154695bf48d404f716aab3bd8ef8\"; callback_url=/new4/session%3Fsrc%3Dwx%26code%3D003yx7Ki179dny09o3Ki1uJjKi1yx7KB%26state%3D; __cur_art_index=9281; _ga=GA1.2.1637544603.1499159508; _gid=GA1.2.1389000090.1499159508; Hm_lvt_2670efbdd59c7e3ed3749b458cafaa37=1499159508; Hm_lpvt_2670efbdd59c7e3ed3749b458cafaa37=1499241085",
+      "If-None-Match": "214c5dee29e2857db74399d3101ba0167088461c",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+    }
+  },
+  "linkProvider": {
+    "className": "org.webant.worker.link.H2LinkProvider",
+    "params": {
+      "url": "jdbc:h2:./data/h2/webant;MODE=MYSQL",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+  "processors": [
+    {
+      "regex": "http://www.kuaidaili.com"
+    },
+    {
+      "regex": "https://www.qiushibaike.com/hot/page/\\d*/?s=4997496"
+    },
+    {
+      "className": "org.webant.plugin.proxy.kuaidaili.processor.KuaidailiListProcessor",
+      "store": [
+        {
+          "className": "org.webant.worker.store.ElasticSearchStore",
+          "params": {
+            "clusterName": "es",
+            "host": "localhost",
+            "port": "9300"
+          }
+        }
+      ]
+    }
+  ]
+}

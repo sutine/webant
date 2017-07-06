@@ -1,0 +1,7 @@
+{
+  "id": "task_proxy",
+  "name": "代理",
+  "description": "采集代理数据",
+  "priority": 4,
+  "sites": ["site_kuaidaili"]
+}

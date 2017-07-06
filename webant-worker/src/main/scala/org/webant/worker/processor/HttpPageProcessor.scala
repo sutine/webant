@@ -42,6 +42,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
 
       response.list = list()
       response.list.foreach(data => {
+        data.id = DigestUtils.md5Hex(s"${link.getTaskId}_${link.getSiteId}_${data.srcId}")
         data.srcUrl = link.getUrl
         data.taskId = link.getTaskId
         data.siteId = link.getSiteId
