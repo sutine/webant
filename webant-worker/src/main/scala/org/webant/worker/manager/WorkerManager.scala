@@ -62,11 +62,11 @@ class WorkerManager {
     result
   }
 
-  def recrawl(): Iterable[Iterable[String]] = {
+  def reset(): Iterable[Iterable[String]] = {
     var result = Iterable.empty[Iterable[String]]
 
     try {
-      result = ConfigManager.getTaskConfigs.values.map(taskConfig => recrawl(taskConfig.id))
+      result = ConfigManager.getTaskConfigs.values.map(taskConfig => reset(taskConfig.id))
 
       isRunning = true
     } catch {
@@ -174,13 +174,13 @@ class WorkerManager {
     result
   }
 
-  def recrawl(taskId: String): Iterable[String] = {
+  def reset(taskId: String): Iterable[String] = {
     val task = ConfigManager.getTasks.get(taskId).orNull
 
     var result = Iterable.empty[String]
     try {
       if (task != null) {
-        result = task.recrawl()
+        result = task.reset()
       }
     } catch {
       case e: Exception =>
@@ -244,9 +244,9 @@ class WorkerManager {
     else s"the task $taskId is not exists!"
   }
 
-  def recrawl(taskId: String, siteId: String): String = {
+  def reset(taskId: String, siteId: String): String = {
     val task = ConfigManager.getTasks.get(taskId).orNull
-    if (task != null) task.recrawl(siteId)
+    if (task != null) task.reset(siteId)
     else s"the task $taskId is not exists!"
   }
 

@@ -113,18 +113,18 @@ class SiteManager(taskId: String, siteId: String) {
     linkProvider.progress()
   }
 
-  def recrawl(): String = {
+  def reset(): String = {
     val siteConfig = ConfigManager.getSiteConfig(siteId)
     var info = ""
     try {
-      linkProvider.resetToInit(Link.LINK_STATUS_PENDING)
-      linkProvider.resetToInit(Link.LINK_STATUS_SUCCESS)
-      linkProvider.resetToInit(Link.LINK_STATUS_FAIL)
-      info = s"reset site ${siteConfig.name}(${siteConfig.id}) to recrawl success."
+      linkProvider.reset(Link.LINK_STATUS_PENDING)
+      linkProvider.reset(Link.LINK_STATUS_SUCCESS)
+      linkProvider.reset(Link.LINK_STATUS_FAIL)
+      info = s"reset site ${siteConfig.name}(${siteConfig.id}) success."
       logger.info(info)
     } catch {
       case e: Exception =>
-        info = s"reset site ${siteConfig.name}(${siteConfig.id}) to recrawl failed! error: ${e.getMessage}"
+        info = s"reset site ${siteConfig.name}(${siteConfig.id}) failed! error: ${e.getMessage}"
         logger.error(info)
         return info
     }
@@ -221,7 +221,7 @@ class SiteManager(taskId: String, siteId: String) {
               if (pendingCount != lastPendingCount)
                 lastPendingCount = pendingCount
               else if (pendingCount != 0)
-                linkProvider.resetToInit(Link.LINK_STATUS_PENDING)
+                linkProvider.reset(Link.LINK_STATUS_PENDING)
             }
 
             if (noopCount == 10 && interval < intervalMax) {

@@ -130,25 +130,25 @@ object WorkerJmxClient {
     mbeanProxy.pause(taskId, siteId)
   }
 
-  def recrawl(): Array[Array[String]] = {
+  def reset(): Array[Array[String]] = {
     if (mbeanProxy == null)
       return Array.empty
 
-    mbeanProxy.recrawl().map(_.toArray).toArray
+    mbeanProxy.reset().map(_.toArray).toArray
   }
 
-  def recrawl(taskId: String): Array[String] = {
+  def reset(taskId: String): Array[String] = {
     if (mbeanProxy == null)
       return Array.empty
 
-    mbeanProxy.recrawl(taskId).toArray
+    mbeanProxy.reset(taskId).toArray
   }
 
-  def recrawl(taskId: String, siteId: String): String = {
+  def reset(taskId: String, siteId: String): String = {
     if (mbeanProxy == null)
       return "lost connection! please connect to server first."
 
-    mbeanProxy.recrawl(taskId, siteId)
+    mbeanProxy.reset(taskId, siteId)
   }
 
   def exit(): Array[Array[String]] = {

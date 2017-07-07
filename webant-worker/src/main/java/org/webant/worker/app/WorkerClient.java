@@ -108,10 +108,10 @@ public class WorkerClient {
                     }
                     else if (items.length >= 3) System.out.println(WorkerJmxClient.pause(items[1], items[2]));
                 }
-                else if (cmd.startsWith("reset") || cmd.startsWith("recrawl")) {
+                else if (cmd.startsWith("reset")) {
                     String[] items = cmd.split(" ");
                     if (items.length == 1) {
-                        String[][] result = WorkerJmxClient.recrawl();
+                        String[][] result = WorkerJmxClient.reset();
                         for (String[] texts : result) {
                             for (String text : texts) {
                                 System.out.println(text);
@@ -119,12 +119,12 @@ public class WorkerClient {
                         }
                     }
                     else if (items.length == 2) {
-                        String[] result = WorkerJmxClient.recrawl(items[1]);
+                        String[] result = WorkerJmxClient.reset(items[1]);
                         for (String item : result) {
                             System.out.println(item);
                         }
                     }
-                    else if (items.length >= 3) System.out.println(WorkerJmxClient.recrawl(items[1], items[2]));
+                    else if (items.length >= 3) System.out.println(WorkerJmxClient.reset(items[1], items[2]));
                 }
                 else if (cmd.startsWith("p") || cmd.startsWith("progress")) {
                     String[] items = cmd.split(" ");

@@ -17,7 +17,7 @@ trait ILinkProvider {
 
   def close(): Boolean = false
 
-  def resetToInit(status: String): Int = 0
+  def reset(status: String): Int = 0
 
   def progress(): Progress = null
 

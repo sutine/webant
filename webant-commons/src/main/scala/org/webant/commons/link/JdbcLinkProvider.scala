@@ -122,8 +122,8 @@ trait JdbcLinkProvider extends ILinkProvider {
     runner.update(conn, sql, values: _*)
   }
 
-  // reset pending status to init status to recrawl, fix some abnormal status
-  override def resetToInit(status: String): Int = {
+  // reset pending status to init status, fix some abnormal status
+  override def reset(status: String): Int = {
     val sql = s"UPDATE $table SET status = 'init' WHERE status = '$status'"
     runner.update(conn, sql)
   }

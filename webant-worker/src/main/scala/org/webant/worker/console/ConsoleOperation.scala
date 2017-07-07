@@ -25,7 +25,7 @@ class ConsoleOperation extends NotificationBroadcasterSupport with ConsoleOperat
 
   override def pause(): Iterable[Iterable[String]] = manager.pause()
 
-  override def recrawl(): Iterable[Iterable[String]] = manager.recrawl()
+  override def reset(): Iterable[Iterable[String]] = manager.reset()
 
   override def exit(): Iterable[Iterable[String]] = manager.exit()
 
@@ -39,7 +39,7 @@ class ConsoleOperation extends NotificationBroadcasterSupport with ConsoleOperat
 
   override def pause(taskId: String): Iterable[String] = manager.pause(taskId)
 
-  override def recrawl(taskId: String): Iterable[String] = manager.recrawl(taskId)
+  override def reset(taskId: String): Iterable[String] = manager.reset(taskId)
 
   override def progress(taskId: String): Progress = manager.progress(taskId)
 
@@ -51,7 +51,7 @@ class ConsoleOperation extends NotificationBroadcasterSupport with ConsoleOperat
 
   override def pause(taskId: String, siteId: String): String = manager.pause(taskId, siteId)
 
-  override def recrawl(taskId: String, siteId: String): String = manager.recrawl(taskId, siteId)
+  override def reset(taskId: String, siteId: String): String = manager.reset(taskId, siteId)
 
   override def progress(taskId: String, siteId: String): Progress = manager.progress(taskId, siteId)
 

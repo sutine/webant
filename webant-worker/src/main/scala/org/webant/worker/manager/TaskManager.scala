@@ -44,8 +44,8 @@ class TaskManager(taskId: String) {
     results
   }
 
-  def recrawl(): Iterable[String] = {
-    val results = ConfigManager.getTaskConfig(taskId).sites.map(recrawl)
+  def reset(): Iterable[String] = {
+    val results = ConfigManager.getTaskConfig(taskId).sites.map(reset)
     isRunning = true
 
     results
@@ -121,18 +121,18 @@ class TaskManager(taskId: String) {
     info
   }
 
-  def recrawl(siteId: String): String = {
+  def reset(siteId: String): String = {
     val site = siteManagers.get(siteId).orNull
     var info = ""
     try {
       if (site != null) {
-        info = site.recrawl()
+        info = site.reset()
         isRunning = true
       } else
         info = s"the site $siteId is not exists!"
     } catch {
       case e: Exception =>
-        return s"reset site $siteId to recrawl failed! error: ${e.getMessage}"
+        return s"reset site $siteId failed! error: ${e.getMessage}"
     }
 
     info
