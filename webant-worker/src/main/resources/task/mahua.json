@@ -1,7 +1,0 @@
-{
-  "id": "task_mahua",
-  "name": "麻花笑话网",
-  "description": "麻花笑话网",
-  "priority": 4,
-  "sites": ["site_mahua"]
-}

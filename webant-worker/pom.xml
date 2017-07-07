@@ -63,7 +63,7 @@
         </resources>
 
         <plugins>
-            <!--生成部署目录-->
+            <!--build the deploy directory-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>appassembler-maven-plugin</artifactId>
@@ -101,7 +101,6 @@
                     </programs>
                 </configuration>
             </plugin>
-            <!--依赖文件一起打包-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

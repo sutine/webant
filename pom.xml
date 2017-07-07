@@ -366,6 +366,7 @@
                     </configuration>
                 </plugin>
 
+                <!--build all dependency together-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
