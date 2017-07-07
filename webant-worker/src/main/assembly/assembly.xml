@@ -1,0 +1,22 @@
+<assembly>
+    <id>jar-with-dependencies</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <dependencySets>
+        <dependencySet>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+            <includes>
+                <include>org.webant:*:jar</include>
+                <!--<include>org.webant:webant-worker:jar</include>-->
+                <!--<include>*:*:jar</include>-->
+            </includes>
+            <excludes>
+                <!--<exclude>org.apache.log4j:*:jar</exclude>-->
+            </excludes>
+        </dependencySet>
+    </dependencySets>
+</assembly>

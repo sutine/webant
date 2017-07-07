@@ -374,7 +374,7 @@
                         <appendAssemblyId>false</appendAssemblyId>
                         <outputDirectory>${project.build.directory}/assembly</outputDirectory>
                         <descriptors>
-                            <descriptor>assembly.xml</descriptor>
+                            <descriptor>src/main/assembly/assembly.xml</descriptor>
                         </descriptors>
                     </configuration>
                     <executions>
