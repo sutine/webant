@@ -25,7 +25,7 @@ class JsonStore[T <: HttpDataEntity] extends IStore[T] {
       }
     } catch {
       case e: Exception =>
-        logger.error(e.getMessage())
+        logger.error(e.getMessage)
 
         dir = new File("./data/json")
         if (!dir.exists() || !dir.isDirectory) {

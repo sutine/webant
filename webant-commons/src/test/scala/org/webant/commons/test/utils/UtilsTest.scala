@@ -1,10 +1,10 @@
 package org.webant.commons.test.utils
 
+import junit.framework.TestCase
 import org.junit.{After, Before, Test}
-import org.scalatest.junit.AssertionsForJUnit
 import org.webant.commons.utils.Retry
 
-class UtilsTest extends AssertionsForJUnit {
+class UtilsTest extends TestCase {
 
   @Before
   def init(): Unit = {

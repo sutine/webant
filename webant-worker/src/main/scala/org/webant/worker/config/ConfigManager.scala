@@ -5,7 +5,6 @@ import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
-import org.webant.commons.utils.JsonUtils
 import org.webant.worker.manager.TaskManager
 
 import scala.collection.mutable
@@ -56,17 +55,7 @@ object ConfigManager {
   }
 
   def loadWorkerConfig(path: String): Unit = {
-    val configPath = ClassLoader.getSystemResource(path)
-    require(StringUtils.isNotBlank(path), "worker config path can not be empty.")
-    val file = new File(configPath.getPath)
-    require(file.exists(), "worker config does not exists.")
-    require(file.isFile, "worker config can not be a directory.")
-
-    val content = FileUtils.readFileToString(file, "UTF-8")
-    if (StringUtils.isNotBlank(content)) {
-      workerConfig = JsonUtils.fromJson(content, classOf[WorkerConfig])
-      logger.info(s"load worker config success!")
-    }
+    workerConfig = WorkerConfig(path)
   }
 
   /*

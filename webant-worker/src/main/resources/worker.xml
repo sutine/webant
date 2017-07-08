@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- worker configuration -->
-<worker>
+<workerConfig>
     <!-- worker id, auto generated -->
     <id>dad7069e-44ff-4fbf-8265-315hnewcell4</id>
 
@@ -39,4 +39,4 @@
 		<dir>./site</dir>
 		<interval>500</interval>
 	</siteMonitor>
-</worker>
+</workerConfig>

@@ -18,7 +18,7 @@ public class WorkerServer {
 
     public static void main(String[] args) {
         try {
-            ConfigManager.loadWorkerConfig("worker.json");
+            ConfigManager.loadWorkerConfig("worker.xml");
 
             WorkerJmxServer.start();
 
