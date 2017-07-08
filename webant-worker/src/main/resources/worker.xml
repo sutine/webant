@@ -11,14 +11,14 @@
     <!-- worker description -->
     <description>webant worker desc</description>
 
-	 <!-- max thread num -->
-	<maxThread>64</maxThread>
+	 <!-- thread num -->
+	<threadNum>64</threadNum>
     
 	 <!-- jmx server host -->
 	<serverHost>localhost</serverHost>
 
 	 <!-- jmx server port -->
-	<serverHost>1099</serverHost>
+	<serverPort>1099</serverPort>
 
 	 <!-- data directory, if data save on local, they are save in this directory -->
 	<dataDir>./data</dataDir>

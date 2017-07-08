@@ -3,6 +3,7 @@ package org.webant.worker.config
 import java.io.File
 
 import org.apache.commons.lang3.StringUtils
+import org.apache.log4j.LogManager
 
 import scala.xml.XML
 
@@ -29,6 +30,8 @@ class ConfigMonitor extends java.io.Serializable {
 }
 
 object WorkerConfig {
+  private val logger = LogManager.getLogger(classOf[WorkerConfig])
+
   def apply(path: String): WorkerConfig = {
     require(StringUtils.isNotBlank(path), "config file path can not be empty.")
     val configPath = ClassLoader.getSystemResource(path)
@@ -42,7 +45,33 @@ object WorkerConfig {
 
     config.id = xml\\"worker"\\"id"text
 
-    config.name = xml\\"name"\\"id"text
+    config.name = xml\\"worker"\\"name"text
+
+    config.description = xml\\"worker"\\"description"text
+
+    val threadNum = xml\\"worker"\\"threadNum"text
+
+    try {
+      config.threadNum = threadNum.toInt
+    } catch {
+      case e: Exception =>
+        logger.error(s"parse threadNum failed! error: ${e.getMessage}")
+    }
+
+    config.serverHost = xml\\"worker"\\"serverHost"text
+
+    val serverPort = xml\\"worker"\\"serverPort"text
+
+    try {
+      config.serverPort = serverPort.toInt
+    } catch {
+      case e: Exception =>
+        logger.error(s"parse serverPort failed! error: ${e.getMessage}")
+    }
+
+    config.dataDir = xml\\"worker"\\"dataDir"text
+
+//    config.queen = xml\\"worker"\\"description"text
 
     config
   }
