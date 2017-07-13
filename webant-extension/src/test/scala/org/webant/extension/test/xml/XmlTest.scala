@@ -6,7 +6,7 @@ import org.scalatest.junit.AssertionsForJUnit
 class XmlTest extends AssertionsForJUnit {
 
   @Test
-  def XMLTobean(): Unit = {
+  def beanToXML(): Unit = {
     import javax.xml.bind.{JAXBContext, JAXBException}
     val p = new Person(1, "小红", "10", "北京")
     val ob = new ObjectDemo("小明", "11", p)
@@ -24,7 +24,7 @@ class XmlTest extends AssertionsForJUnit {
   }
 
   @Test
-  def beanToXML(): Unit = {
+  def XMLTobean(): Unit = {
     import java.io.StringReader
     import javax.xml.bind.{JAXBContext, JAXBException}
     val xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<objectDemo>" + "<name>小明</name>" + "<person>" + "<address>北京</address>" + "<age>10</age>" + "<id>1</id>" + "<username>小红</username>" + "</person>" + "<sex>11</sex>" + "</objectDemo>"

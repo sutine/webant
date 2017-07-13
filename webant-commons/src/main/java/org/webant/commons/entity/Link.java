@@ -1,8 +1,9 @@
 package org.webant.commons.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Link {
+public class Link implements Serializable {
     public final static String LINK_STATUS_INIT = "init";
     public final static String LINK_STATUS_PENDING = "pending";
     public final static String LINK_STATUS_SUCCESS = "success";

@@ -4,8 +4,8 @@ import java.io.File
 
 import org.apache.commons.collections.MapUtils
 import org.apache.log4j.LogManager
-import org.webant.extension.berkeleydb.{BerkeleydbDao, BerkeleydbDatabaseObjectImpl}
 import org.webant.commons.entity.HttpDataEntity
+import org.webant.extension.berkeleydb.{BerkeleydbDao, BerkeleydbDatabaseObjectImpl}
 import org.webant.commons.store.IStore
 
 class BerkeleyDbStore[T <: HttpDataEntity] extends IStore[T] {

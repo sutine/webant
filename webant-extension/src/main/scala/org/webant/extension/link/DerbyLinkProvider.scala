@@ -22,11 +22,11 @@ class DerbyLinkProvider extends JdbcLinkProvider {
 //    val password = ""
 
     if (!super.init(params)) {
-      logger.error("init DerbyLinkProvider failed!")
+      logger.error(s"init ${getClass.getSimpleName} failed!")
       return false
     }
 
-    logger.info(s"init DerbyLinkProvider success!")
+    logger.info(s"init ${getClass.getSimpleName} success!")
     createTable()
   }
 

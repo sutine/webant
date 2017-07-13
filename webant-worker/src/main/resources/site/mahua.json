@@ -1,0 +1,166 @@
+{
+  "id": "site_mahua",
+  "name": "麻花笑话网",
+  "description": "麻花笑话网",
+  "seeds": [
+    "http://www.mahua.com/"
+  ],
+  "priority": 4,
+  "interval": 2000,
+  "incrementInterval": 600000,
+  "http": {
+    "method": "GET",
+    "connectTimeout": 15000,
+    "socketTimeout": 10000,
+    "encoding": "utf-8",
+    "retryTimes": 3,
+    "cycleRetryTimes": 8,
+    "contentType": "text/xml; charset=utf-8",
+    "proxy": false,
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate, sdch",
+      "Accept-Language": "zh-CN,zh;q=0.8",
+      "Cache-Control": "max-age=0",
+      "Cookie": "UM_distinctid=15bde680426215-0dd1f2a838eeff-67f1a39-144000-15bde680427480; MH_UP_JOKES=%2C1664724%2C; CNZZDATA1000005254=1002886654-1494081766-%7C1494781843; Hm_lvt_035fdfc559009c734b7c7e6bdd54bc20=1494085011; Hm_lpvt_035fdfc559009c734b7c7e6bdd54bc20=1494783080",
+      "Proxy-Connection": "keep-alive",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
+    }
+  },
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.SqlitelLinkProvider",
+    "params": {
+      "url": "jdbc:sqlite:data/webant.db",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+*/
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.DerbyLinkProvider",
+    "params": {
+      "url": "jdbc:derby:data/derby/webant;create=true",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+*/
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.HsqldbLinkProvider",
+    "params": {
+      "url": "jdbc:hsqldb:file:./data/hsqldb/webant;sql.syntax_mys=true",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+*/
+  "linkProvider": {
+    "className": "org.webant.worker.link.H2LinkProvider",
+    "params": {
+      "url": "jdbc:h2:./data/h2/webant;MODE=MYSQL",
+      "username": "webant",
+      "password": "webant",
+      "batch": 20
+    }
+  },
+/*
+  "linkProvider": {
+    "className": "org.webant.worker.link.MysqlLinkProvider",
+    "params": {
+      "url": "jdbc:mysql://localhost:3306/webant?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+      "username": "bill",
+      "password": "sutine",
+      "batch": 20
+    }
+  },
+*/
+  "processors": [
+    {
+      "regex": "http://www.mahua.com/?"
+    },
+    {
+      "regex": "http://www.mahua.com/newjokes/index_\\d*.htm"
+    },
+    {
+      "className": "org.webant.plugin.mahua.processor.MahuaDetailProcessor",
+      "http": {
+        "method": "GET",
+        "connectTimeout": 15000,
+        "socketTimeout": 10000,
+        "encoding": "utf-8",
+        "retryTimes": 3,
+        "cycleRetryTimes": 8,
+        "contentType": "text/xml; charset=utf-8",
+        "proxy": false,
+        "headers": {
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+          "Accept-Encoding": "gzip, deflate, sdch",
+          "Accept-Language": "zh-CN,zh;q=0.8",
+          "Cache-Control": "max-age=0",
+          "cookie": "UM_distinctid=15bde680426215-0dd1f2a838eeff-67f1a39-144000-15bde680427480; MH_UP_JOKES=%2C1664724%2C; CNZZDATA1000005254=1002886654-1494081766-%7C1494781843; Hm_lvt_035fdfc559009c734b7c7e6bdd54bc20=1494085011; Hm_lpvt_035fdfc559009c734b7c7e6bdd54bc20=1494783080",
+          "Proxy-Connection": "keep-alive",
+          "Upgrade-Insecure-Requests": "1",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
+        }
+      },
+      "store": [
+        {
+          "className": "org.webant.extension.store.ElasticSearchStore",
+          "params": {
+            "clusterName": "es",
+            "host": "localhost",
+            "port": "9300",
+            "index": "mahua",
+            "type": "detail"
+          }
+        }
+/*
+        {
+          "className": "org.webant.plugin.mahua.store.JokeDetailStore",
+          "params": {
+            "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+            "username": "bill",
+            "password": "sutine"
+          }
+        },
+        {
+          "className": "org.webant.plugin.mahua.store.FunStore",
+          "params": {
+            "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+            "username": "bill",
+            "password": "sutine"
+          }
+        }
+
+        {
+          "className": "org.webant.worker.store.H2Store",
+          "params": {
+            "url": "jdbc:h2:./data/h2/data;MODE=MYSQL",
+            "username": "webant",
+            "password": "webant"
+          }
+        },
+        {
+          "className": "org.webant.worker.store.JsonStore",
+          "params": {
+            "dir": "./data/json"
+          }
+        },
+        {
+          "className": "org.webant.worker.store.BerkeleyDbStore",
+          "params": {
+            "dir": "./data/bdb"
+          }
+        }
+*/
+      ]
+    }
+  ]
+}

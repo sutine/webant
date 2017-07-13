@@ -22,11 +22,11 @@ class SqlitelLinkProvider extends JdbcLinkProvider {
 //    val password = ""
 
     if (!super.init(params)) {
-      logger.error("init SqlitelLinkProvider failed!")
+      logger.error(s"init ${getClass.getSimpleName} failed!")
       return false
     }
 
-    logger.info(s"init SqlitelLinkProvider success!")
+    logger.info(s"init ${getClass.getSimpleName} success!")
     createTable()
   }
 

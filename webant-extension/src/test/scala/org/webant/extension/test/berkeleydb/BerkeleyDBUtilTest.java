@@ -52,6 +52,6 @@ public class BerkeleyDBUtilTest {
         BerkeleydbDatabaseObjectImpl bdb = new BerkeleydbDatabaseObjectImpl();
         bdb.openConnection("D:\\workspace\\webant\\data\\bdb", "webant");
         HttpDataEntity data = (HttpDataEntity) bdb.get("7a5aad0e093bfe8786c3b024f9e87594");
-        System.out.println(data.srcUrl());
+        System.out.println(data.srcUrl);
     }
 }

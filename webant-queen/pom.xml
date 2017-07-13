@@ -16,7 +16,6 @@
     <name>webant queen pom</name>
 
     <dependencies>
-        <!-- 项目模块：webant-commons -->
         <dependency>
             <groupId>org.webant</groupId>
             <artifactId>webant-commons</artifactId>

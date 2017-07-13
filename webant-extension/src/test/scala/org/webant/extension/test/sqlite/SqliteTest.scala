@@ -2,14 +2,14 @@ package org.webant.extension.test.sqlite
 
 import java.sql.DriverManager
 
+import junit.framework.TestCase
 import org.junit.Test
-import org.scalatest.junit.AssertionsForJUnit
 import org.webant.commons.entity.Link
 import org.webant.commons.link.Progress
 import org.webant.commons.utils.JsonUtils
 import org.webant.extension.link.SqlitelLinkProvider
 
-class SqliteTest extends AssertionsForJUnit {
+class SqliteTest extends TestCase {
 
   @Test
   def testProgressSum(): Unit = {

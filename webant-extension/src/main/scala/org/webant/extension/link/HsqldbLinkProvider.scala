@@ -21,11 +21,11 @@ class HsqldbLinkProvider extends JdbcLinkProvider {
 //    password = ""
 
     if (!super.init(params)) {
-      logger.error("init HsqldbLinkProvider failed!")
+      logger.error(s"init ${getClass.getSimpleName} failed!")
       return false
     }
 
-    logger.info(s"init HsqldbLinkProvider success!")
+    logger.info(s"init ${getClass.getSimpleName} success!")
     createTable()
   }
 

@@ -4,18 +4,19 @@ import java.io.File
 import java.lang.reflect.{Field, InvocationTargetException}
 import java.text.ParseException
 import java.util.Date
+import javax.xml.bind.{JAXBContext, JAXBException}
 
 import com.google.gson.GsonBuilder
-import junit.framework.TestCase
 import org.apache.commons.beanutils.{BeanUtils, PropertyUtils}
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.junit.{After, Before, Test}
-import org.webant.worker.config.{SiteConfig, WorkerConfig}
+import org.scalatest.junit.AssertionsForJUnit
+import org.webant.worker.config.{SiteConfig, SiteConfigBuilder, WorkerConfig}
 
 import scala.beans.BeanProperty
 
-class WorkerTest extends TestCase {
+class WorkerTest extends AssertionsForJUnit {
 
   @Before
   def init(): Unit = {
@@ -29,6 +30,23 @@ class WorkerTest extends TestCase {
   def testWorkerConfig(): Unit = {
     val path = "worker.xml"
     WorkerConfig(path)
+  }
+
+  @Test
+  def testConfigToXml(): Unit = {
+    val configPath = ClassLoader.getSystemResource("site/mahua.json").getPath
+    val config = new SiteConfigBuilder().loadSiteConfig(configPath).build()
+    try {
+      val context = JAXBContext.newInstance(classOf[SiteConfig])
+      val marshaller = context.createMarshaller
+      marshaller.marshal(config, System.out)
+    } catch {
+      case e: JAXBException =>
+        e.printStackTrace()
+    }
+
+//    println(config.toString)
+
   }
 
   @Test
