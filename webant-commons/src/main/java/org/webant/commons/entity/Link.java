@@ -11,6 +11,7 @@ public class Link implements Serializable {
     private String id;
     private String taskId;
     private String siteId;
+    private String nodeId;
     private String url;
     private String body;
     private String referer;
@@ -75,6 +76,14 @@ public class Link implements Serializable {
 
     public void setSiteId(String siteId) {
         this.siteId = siteId;
+    }
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
     }
 
     public String getUrl() {

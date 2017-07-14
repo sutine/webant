@@ -50,7 +50,7 @@ object StoreFactory {
     }
 
     if(provider == null || !provider.init(config.params)) {
-      logger.error("init link provider failed! user default H2Store.")
+      logger.error("init link provider failed! use default H2Store.")
       val h2Provider = new H2Store[HttpDataEntity]()
       h2Provider.init()
 

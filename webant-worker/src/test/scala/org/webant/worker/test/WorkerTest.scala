@@ -27,6 +27,36 @@ class WorkerTest extends AssertionsForJUnit {
   }
 
   @Test
+  def printSql(): Unit = {
+    val table = "link"
+    val sql = s"CREATE TABLE IF NOT EXISTS `$table` (" +
+      "  `id` varchar(64) NOT NULL," +
+      "  `taskId` varchar(64) DEFAULT NULL," +
+      "  `siteId` varchar(64) DEFAULT NULL," +
+      "  `nodeId` varchar(64) DEFAULT NULL," +
+      "  `url` varchar(1024) DEFAULT NULL," +
+      "  `body` text DEFAULT NULL," +
+      "  `referer` varchar(1024) DEFAULT NULL," +
+      "  `priority` smallint(255) DEFAULT NULL," +
+      "  `lastCrawlTime` datetime DEFAULT NULL," +
+      "  `status` varchar(32) DEFAULT NULL," +
+      "  `dataVersion` int(11) DEFAULT NULL," +
+      "  `dataCreateTime` datetime DEFAULT NULL," +
+      "  `dataUpdateTime` datetime DEFAULT NULL," +
+      "  `dataDeleteTime` datetime DEFAULT NULL," +
+      "  PRIMARY KEY (`id`)," +
+      s"  KEY `idx_${table}_taskId` (`taskId`)," +
+      s"  KEY `idx_${table}_siteId` (`siteId`)," +
+      s"  KEY `idx_${table}_priority` (`priority`)," +
+      s"  KEY `idx_${table}_status` (`status`)," +
+      s"  KEY `idx_${table}_dataCreateTime` (`dataCreateTime`)," +
+      s"  KEY `idx_${table}_dataUpdateTime` (`dataUpdateTime`)" +
+      ")"
+
+    println(sql)
+  }
+
+  @Test
   def testWorkerConfig(): Unit = {
     val path = "worker.xml"
     WorkerConfig(path)

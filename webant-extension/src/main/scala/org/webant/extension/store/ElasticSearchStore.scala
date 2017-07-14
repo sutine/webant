@@ -2,7 +2,7 @@ package org.webant.extension.store
 
 import org.apache.commons.collections.MapUtils
 import org.webant.commons.entity.HttpDataEntity
-`import org.webant.extension.elasticsearch.ElasticSearchUtils
+import org.webant.extension.elasticsearch.ElasticSearchUtils
 import org.webant.commons.store.IStore
 
 import scala.collection.JavaConverters._
