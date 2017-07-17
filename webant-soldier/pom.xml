@@ -15,6 +15,26 @@
     <packaging>jar</packaging>
     <name>webant soldier pom</name>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/sutine/webant</url>
+        <connection>https://github.com/sutine/webant.git</connection>
+        <developerConnection>http://www.webant.org/</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>sutine</name>
+            <email>sutine@qq.com</email>
+            <url>http://www.webant.org/</url>
+        </developer>
+    </developers>
+
     <dependencies>
         <!-- 项目模块：snsant-commons -->
         <dependency>
@@ -86,6 +106,27 @@
                     </programs>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+
         </plugins>
 
     </build>
