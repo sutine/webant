@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 public class ElasticSearchUtils<T extends HttpDataEntity> {
     private static Logger logger = LoggerFactory.getLogger(ElasticSearchUtils.class);
-    private static Client client;
+    private Client client;
     private long timeout = 5000;
 
     public boolean init(String clusterName, String host, int port) throws UnknownHostException {

@@ -16,9 +16,9 @@ public class HttpDataEntity implements Serializable{
     public String taskId;
     public String siteId;
     public Date crawlTime;
-    public Integer dataVersion;
-    public Date dataCreateTime;
-    public Date dataUpdateTime;
+    public Integer dataVersion = 1;
+    public Date dataCreateTime = new Date();
+    public Date dataUpdateTime = new Date();
     public Date dataDeleteTime;
 
     public String getId() {

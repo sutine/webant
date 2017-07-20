@@ -54,7 +54,7 @@ class DateAsLongAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> 
 
 class TimestampTypeAdapter implements JsonSerializer<Timestamp>, JsonDeserializer<Timestamp> {
     public JsonElement serialize(Timestamp src, Type arg1, JsonSerializationContext arg2) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        DateFormat format = new SimpleDateFormat(DateFormatUtils.DATE_TIME_MILLI_FORMAT);
         String dateFormatAsString = format.format(new Date(src.getTime()));
         return new JsonPrimitive(dateFormatAsString);
     }
@@ -65,7 +65,7 @@ class TimestampTypeAdapter implements JsonSerializer<Timestamp>, JsonDeserialize
         }
 
         try {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+            DateFormat format = new SimpleDateFormat(DateFormatUtils.DATE_TIME_MILLI_FORMAT);
             Date date = format.parse(json.getAsString());
             return new Timestamp(date.getTime());
         } catch (Exception e) {
@@ -76,7 +76,7 @@ class TimestampTypeAdapter implements JsonSerializer<Timestamp>, JsonDeserialize
 
 class DateTypeAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
     public JsonElement serialize(Date src, Type arg1, JsonSerializationContext arg2) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        DateFormat format = new SimpleDateFormat(DateFormatUtils.DATE_TIME_MILLI_FORMAT);
         String dateFormatAsString = format.format(new Date(src.getTime()));
         return new JsonPrimitive(dateFormatAsString);
     }
@@ -87,9 +87,8 @@ class DateTypeAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
         }
 
         try {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-            Date date = format.parse(json.getAsString());
-            return date;
+            DateFormat format = new SimpleDateFormat(DateFormatUtils.DATE_TIME_MILLI_FORMAT);
+            return format.parse(json.getAsString());
         } catch (Exception e) {
             throw new JsonParseException(e);
         }
