@@ -1,24 +1,24 @@
-<Configuration status="ERROR">
+<Configuration>
 
     <Properties>
         <Property name="LOG_HOME">./logs</Property>
-        <Property name="LOG_FILE">webant-soldier.log</Property>
+        <Property name="LOG_FILE">webant-worker.log</Property>
     </Properties>
 
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{ABSOLUTE} [%t][%-5p] %c{1}:%L - %m%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%T][%p] %c{1}:%L - %m%n"/>
             <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="ACCEPT"/>
         </Console>
         <Console name="STDERR" target="SYSTEM_ERR">
-            <PatternLayout pattern="%d{ABSOLUTE} [%t][%-5p] %c{1}:%L - %m%n"/>
+            <PatternLayout pattern="%d{ABSOLUTE} [%t][%p] %c{1.}:%L - %m%n"/>
         </Console>
         <RollingRandomAccessFile name="FILE" fileName="${LOG_HOME}/${LOG_FILE}"
                                  filePattern="${LOG_HOME}/${LOG_FILE}.%d{yyyy-MM-dd}.%i.log">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss:SSS} [%t][%-5p] %c{1}:%L - %m%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%T][%p] %c{1}:%L - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1"/>
-                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20"/>
         </RollingRandomAccessFile>
@@ -30,10 +30,8 @@
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="STDERR" level="ERROR"/>
         </root>
-        <logger name="org.webant.test" level="DEBUG"/>
-        <logger name="org.apache.test" level="DEBUG"/>
-        <logger name="org.apache" level="WARN"/>
-        <logger name="akka" level="WARN"/>
-    </Loggers>
 
+        <logger name="java.sql.Connection" level="ERROR" />
+        <logger name="org.apache.http" level="INFO" />
+    </Loggers>
 </Configuration>
