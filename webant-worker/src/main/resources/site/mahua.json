@@ -89,7 +89,7 @@
       "regex": "http://www.mahua.com/newjokes/index_\\d*.htm"
     },
     {
-      "className": "org.webant.plugin.mahua.processor.MahuaDetailProcessor",
+      "className": "org.webant.worker.test.mahua.processor.MahuaDetailProcessor",
       "http": {
         "method": "GET",
         "connectTimeout": 15000,
@@ -112,54 +112,63 @@
       },
       "store": [
         {
-          "className": "org.webant.extension.store.ElasticSearchStore",
+          "className": "org.webant.worker.store.HttpStore",
           "params": {
-            "clusterName": "es",
-            "host": "localhost",
-            "port": "9300",
-            "index": "mahua",
-            "type": "detail"
-          }
-        }
-/*
-        {
-          "className": "org.webant.plugin.mahua.store.JokeDetailStore",
-          "params": {
-            "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
-            "username": "bill",
-            "password": "sutine"
-          }
-        },
-        {
-          "className": "org.webant.plugin.mahua.store.FunStore",
-          "params": {
-            "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+            "url": "http://localhost:8080/fun/save",
             "username": "bill",
             "password": "sutine"
           }
         }
+        /*
+              "store": [
+                {
+                  "className": "org.webant.extension.store.ElasticSearchStore",
+                  "params": {
+                    "clusterName": "es",
+                    "host": "localhost",
+                    "port": "9300",
+                    "index": "mahua",
+                    "type": "detail"
+                  }
+                }
+                {
+                  "className": "org.webant.plugin.mahua.store.JokeDetailStore",
+                  "params": {
+                    "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+                    "username": "bill",
+                    "password": "sutine"
+                  }
+                },
+                {
+                  "className": "org.webant.plugin.mahua.store.FunStore",
+                  "params": {
+                    "url": "jdbc:mysql://localhost:3306/wefun?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+                    "username": "bill",
+                    "password": "sutine"
+                  }
+                }
 
-        {
-          "className": "org.webant.worker.store.H2Store",
-          "params": {
-            "url": "jdbc:h2:./data/h2/data;MODE=MYSQL",
-            "username": "webant",
-            "password": "webant"
-          }
-        },
-        {
-          "className": "org.webant.worker.store.JsonStore",
-          "params": {
-            "dir": "./data/json"
-          }
-        },
-        {
-          "className": "org.webant.worker.store.BerkeleyDbStore",
-          "params": {
-            "dir": "./data/bdb"
-          }
-        }
-*/
+                {
+                  "className": "org.webant.worker.store.H2Store",
+                  "params": {
+                    "url": "jdbc:h2:./data/h2/data;MODE=MYSQL",
+                    "username": "webant",
+                    "password": "webant"
+                  }
+                },
+                {
+                  "className": "org.webant.worker.store.JsonStore",
+                  "params": {
+                    "dir": "./data/json"
+                  }
+                },
+                {
+                  "className": "org.webant.worker.store.BerkeleyDbStore",
+                  "params": {
+                    "dir": "./data/bdb"
+                  }
+                }
+        */
       ]
     }
   ]

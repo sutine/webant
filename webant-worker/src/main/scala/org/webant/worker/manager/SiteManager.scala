@@ -217,11 +217,14 @@ class SiteManager(taskId: String, siteId: String) {
               noopCount = 0
             } else {
               noopCount += 1
+              // reset pending links
               val pendingCount = linkProvider.count(Link.LINK_STATUS_PENDING)
               if (pendingCount != lastPendingCount)
                 lastPendingCount = pendingCount
               else if (pendingCount != 0)
                 linkProvider.reset(Link.LINK_STATUS_PENDING)
+
+              // reset banned links
             }
 
             if (noopCount == 10 && interval < intervalMax) {

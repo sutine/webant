@@ -23,11 +23,11 @@ class H2Store[T <: HttpDataEntity] extends JdbcStoreProvider[T] {
 
   override def init(params: java.util.Map[String, Object]): Boolean = {
     if (!super.init(params)) {
-      logger.error("init H2Store failed!")
+      logger.error(s"init ${getClass.getSimpleName} failed!")
       return false
     }
 
-    logger.info(s"init H2Store success!")
+    logger.info(s"init ${getClass.getSimpleName} success!")
     createTable()
   }
 

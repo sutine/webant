@@ -6,7 +6,13 @@ class SiteConfig extends java.io.Serializable {
   var description: String = _
   var seeds: Array[String] = _
   var priority: Int = 4
+  // time interval between links
   var interval: Long = 0L
+  // if no links to crawl, so increase the interval time to reduce the read cost
+  var intervalUnit: Long = 100L
+  // if no links to crawl, when increase the interval time, this is the max interval time
+  var intervalMax: Long = 1000L
+  // time interval to recrawl
   var incrementInterval: Long = 0L
   var http: HttpConfig = _
   var linkProvider: LinkProvider = _
