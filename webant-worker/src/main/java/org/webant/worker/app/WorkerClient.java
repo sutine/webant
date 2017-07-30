@@ -26,7 +26,8 @@ public class WorkerClient {
 
             cmd = cmd.trim().toLowerCase();
 
-            if (!(cmd.startsWith("c") || cmd.startsWith("conn") || cmd.startsWith("connect")) && !WorkerJmxClient.isConnected()) {
+            if (!(cmd.startsWith("c") || cmd.startsWith("conn") || cmd.startsWith("connect") || cmd.startsWith("exit"))
+                    && !WorkerJmxClient.isConnected()) {
                 System.out.println("lost connection! please connect to server first.");
                 continue;
             }

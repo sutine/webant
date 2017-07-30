@@ -1,25 +1,36 @@
 package org.webant.worker.link
 
-import java.util
+import java.nio.charset.Charset
 
+import com.google.gson.reflect.TypeToken
+import org.apache.commons.collections.MapUtils
+import org.apache.commons.lang3.StringUtils
+import org.apache.http.entity.ContentType
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
-import org.webant.commons.link.JdbcLinkProvider
+import org.webant.commons.http.HttpDataResponse
+import org.webant.commons.link.{ILinkProvider, Progress}
+import org.webant.commons.utils.JsonUtils
 
-class HttpLinkProvider extends JdbcLinkProvider {
+class HttpLinkProvider extends ILinkProvider {
   private val logger = LogManager.getLogger(classOf[HttpLinkProvider])
-
-  def init(): Boolean = {
-    val params = new util.HashMap[String, Object]()
-    params.put("url", "jdbc:h2:./data/h2/webant;MODE=MYSQL")
-    params.put("username", "webant")
-    params.put("password", "webant")
-
-    init(params)
-  }
+  protected var host = "http://localhost:8080"
+  protected var taskId: String = _
+  protected var siteId: String = _
 
   override def init(params: java.util.Map[String, Object]): Boolean = {
-    if (!super.init(params)) {
+    if (!params.containsKey("url") || !params.containsKey("username")
+      || !params.containsKey("password") || !params.containsKey("siteId"))
+      return false
+
+    host = MapUtils.getString(params, "url")
+    val username = MapUtils.getString(params, "username")
+    val password = MapUtils.getString(params, "password")
+    batch = MapUtils.getInteger(params, "batch", 20)
+    taskId = MapUtils.getString(params, "taskId")
+    siteId = MapUtils.getString(params, "siteId")
+
+    if (!StringUtils.isNotBlank(host)) {
       logger.error(s"init ${getClass.getSimpleName} failed!")
       return false
     }
@@ -29,59 +40,79 @@ class HttpLinkProvider extends JdbcLinkProvider {
   }
 
   override def read(): Iterable[Link] = {
-    getLinksToCrawl(Link.LINK_STATUS_INIT, batch)
-  }
-
-  private def getLinksToCrawl(status: String, size: Int): Iterable[Link] = {
-    val sql = "SELECT id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, dataCreateTime, " +
-      s"dataUpdateTime, dataDeleteTime FROM $table WHERE status = ? LIMIT ?, ?"
-
-    val offset: Integer = 0
-    val pageSize: Integer = if (size <= 0 || size > 1000) 1000 else size
-    val selectParams = Array[Object](status, offset, pageSize)
-    var links = Iterable.empty[Link]
-
-    links
+    val url = s"$host/link/fetch"
+    get(url)
   }
 
   override def write(link: Link): Int = {
-    require(conn != null)
+    require(StringUtils.isNotBlank(host))
     if (link == null) return 0
-    upsert(link)
+
+    val url = s"$host/link/save"
+    val json = JsonUtils.toJson(link)
+    post(url, json)
   }
 
   override def write(links: Iterable[Link]): Int = {
-    require(conn != null)
-    if (links == null || links.isEmpty) return 0
-    upsert(links)
-  }
-
-  override def upsert(link: Link): Int = {
-    // no reflection, simple and fast
-    val sql = s"insert into $table ( id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, dataCreateTime, " +
-      "dataUpdateTime, dataDeleteTime ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE " +
-      "taskId = ?, siteId = ?, url = ?, referer = ?, priority = ?, lastCrawlTime = ?, status = ?, dataVersion = dataVersion + 1, dataUpdateTime = now()"
-    val values = Array[Object](
-      link.getId, link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime,
-      link.getStatus, link.getDataVersion, link.getDataCreateTime, link.getDataUpdateTime, link.getDataDeleteTime,
-
-      link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime, link.getStatus
-    )
-    runner.update(conn, sql, values: _*)
-  }
-
-  override def upsert(links: Iterable[Link]): Int = {
+    require(StringUtils.isNotBlank(host))
     if (links == null || links.isEmpty) return 0
 
-    // no reflection, simple and fast
-    val placeholders = links.toArray.map(_ => "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )").mkString(", ")
-    val sql = s"insert into $table (id, taskId, siteId, url, referer, priority, lastCrawlTime, status, dataVersion, " +
-      s"dataCreateTime, dataUpdateTime, dataDeleteTime) values $placeholders ON DUPLICATE KEY UPDATE " +
-      //      "priority = values(priority), lastCrawlTime = values(lastCrawlTime), status = values(status), " +
-      "dataVersion = dataVersion + 1, dataUpdateTime = now()"
+    val url = s"$host/link/save/list"
+    val json = JsonUtils.toJson(links.toArray)
+    post(url, json)
+  }
 
-    val values = links.toArray.flatMap(link => Array(link.getId, link.getTaskId, link.getSiteId, link.getUrl, link.getReferer, link.getPriority, link.getLastCrawlTime,
-      link.getStatus, link.getDataVersion, link.getDataCreateTime, link.getDataUpdateTime, link.getDataDeleteTime))
-    runner.update(conn, sql, values: _*)
+  private def get(url: String): Array[Link] = {
+    val resp = org.apache.http.client.fluent.Request.Get(url)
+      .addHeader("Accept", "text/html,application/json,application/xml;")
+      .addHeader("User-Agent", "Webant worker http client")
+      .execute
+    val result = resp.returnContent.asString(Charset.forName("UTF-8"))
+    if (StringUtils.isBlank(result))
+      return Array.empty
+
+    val response = JsonUtils.fromJson[HttpDataResponse[Array[Link]]](result, new TypeToken[HttpDataResponse[Array[Link]]] {}.getType)
+    response.getData
+  }
+
+  private def post(url: String, json: String): Int = {
+    val resp = org.apache.http.client.fluent.Request.Post(url)
+      .bodyString(json, ContentType.APPLICATION_JSON)
+      .addHeader("Accept", "text/html,application/json,application/xml;")
+      .addHeader("User-Agent", "Webant worker http client")
+      .execute
+    val result = resp.returnContent.asString(Charset.forName("UTF-8"))
+    if (StringUtils.isBlank(result))
+      return 0
+
+    val response = JsonUtils.fromJson[HttpDataResponse[Integer]](result, new TypeToken[HttpDataResponse[Integer]] {}.getType)
+    response.getData
+  }
+
+  override def reset(status: String): Int = {
+    0
+  }
+
+  override def progress(): Progress = {
+    val t = total()
+
+    val init = 0
+    val pending = 0
+    val success = 0
+    val fail = 0
+
+    Progress(t, init, pending, success, fail)
+  }
+
+  override def total(): Long = {
+    0
+  }
+
+  override def count(status: String): Long = {
+    0
+  }
+
+  override def close(): Boolean = {
+    true
   }
 }

@@ -65,7 +65,7 @@ class HttpStore[T <: HttpDataEntity] extends IStore[T] {
     val resp = org.apache.http.client.fluent.Request.Post(url)
       .bodyString(json, ContentType.APPLICATION_JSON)
       .addHeader("Accept", "text/html,application/json,application/xml;")
-      .addHeader("User-Agent", "Webant worker http store")
+      .addHeader("User-Agent", "Webant worker http client")
       .execute
     val result = resp.returnContent.asString(Charset.forName("UTF-8"))
     if (StringUtils.isBlank(result))

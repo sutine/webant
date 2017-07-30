@@ -62,25 +62,34 @@
   },
 */
   "linkProvider": {
-    "className": "org.webant.worker.link.H2LinkProvider",
+    "className": "org.webant.worker.link.HttpLinkProvider",
     "params": {
-      "url": "jdbc:h2:./data/h2/webant;MODE=MYSQL",
+      "url": "http://localhost:8080",
       "username": "webant",
       "password": "webant",
       "batch": 20
     }
   },
-/*
-  "linkProvider": {
-    "className": "org.webant.worker.link.MysqlLinkProvider",
-    "params": {
-      "url": "jdbc:mysql://localhost:3306/webant?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
-      "username": "bill",
-      "password": "sutine",
-      "batch": 20
-    }
-  },
-*/
+  /*
+    "linkProvider": {
+      "className": "org.webant.worker.link.H2LinkProvider",
+      "params": {
+        "url": "jdbc:h2:./data/h2/webant;MODE=MYSQL",
+        "username": "webant",
+        "password": "webant",
+        "batch": 20
+      }
+    },
+    "linkProvider": {
+      "className": "org.webant.worker.link.MysqlLinkProvider",
+      "params": {
+        "url": "jdbc:mysql://localhost:3306/webant?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true",
+        "username": "bill",
+        "password": "sutine",
+        "batch": 20
+      }
+    },
+  */
   "processors": [
     {
       "regex": "http://www.mahua.com/?"
@@ -114,7 +123,7 @@
         {
           "className": "org.webant.worker.store.HttpStore",
           "params": {
-            "url": "http://localhost:8080/fun/save",
+            "url": "http://localhost:8081/fun/save",
             "username": "bill",
             "password": "sutine"
           }

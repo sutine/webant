@@ -199,45 +199,50 @@ class SiteManager(taskId: String, siteId: String) {
     new Thread() {
       override def run(): Unit = {
         while (!isStopped) {
-          val site = ConfigManager.getSiteConfig(siteId)
+          try {
+            val site = ConfigManager.getSiteConfig(siteId)
 
-          if (!isPaused) {
-            val links = linkProvider.read()
-            if (links.nonEmpty) {
-              if (site.interval > 0) {
-                links.foreach(link => {
-                  WorkerReactor.submit(link)
-                  Thread.sleep(site.interval)
-                })
+            if (!isPaused) {
+              val links = linkProvider.read()
+              if (links.nonEmpty) {
+                if (site.interval > 0) {
+                  links.foreach(link => {
+                    WorkerReactor.submit(link)
+                    Thread.sleep(site.interval)
+                  })
+                } else {
+                  WorkerReactor.submit(links)
+                }
+
+                interval = intervalUnit
+                noopCount = 0
               } else {
-                WorkerReactor.submit(links)
+                noopCount += 1
+                // reset pending links
+                val pendingCount = linkProvider.count(Link.LINK_STATUS_PENDING)
+                if (pendingCount != lastPendingCount)
+                  lastPendingCount = pendingCount
+                else if (pendingCount != 0)
+                  linkProvider.reset(Link.LINK_STATUS_PENDING)
+
+                // reset banned links
               }
 
-              interval = intervalUnit
-              noopCount = 0
-            } else {
-              noopCount += 1
-              // reset pending links
-              val pendingCount = linkProvider.count(Link.LINK_STATUS_PENDING)
-              if (pendingCount != lastPendingCount)
-                lastPendingCount = pendingCount
-              else if (pendingCount != 0)
-                linkProvider.reset(Link.LINK_STATUS_PENDING)
-
-              // reset banned links
+              if (noopCount == 10 && interval < intervalMax) {
+                noopCount = 0
+                interval += intervalUnit
+              }
             }
 
-            if (noopCount == 10 && interval < intervalMax) {
-              noopCount = 0
-              interval += intervalUnit
+            // submit seeds to delta crawl
+            val now = System.currentTimeMillis()
+            if (site.incrementInterval > 0 && now - lastDeltaTime >= site.incrementInterval) {
+              submitSeeds()
+              lastDeltaTime = now
             }
-          }
-
-          // submit seeds to delta crawl
-          val now = System.currentTimeMillis()
-          if (site.incrementInterval > 0 && now - lastDeltaTime >= site.incrementInterval) {
-            submitSeeds()
-            lastDeltaTime = now
+          } catch {
+            case e: Exception =>
+              logger.error(s"anything error! ${e.getMessage}")
           }
 /*
           if (isComplete()) {
