@@ -1,12 +1,12 @@
 package org.webant.queen.link.controller;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.webant.queen.commons.vo.ErrorCode;
 import org.webant.queen.commons.vo.ListResult;
@@ -40,7 +40,7 @@ public class LInkController {
     @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
     @ResponseBody
     public Response<?> get(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
-        if (StringUtils.isBlank(id)) {
+        if (StringUtils.isEmpty(id)) {
             return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
         }
 
