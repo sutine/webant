@@ -1,5 +1,6 @@
 package org.webant.queen.link.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ public class Link implements Serializable {
     public final static String LINK_STATUS_SUCCESS = "success";
     public final static String LINK_STATUS_FAIL = "fail";
     @Id
+    @Column(length = 64)
     private String id;
     private String taskId;
     private String siteId;

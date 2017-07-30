@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost/datacubic?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&generateSimpleParameterMetadata=true
+    url: jdbc:mysql://localhost/webant?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&generateSimpleParameterMetadata=true
     username: bill
     password: sutine
     driver-class-name: com.mysql.jdbc.Driver
@@ -8,3 +8,4 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

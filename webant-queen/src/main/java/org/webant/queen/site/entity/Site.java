@@ -1,7 +1,6 @@
 package org.webant.queen.site.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,6 +8,7 @@ import java.util.Date;
 public class Site implements Serializable {
 
     @Id
+    @Column(length = 64)
     private String id;
     private Integer dataVersion = 1;
     private Date dataCreateTime = new Date();

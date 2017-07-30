@@ -1,5 +1,6 @@
 package org.webant.queen.node.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ public class Node implements Serializable {
     public final static String NODE_STATUS_DISABLE = "disable";
 
     @Id
+    @Column(length = 64)
     private String id;
     private String status = NODE_STATUS_INIT;
     private Integer dataVersion = 1;
