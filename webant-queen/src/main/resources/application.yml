@@ -1,0 +1,50 @@
+logging:
+  file: logs/webant-queen.log
+  level:
+    root: INFO
+  org:
+    springframework:
+      web: DEBUG
+
+spring:
+#  datasource:
+#    url: jdbc:mysql://localhost/datacubic?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+#    username: bill
+#    password: sutine
+#    driver-class-name: com.mysql.jdbc.Driver
+  datasource:
+    url: jdbc:h2:./data/h2/webant;MODE=MYSQL
+    username: webant
+    password: webant
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    elasticsearch:
+      cluster-name: es
+      cluster-nodes: localhost:9300
+      properties:
+        http:
+          enabled: true
+      repositories:
+        enabled: true
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss.SSS
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss.SSS
+    serialization:
+      write_dates_as_timestamps: false
+    time-zone: GMT+8
+server:
+  port: 8080
+
+---
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:test
+    username: root
+    password: 123456
+    driver-class-name: org.h2.Driver

@@ -23,10 +23,10 @@
 	 <!-- data directory, if data save on local, they are save in this directory -->
 	<dataDir>./data</dataDir>
 
-	<!-- queen server address -->
-	<queen>
+	<!-- server address -->
+	<org.queen>
 		<url>url</url>
-	</queen>
+	</org.queen>
 
 	<!-- task configuration files monitor -->
 	<taskMonitor>
