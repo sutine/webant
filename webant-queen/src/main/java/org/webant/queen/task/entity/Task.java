@@ -1,59 +1,60 @@
 package org.webant.queen.task.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.webant.queen.site.entity.Site;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Task implements Serializable {
 
     @Id
-    @Column(length = 64)
-    private String id;
-    private Integer dataVersion = 1;
-    private Date dataCreateTime = new Date();
-    private Date dataUpdateTime = new Date();
-    private Date dataDeleteTime;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private String description;
+    private Integer priority;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
+    private List<Site> sites;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getDataVersion() {
-        return dataVersion;
+    public String getName() {
+        return name;
     }
 
-    public void setDataVersion(Integer dataVersion) {
-        this.dataVersion = dataVersion;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Date getDataCreateTime() {
-        return dataCreateTime;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDataCreateTime(Date dataCreateTime) {
-        this.dataCreateTime = dataCreateTime;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Date getDataUpdateTime() {
-        return dataUpdateTime;
+    public Integer getPriority() {
+        return priority;
     }
 
-    public void setDataUpdateTime(Date dataUpdateTime) {
-        this.dataUpdateTime = dataUpdateTime;
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
-    public Date getDataDeleteTime() {
-        return dataDeleteTime;
+    public List<Site> getSites() {
+        return sites;
     }
 
-    public void setDataDeleteTime(Date dataDeleteTime) {
-        this.dataDeleteTime = dataDeleteTime;
+    public void setSites(List<Site> sites) {
+        this.sites = sites;
     }
 }

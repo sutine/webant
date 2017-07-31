@@ -1,8 +1,9 @@
 package org.webant.queen.site.entity;
 
+import org.webant.queen.task.entity.Task;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class Site implements Serializable {
@@ -10,10 +11,10 @@ public class Site implements Serializable {
     @Id
     @Column(length = 64)
     private String id;
-    private Integer dataVersion = 1;
-    private Date dataCreateTime = new Date();
-    private Date dataUpdateTime = new Date();
-    private Date dataDeleteTime;
+    @ManyToOne
+    @JoinColumn(name = "taskId",foreignKey = @ForeignKey(name = "fk_site_task"))
+    private Task task;
+    private String config;
 
     public String getId() {
         return id;
@@ -23,35 +24,19 @@ public class Site implements Serializable {
         this.id = id;
     }
 
-    public Integer getDataVersion() {
-        return dataVersion;
+    public Task getTask() {
+        return task;
     }
 
-    public void setDataVersion(Integer dataVersion) {
-        this.dataVersion = dataVersion;
+    public void setTask(Task task) {
+        this.task = task;
     }
 
-    public Date getDataCreateTime() {
-        return dataCreateTime;
+    public String getConfig() {
+        return config;
     }
 
-    public void setDataCreateTime(Date dataCreateTime) {
-        this.dataCreateTime = dataCreateTime;
-    }
-
-    public Date getDataUpdateTime() {
-        return dataUpdateTime;
-    }
-
-    public void setDataUpdateTime(Date dataUpdateTime) {
-        this.dataUpdateTime = dataUpdateTime;
-    }
-
-    public Date getDataDeleteTime() {
-        return dataDeleteTime;
-    }
-
-    public void setDataDeleteTime(Date dataDeleteTime) {
-        this.dataDeleteTime = dataDeleteTime;
+    public void setConfig(String config) {
+        this.config = config;
     }
 }

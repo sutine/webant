@@ -8,7 +8,7 @@
     <artifactId>webant-queen</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>webant org.queen pom</name>
+    <name>webant queen pom</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -68,6 +68,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.0.19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

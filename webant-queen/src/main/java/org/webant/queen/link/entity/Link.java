@@ -1,12 +1,14 @@
 package org.webant.queen.link.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(indexes = {@Index(name = "idx_task_id", columnList = "taskId"),
+        @Index(name = "idx_site_id", columnList = "siteId"),
+        @Index(name = "idx_node_id", columnList = "nodeId"),
+        @Index(name = "idx_status", columnList = "status")})
 public class Link implements Serializable {
     public final static String LINK_STATUS_INIT = "init";
     public final static String LINK_STATUS_PENDING = "pending";
