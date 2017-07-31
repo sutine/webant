@@ -1,4 +1,4 @@
-package org.webant.queen.node.entity;
+package org.webant.queen.data.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -10,20 +10,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Node implements Serializable {
-    public final static String NODE_STATUS_INIT = "init";
-    public final static String NODE_STATUS_RUNNING = "running";
-    public final static String NODE_STATUS_BUSY = "busy";
-    public final static String NODE_STATUS_HEAVY = "heavy";
-    public final static String NODE_STATUS_OFFLINE = "offline";
-    public final static String NODE_STATUS_DISABLE = "disable";
+public class Data implements Serializable {
 
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
     @Column(length = 32)
     private String id;
-    private String status = NODE_STATUS_INIT;
     private Integer dataVersion = 1;
     private Date dataCreateTime = new Date();
     private Date dataUpdateTime = new Date();
@@ -35,14 +28,6 @@ public class Node implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Integer getDataVersion() {

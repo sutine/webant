@@ -7,6 +7,6 @@ import org.webant.queen.site.entity.SiteTemplate;
 import java.util.List;
 
 @Repository
-public interface SiteTemplateRepository extends JpaRepository<SiteTemplate, Integer> {
+public interface SiteTemplateRepository extends JpaRepository<SiteTemplate, String> {
     List<SiteTemplate> findAllByFingerPrint(String fingerPrint);
 }

@@ -1,5 +1,6 @@
 package org.webant.queen.site.entity;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
@@ -11,8 +12,10 @@ import java.io.Serializable;
 public class SiteTemplate implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    @GenericGenerator(name="idGenerator", strategy="uuid")
+    @GeneratedValue(generator="idGenerator")
+    @Column(length = 32)
+    private String id;
     @Column(columnDefinition = "text")
     private String config;
     private String fingerPrint;
@@ -26,11 +29,11 @@ public class SiteTemplate implements Serializable {
             fingerPrint = DigestUtils.md5DigestAsHex(config.getBytes());
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

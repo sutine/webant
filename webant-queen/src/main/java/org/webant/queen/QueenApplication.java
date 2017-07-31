@@ -1,6 +1,8 @@
 package org.webant.queen;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +18,11 @@ public class QueenApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(QueenApplication.class, args);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }
 
     @Bean

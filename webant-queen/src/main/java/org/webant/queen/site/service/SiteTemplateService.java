@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.webant.queen.site.dao.SiteTemplateRepository;
 import org.webant.queen.site.entity.SiteTemplate;
@@ -18,7 +17,7 @@ public class SiteTemplateService {
     @Autowired
     private SiteTemplateRepository repository;
 
-    public SiteTemplate get(Integer id) {
+    public SiteTemplate get(String id) {
         return repository.findById(id).get();
     }
 
@@ -30,12 +29,11 @@ public class SiteTemplateService {
         return list.size();
     }
 
-    public int save(SiteTemplate entity) {
+    public String save(SiteTemplate entity) {
         if (entity == null && StringUtils.isEmpty(entity.getConfig()))
-            return 0;
+            return "";
 
-        String fingerPrint = DigestUtils.md5DigestAsHex(entity.getConfig().getBytes());
-        List<SiteTemplate> list = repository.findAllByFingerPrint(fingerPrint);
+        List<SiteTemplate> list = repository.findAllByFingerPrint(entity.getFingerPrint());
         if (!list.isEmpty())
             return list.get(0).getId();
 

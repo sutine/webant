@@ -1,9 +1,6 @@
 package org.webant.queen.task.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +8,7 @@ import org.webant.queen.commons.vo.ErrorCode;
 import org.webant.queen.commons.vo.Response;
 import org.webant.queen.task.entity.Task;
 import org.webant.queen.task.service.TaskService;
-
-import java.util.List;
+import org.webant.queen.task.vo.TaskVo;
 
 @Controller
 @RequestMapping(value = {"/task"})
@@ -20,15 +16,38 @@ public class TaskController {
     @Autowired
     TaskService service;
 
-    @RequestMapping(value = "/fetch", method = RequestMethod.GET)
+    @RequestMapping(value = "/start", method = RequestMethod.GET)
     @ResponseBody
-    public Response fetch(@PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
+    public Response start(@RequestParam(value = "taskId", required = false, defaultValue = "") String taskId,
+                          @RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
         return Response.success();
     }
 
-    @RequestMapping(value = "/pulse", method = RequestMethod.GET)
+    @RequestMapping(value = "/pause", method = RequestMethod.GET)
     @ResponseBody
-    public Response list(@PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
+    public Response pause(@RequestParam(value = "taskId", required = false, defaultValue = "") String taskId,
+                          @RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        return Response.success();
+    }
+
+    @RequestMapping(value = "/stop", method = RequestMethod.GET)
+    @ResponseBody
+    public Response stop(@RequestParam(value = "taskId", required = false, defaultValue = "") String taskId,
+                         @RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        return Response.success();
+    }
+
+    @RequestMapping(value = "/progress", method = RequestMethod.GET)
+    @ResponseBody
+    public Response progress(@RequestParam(value = "taskId", required = false, defaultValue = "") String taskId,
+                             @RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        return Response.success();
+    }
+
+    @RequestMapping(value = "/reset", method = RequestMethod.GET)
+    @ResponseBody
+    public Response reset(@RequestParam(value = "taskId", required = false, defaultValue = "") String taskId,
+                          @RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
         return Response.success();
     }
 
@@ -45,21 +64,12 @@ public class TaskController {
         return Response.success(link);
     }
 
-    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public Response save(@RequestBody Task entity) {
-        return Response.success();
-    }
+    public Response add(@RequestBody TaskVo entity) {
+        Task task = entity.toTask();
+        String id = service.save(task);
 
-    @RequestMapping(value = "/pulse", method = RequestMethod.POST)
-    @ResponseBody
-    public Response pulse(@RequestBody Task entity) {
-        return Response.success();
-    }
-
-    @RequestMapping(value = "/signoff", method = RequestMethod.POST)
-    @ResponseBody
-    public Response signoff(@RequestBody List<Task> list) {
-        return Response.success();
+        return Response.success(id);
     }
 }

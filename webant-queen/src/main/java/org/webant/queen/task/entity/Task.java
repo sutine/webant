@@ -1,5 +1,6 @@
 package org.webant.queen.task.entity;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.webant.queen.site.entity.Site;
 
 import javax.persistence.*;
@@ -10,19 +11,24 @@ import java.util.List;
 public class Task implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    @GenericGenerator(name="idGenerator", strategy="uuid")
+    @GeneratedValue(generator="idGenerator")
+    @Column(length = 32)
+    private String id;
     private String name;
     private String description;
     private Integer priority;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
+    private String fingerPrint;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "taskId")
     private List<Site> sites;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,5 +62,13 @@ public class Task implements Serializable {
 
     public void setSites(List<Site> sites) {
         this.sites = sites;
+    }
+
+    public String getFingerPrint() {
+        return fingerPrint;
+    }
+
+    public void setFingerPrint(String fingerPrint) {
+        this.fingerPrint = fingerPrint;
     }
 }

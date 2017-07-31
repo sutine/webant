@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.webant.queen.task.dao.TaskRepository;
 import org.webant.queen.task.entity.Task;
 
@@ -28,10 +29,15 @@ public class TaskService {
         return list.size();
     }
 
-    public int save(Task entity) {
-        if (entity == null)
-            return 0;
-        repository.save(entity);
-        return 1;
+    public String save(Task task) {
+        if (task == null || StringUtils.isEmpty(task.getFingerPrint()))
+            return "";
+
+        List<Task> list = repository.findAllByFingerPrint(task.getFingerPrint());
+        if (!list.isEmpty())
+            return list.get(0).getId();
+
+        Task save = repository.save(task);
+        return save.getId();
     }
 }

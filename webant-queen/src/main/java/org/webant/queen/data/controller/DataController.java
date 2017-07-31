@@ -1,4 +1,4 @@
-package org.webant.queen.node.controller;
+package org.webant.queen.data.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -6,19 +6,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.webant.queen.commons.vo.ErrorCode;
 import org.webant.queen.commons.vo.Response;
-import org.webant.queen.node.entity.Node;
-import org.webant.queen.node.service.NodeService;
-
-import java.util.List;
+import org.webant.queen.data.entity.Data;
+import org.webant.queen.data.service.DataService;
 
 @Controller
-@RequestMapping(value = {"/node"})
-public class NodeController {
+@RequestMapping(value = {"/data"})
+public class DataController {
     @Autowired
-    NodeService service;
+    DataService service;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -33,21 +34,9 @@ public class NodeController {
             return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
         }
 
-        Node link = service.get(id);
-        if (link == null)
+        Data data = service.get(id);
+        if (data == null)
             return Response.failure(ErrorCode.BAD_REQUEST, "请求的数据不存在");
-        return Response.success(link);
-    }
-
-    @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    @ResponseBody
-    public Response save(@RequestBody Node entity) {
-        return Response.success();
-    }
-
-    @RequestMapping(value = "/signoff", method = RequestMethod.POST)
-    @ResponseBody
-    public Response signoff(@RequestBody List<Node> list) {
-        return Response.success();
+        return Response.success(data);
     }
 }
