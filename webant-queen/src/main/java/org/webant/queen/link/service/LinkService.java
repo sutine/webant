@@ -89,7 +89,7 @@ public class LinkService {
         try {
             affectRowNum = jdbcTemplate.update(sql, values);
         } catch (Exception e) {
-            logger.error("save link failed!", e);
+            logger.error("save link failed!", e.getMessage());
         }
 
         return affectRowNum;
@@ -119,7 +119,31 @@ public class LinkService {
         try {
             affectRowNum = jdbcTemplate.update(sql, values);
         } catch (Exception e) {
-            logger.error("save links failed!", e);
+            logger.error("save links failed!", e.getMessage());
+        }
+
+        return affectRowNum;
+    }
+
+    public int updateStatus(String srcStatus, String dstStatus) {
+        String sql = "update " + table + " set status = '" + dstStatus + "' where status = '" + srcStatus + "'";
+        int affectRowNum = 0;
+        try {
+            affectRowNum = jdbcTemplate.update(sql);
+        } catch (Exception e) {
+            logger.error("update status failed!", e.getMessage());
+        }
+
+        return affectRowNum;
+    }
+
+    public int reset(String siteId) {
+        String sql = "update " + table + " set status = 'init' where site_id = '" + siteId + "'";
+        int affectRowNum = 0;
+        try {
+            affectRowNum = jdbcTemplate.update(sql);
+        } catch (Exception e) {
+            logger.error("reset site siteId failed!", e.getMessage());
         }
 
         return affectRowNum;

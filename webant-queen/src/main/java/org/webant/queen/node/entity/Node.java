@@ -17,6 +17,7 @@ public class Node implements Serializable {
     public final static String NODE_STATUS_HEAVY = "heavy";
     public final static String NODE_STATUS_OFFLINE = "offline";
     public final static String NODE_STATUS_DISABLE = "disable";
+    public final static String NODE_STATUS_SHUTDOWN = "shutdown";
 
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")

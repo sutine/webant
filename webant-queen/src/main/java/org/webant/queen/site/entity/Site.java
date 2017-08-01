@@ -7,6 +7,13 @@ import java.io.Serializable;
 
 @Entity
 public class Site implements Serializable {
+    public final static String SITE_STATUS_INIT = "init";
+    public final static String SITE_STATUS_START = "start";
+    public final static String SITE_STATUS_PAUSE = "pause";
+    public final static String SITE_STATUS_STOP = "stop";
+
+    public Site() {
+    }
 
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
@@ -16,6 +23,8 @@ public class Site implements Serializable {
 
     @Column(columnDefinition = "text")
     private String config;
+
+    private String status = SITE_STATUS_INIT;
 
     public Site(String config) {
         this.config = config;
@@ -35,5 +44,13 @@ public class Site implements Serializable {
 
     public void setConfig(String config) {
         this.config = config;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

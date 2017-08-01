@@ -6,27 +6,90 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.webant.queen.commons.exception.QueenException;
 import org.webant.queen.commons.vo.ErrorCode;
 import org.webant.queen.commons.vo.Response;
 import org.webant.queen.site.entity.Site;
 import org.webant.queen.site.service.SiteService;
 
-import java.util.List;
-
 @Controller
 @RequestMapping(value = {"/site"})
 public class SiteController {
     @Autowired
-    SiteService service;
+    private SiteService service;
 
-    @RequestMapping(value = "/fetch", method = RequestMethod.GET)
+    @RequestMapping(value = "/start", method = RequestMethod.GET)
     @ResponseBody
-    public Response fetch(@PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
+    public Response start(@RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        if (StringUtils.isEmpty(siteId))
+            return Response.failure(ErrorCode.BAD_REQUEST, "site id can not be empty!");
+
+        try {
+            service.action(siteId, Site.SITE_STATUS_START);
+        } catch (QueenException e) {
+            return Response.failure(ErrorCode.APPLICATION_ERROR, e.getMessage());
+        }
         return Response.success();
     }
 
-    @RequestMapping(value = "/pulse", method = RequestMethod.GET)
+    @RequestMapping(value = "/pause", method = RequestMethod.GET)
+    @ResponseBody
+    public Response pause(@RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        if (StringUtils.isEmpty(siteId))
+            return Response.failure(ErrorCode.BAD_REQUEST, "site id can not be empty!");
+
+        try {
+            service.action(siteId, Site.SITE_STATUS_PAUSE);
+        } catch (QueenException e) {
+            return Response.failure(ErrorCode.APPLICATION_ERROR, e.getMessage());
+        }
+        return Response.success();
+    }
+
+    @RequestMapping(value = "/stop", method = RequestMethod.GET)
+    @ResponseBody
+    public Response stop(@RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        if (StringUtils.isEmpty(siteId))
+            return Response.failure(ErrorCode.BAD_REQUEST, "site id can not be empty!");
+
+        try {
+            service.action(siteId, Site.SITE_STATUS_STOP);
+        } catch (QueenException e) {
+            return Response.failure(ErrorCode.APPLICATION_ERROR, e.getMessage());
+        }
+        return Response.success();
+    }
+
+    @RequestMapping(value = "/progress", method = RequestMethod.GET)
+    @ResponseBody
+    public Response progress(@RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        if (StringUtils.isEmpty(siteId))
+            return Response.failure(ErrorCode.BAD_REQUEST, "site id can not be empty!");
+
+        return Response.success(service.progress(siteId));
+    }
+
+    @RequestMapping(value = "/reset", method = RequestMethod.GET)
+    @ResponseBody
+    public Response reset(@RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
+        if (StringUtils.isEmpty(siteId))
+            return Response.failure(ErrorCode.BAD_REQUEST, "site id can not be empty!");
+
+        long affectRowsNum = 0;
+        try {
+            affectRowsNum = service.reset(siteId);
+        } catch (QueenException e) {
+            return Response.failure(ErrorCode.APPLICATION_ERROR, e.getMessage());
+        }
+
+        return Response.success(affectRowsNum);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public Response list(@PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
         return Response.success();
@@ -43,23 +106,5 @@ public class SiteController {
         if (link == null)
             return Response.failure(ErrorCode.BAD_REQUEST, "请求的数据不存在");
         return Response.success(link);
-    }
-
-    @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    @ResponseBody
-    public Response save(@RequestBody Site entity) {
-        return Response.success();
-    }
-
-    @RequestMapping(value = "/pulse", method = RequestMethod.POST)
-    @ResponseBody
-    public Response pulse(@RequestBody Site entity) {
-        return Response.success();
-    }
-
-    @RequestMapping(value = "/signoff", method = RequestMethod.POST)
-    @ResponseBody
-    public Response signoff(@RequestBody List<Site> list) {
-        return Response.success();
     }
 }

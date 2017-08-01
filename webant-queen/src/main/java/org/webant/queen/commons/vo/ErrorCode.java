@@ -14,14 +14,6 @@ public class ErrorCode {
     public static final int  GATEWAY_TIMEOUT = 504;         // 上游服务器连接超时
     public static final int  APPLICATION_ERROR = 800;       // 应用业务逻辑错误
 
-    public static final int LOGIN_FAIL = 1000;        // 用户名或密码错误
-
-    public static final int CDN_UPLOAD_ERROR = 5000;        // 转存CDN失败
-    public static final int PROMOTION_EXPIRED = 10000;      // 邀请码过期
-    public static final int PROMOTION_USED = 10001;         // 邀请码已经被使用
-    public static final int PROMOTION_INVAIL = 10002;       // 邀请码无效
-    public static final int WECHAT_UNLOGIN = 20000;       // 微信未登录
-
     public static String desc(int code) {
         switch (code) {
             case NONE: return "没有错误";
@@ -37,13 +29,6 @@ public class ErrorCode {
             case GATEWAY_TIMEOUT: return "上游服务器连接超时";
             case APPLICATION_ERROR: return "应用业务逻辑错误";
 
-            case LOGIN_FAIL: return "用户名或密码验证失败";
-
-            case CDN_UPLOAD_ERROR: return "转存CDN失败";
-            case PROMOTION_EXPIRED: return "邀请码过期";
-            case PROMOTION_USED: return "邀请码已经被使用";
-            case PROMOTION_INVAIL: return "邀请码无效";
-            case WECHAT_UNLOGIN: return "微信未登录";
             default: return "未知错误";
         }
     }

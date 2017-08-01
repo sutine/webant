@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class SiteConfig implements Serializable {
-    private Integer id;
+    private String id;
     private String name;
     private String description;
     private String[] seeds;
@@ -15,11 +15,11 @@ public class SiteConfig implements Serializable {
     private LinkProvider linkProvider;
     private ProcessorConfig[] processors;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

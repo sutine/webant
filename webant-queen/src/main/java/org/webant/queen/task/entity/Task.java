@@ -9,6 +9,13 @@ import java.util.List;
 
 @Entity
 public class Task implements Serializable {
+    public final static String TASK_STATUS_INIT = "init";
+    public final static String TASK_STATUS_START = "start";
+    public final static String TASK_STATUS_PAUSE = "pause";
+    public final static String TASK_STATUS_STOP = "stop";
+
+    public Task() {
+    }
 
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
@@ -18,6 +25,7 @@ public class Task implements Serializable {
     private String name;
     private String description;
     private Integer priority;
+    private String status = TASK_STATUS_INIT;
     private String fingerPrint;
 
     @OneToMany(cascade = {CascadeType.ALL})
@@ -62,6 +70,14 @@ public class Task implements Serializable {
 
     public void setSites(List<Site> sites) {
         this.sites = sites;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getFingerPrint() {
