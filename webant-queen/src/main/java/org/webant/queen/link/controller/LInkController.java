@@ -22,10 +22,12 @@ public class LInkController {
     @Autowired
     LinkService service;
 
-    @RequestMapping(value = "/fetch", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
-    public Response fetch(@PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
-        List<Link> list = service.getInitLinks(Link.LINK_STATUS_INIT, pageable);
+    public Response select(@RequestParam(value = "nodeId", required = false, defaultValue = Link.LINK_STATUS_INIT) String nodeId,
+            @RequestParam(value = "status", required = false, defaultValue = Link.LINK_STATUS_INIT) String status,
+            @PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
+        List<Link> list = service.select(nodeId, status, pageable);
         return Response.success(list);
     }
 
@@ -40,9 +42,8 @@ public class LInkController {
     @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
     @ResponseBody
     public Response<?> get(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(id))
             return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
-        }
 
         Link link = service.get(id);
         if (link == null)

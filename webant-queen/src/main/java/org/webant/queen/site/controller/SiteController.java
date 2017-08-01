@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.webant.queen.commons.entity.Progress;
 import org.webant.queen.commons.exception.QueenException;
 import org.webant.queen.commons.vo.ErrorCode;
 import org.webant.queen.commons.vo.Response;
@@ -70,7 +71,14 @@ public class SiteController {
         if (StringUtils.isEmpty(siteId))
             return Response.failure(ErrorCode.BAD_REQUEST, "site id can not be empty!");
 
-        return Response.success(service.progress(siteId));
+        Progress progress;
+        try {
+            progress = service.progress(siteId);
+        } catch (QueenException e) {
+            return Response.failure(ErrorCode.APPLICATION_ERROR, e.getMessage());
+        }
+
+        return Response.success(progress);
     }
 
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
@@ -79,7 +87,7 @@ public class SiteController {
         if (StringUtils.isEmpty(siteId))
             return Response.failure(ErrorCode.BAD_REQUEST, "site id can not be empty!");
 
-        long affectRowsNum = 0;
+        long affectRowsNum;
         try {
             affectRowsNum = service.reset(siteId);
         } catch (QueenException e) {

@@ -1,5 +1,7 @@
 package org.webant.queen.link.entity;
 
+import org.springframework.util.DigestUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -53,8 +55,10 @@ public class Link implements Serializable {
         this.lastCrawlTime = lastCrawlTime;
     }
 
-    public Link(String id, String url, String status) {
-        this.id = id;
+    public Link(String taskId, String siteId, String url, String status) {
+        id = DigestUtils.md5DigestAsHex(url.getBytes());
+        this.taskId = taskId;
+        this.siteId = siteId;
         this.url = url;
         this.status = status;
     }

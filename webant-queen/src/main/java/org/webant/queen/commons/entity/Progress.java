@@ -1,6 +1,7 @@
 package org.webant.queen.commons.entity;
 
 public class Progress {
+    private float gauge;
     private Long total;
     private Long init;
     private Long pending;
@@ -13,6 +14,17 @@ public class Progress {
         this.pending = pending;
         this.success = success;
         this.fail = fail;
+
+        if (total != 0)
+            gauge = ((float)Math.round((success + fail) * 100 / total)) / 100;
+    }
+
+    public Float getGauge() {
+        return gauge;
+    }
+
+    public void setGauge(Float gauge) {
+        this.gauge = gauge;
     }
 
     public Long getTotal() {

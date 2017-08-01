@@ -8,12 +8,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.webant.queen.commons.entity.Progress;
 import org.webant.queen.link.dao.LinkRepository;
+import org.webant.queen.link.dao.ProgressSummary;
 import org.webant.queen.link.entity.Link;
+import org.webant.queen.site.entity.Site;
+import org.webant.queen.site.service.SiteService;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,11 +32,14 @@ public class LinkService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private SiteService siteService;
+
     private String table = "link";
 
     @Transactional(rollbackFor = {IllegalArgumentException.class})
-    public List<Link> getInitLinks(String status, Pageable pageable) {
-        Page<Link> page = repository.findAllByStatus(status, pageable);
+    public List<Link> select(String nodeId, String status, Pageable pageable) {
+        Page<Link> page = repository.selectLinks(status, Site.SITE_STATUS_START, pageable);
         if (page.getContent().isEmpty())
             return new LinkedList<>();
 
@@ -50,6 +59,9 @@ public class LinkService {
     }
 
     public Page<Link> list(String status, Pageable pageable) {
+        if (StringUtils.isEmpty(status))
+            return repository.findAll(pageable);
+
         return repository.findAllByStatus(status, pageable);
     }
 
@@ -135,6 +147,31 @@ public class LinkService {
         }
 
         return affectRowNum;
+    }
+
+    public Progress progress(String siteId) {
+        long total = repository.countBySiteId(siteId);
+        List<ProgressSummary> list = repository.groupByStatus(siteId);
+        Map<String, Integer> map = list.stream()
+                .collect(Collectors.toMap(ProgressSummary::getStatus, ProgressSummary::getCount));
+
+        long init = 0;
+        long pending = 0;
+        long success = 0;
+        long fail = 0;
+        if (map.containsKey(Link.LINK_STATUS_INIT))
+            init = map.get(Link.LINK_STATUS_INIT);
+
+        if (map.containsKey(Link.LINK_STATUS_PENDING))
+            pending = map.get(Link.LINK_STATUS_PENDING);
+
+        if (map.containsKey(Link.LINK_STATUS_SUCCESS))
+            success = map.get(Link.LINK_STATUS_SUCCESS);
+
+        if (map.containsKey(Link.LINK_STATUS_FAIL))
+            fail = map.get(Link.LINK_STATUS_FAIL);
+
+        return new Progress(total, init, pending, success, fail);
     }
 
     public int reset(String siteId) {
