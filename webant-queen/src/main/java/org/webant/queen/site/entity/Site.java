@@ -1,6 +1,7 @@
 package org.webant.queen.site.entity;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.webant.queen.task.entity.Task;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +26,10 @@ public class Site implements Serializable {
     private String config;
 
     private String status = SITE_STATUS_INIT;
+
+    @ManyToOne
+    @JoinColumn(name = "taskId",foreignKey = @ForeignKey(name = "fk_site_task"))
+    private Task task;
 
     public Site(String config) {
         this.config = config;
@@ -52,5 +57,13 @@ public class Site implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 }

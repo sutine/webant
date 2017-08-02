@@ -13,30 +13,49 @@
 
 	 <!-- thread num -->
 	<threadNum>64</threadNum>
-    
-	 <!-- jmx server host -->
-	<serverHost>localhost</serverHost>
 
-	 <!-- jmx server port -->
-	<serverPort>1099</serverPort>
-
-	 <!-- data directory, if data save on local, they are save in this directory -->
+	<!-- data directory, if data save on local, they are save in this directory -->
 	<dataDir>./data</dataDir>
 
-	<!-- server address -->
-	<org.queen>
-		<url>url</url>
-	</org.queen>
+	<!-- must be standalone or server or node -->
+	<mode>node</mode>
 
-	<!-- task configuration files monitor -->
-	<taskMonitor>
-		<dir>./task</dir>
-		<interval>500</interval>
-	</taskMonitor>
+	<!-- standalone mode, run as a single process application -->
+	<standalone>
+		<!-- task configuration files monitor -->
+		<taskMonitor>
+			<dir>./task</dir>
+			<interval>500</interval>
+		</taskMonitor>
 
-	<!-- site configuration files monitor -->
-	<siteMonitor>
-		<dir>./site</dir>
-		<interval>500</interval>
-	</siteMonitor>
+		<!-- site configuration files monitor -->
+		<siteMonitor>
+			<dir>./site</dir>
+			<interval>500</interval>
+		</siteMonitor>
+	</standalone>
+
+	<!-- server mode, run as a server, and then manage the server via a worker client -->
+	<server>
+		<!-- jmx server host -->
+		<serverHost>localhost</serverHost>
+
+		<!-- jmx server port -->
+		<serverPort>1099</serverPort>
+
+		<!-- jmx server username -->
+		<username>webant</username>
+
+		<!-- jmx server password -->
+		<password>webant</password>
+	</server>
+
+	<!-- node mode, run as a node in the webant cluster, get tasks and links from the queen node, process links and reply data to the queen node -->
+	<node>
+		<!-- queen node address -->
+		<queen>
+			<url>url</url>
+		</queen>
+	</node>
+
 </workerConfig>

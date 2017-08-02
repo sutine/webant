@@ -8,13 +8,12 @@ import javax.management.remote.{JMXAuthenticator, JMXConnectorServer, JMXConnect
 import javax.security.auth.Subject
 
 import org.apache.log4j.LogManager
-import org.webant.commons.utils.WebantConstants
 import org.webant.worker.config.ConfigManager
 
 object WorkerJmxServer {
   private val logger = LogManager.getLogger(WorkerJmxServer.getClass)
   private val JMX_SERVER_NAME = "WebantWorkerConsole"
-  private val JMX_SERVICE_URL = s"service:jmx:rmi:///jndi/rmi://${ConfigManager.getWorkerConfig.serverHost}:${ConfigManager.getWorkerConfig.serverPort}/$JMX_SERVER_NAME"
+  private val JMX_SERVICE_URL = s"service:jmx:rmi:///jndi/rmi://${ConfigManager.getWorkerConfig.server.serverHost}:${ConfigManager.getWorkerConfig.server.serverPort}/$JMX_SERVER_NAME"
   private val JMX_WORKER_OBJECT_NAME = s"$JMX_SERVER_NAME:name=WorkerJmxConsole"
 
   @throws[MalformedObjectNameException]
@@ -41,14 +40,16 @@ object WorkerJmxServer {
       """.stripMargin
     logger.info(webant)
 
-    LocateRegistry.createRegistry(ConfigManager.getWorkerConfig.serverPort)
+    LocateRegistry.createRegistry(ConfigManager.getWorkerConfig.server.serverPort)
     val mbeanServer = MBeanServerFactory.createMBeanServer
     val prop = new util.HashMap[String, AnyRef]
     prop.put(JMXConnectorServer.AUTHENTICATOR, new JMXAuthenticator() {
       override def authenticate(credentials: scala.Any): Subject = {
         credentials match {
           case account: Array[String] =>
-            if (account(0) == WebantConstants.USERNAME && account(1) == WebantConstants.PASSWORD) return new Subject
+            if (account(0) == ConfigManager.getWorkerConfig.server.username
+              && account(1) == ConfigManager.getWorkerConfig.server.password)
+              return new Subject
           case _ =>
         }
         throw new SecurityException("authentication failed!")

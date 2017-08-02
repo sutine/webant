@@ -11,10 +11,15 @@ import org.webant.commons.entity.Link
 import org.webant.commons.http.HttpDataResponse
 import org.webant.commons.link.{ILinkProvider, Progress}
 import org.webant.commons.utils.JsonUtils
+import org.webant.worker.config.ConfigManager
 
 class HttpLinkProvider extends ILinkProvider {
   private val logger = LogManager.getLogger(classOf[HttpLinkProvider])
-  protected var host = "http://localhost:8080"
+  private val host = ConfigManager.getWorkerConfig.node.queen.url
+  private val SELECT_URL = s"$host/link/select"
+  private val SAVE_URL = s"$host/link/save"
+  private val SAVE_LIST_URL = s"$host/link/save/list"
+
   protected var taskId: String = _
   protected var siteId: String = _
 
@@ -23,7 +28,6 @@ class HttpLinkProvider extends ILinkProvider {
       || !params.containsKey("password") || !params.containsKey("siteId"))
       return false
 
-    host = MapUtils.getString(params, "url")
     val username = MapUtils.getString(params, "username")
     val password = MapUtils.getString(params, "password")
     batch = MapUtils.getInteger(params, "batch", 20)
@@ -40,26 +44,21 @@ class HttpLinkProvider extends ILinkProvider {
   }
 
   override def read(): Iterable[Link] = {
-    val url = s"$host/link/fetch"
-    get(url)
+    get(SELECT_URL)
   }
 
   override def write(link: Link): Int = {
-    require(StringUtils.isNotBlank(host))
     if (link == null) return 0
 
-    val url = s"$host/link/save"
     val json = JsonUtils.toJson(link)
-    post(url, json)
+    post(SAVE_URL, json)
   }
 
   override def write(links: Iterable[Link]): Int = {
-    require(StringUtils.isNotBlank(host))
     if (links == null || links.isEmpty) return 0
 
-    val url = s"$host/link/save/list"
     val json = JsonUtils.toJson(links.toArray)
-    post(url, json)
+    post(SAVE_LIST_URL, json)
   }
 
   private def get(url: String): Array[Link] = {

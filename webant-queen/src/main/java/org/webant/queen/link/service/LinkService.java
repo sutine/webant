@@ -39,6 +39,10 @@ public class LinkService {
 
     @Transactional(rollbackFor = {IllegalArgumentException.class})
     public List<Link> select(String nodeId, String status, Pageable pageable) {
+        List<Link> seeds = siteService.genSeedLinks();
+        if (!seeds.isEmpty())
+            return seeds;
+
         Page<Link> page = repository.selectLinks(status, Site.SITE_STATUS_START, pageable);
         if (page.getContent().isEmpty())
             return new LinkedList<>();
@@ -113,7 +117,7 @@ public class LinkService {
 
         String placeholder = "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
         StringBuilder sb = new StringBuilder();
-        for (Link link : list) {
+        for (Link ignored : list) {
             sb.append(placeholder).append(", ");
         }
         String placeholders = sb.substring(0, sb.lastIndexOf(", "));

@@ -1,6 +1,8 @@
 package org.webant.queen.link.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.util.DigestUtils;
+import org.webant.queen.utils.DateFormatUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,11 +28,15 @@ public class Link implements Serializable {
     private String body;
     private String referer;
     private Integer priority = 4;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormatUtils.DATE_TIME_MILLI_FORMAT, timezone = "GMT+8")
     private Date lastCrawlTime;
     private String status = LINK_STATUS_INIT;
     private Integer dataVersion = 1;
+    @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = DateFormatUtils.DATE_TIME_MILLI_FORMAT, timezone = "GMT+8")
     private Date dataCreateTime = new Date();
+    @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = DateFormatUtils.DATE_TIME_MILLI_FORMAT, timezone = "GMT+8")
     private Date dataUpdateTime = new Date();
+    @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = DateFormatUtils.DATE_TIME_MILLI_FORMAT, timezone = "GMT+8")
     private Date dataDeleteTime;
 
     public Link(String id, String url, String referer, Integer priority, Date lastCrawlTime, String status, Integer dataVersion, Date dataCreateTime, Date dataUpdateTime, Date dataDeleteTime) {

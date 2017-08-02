@@ -6,7 +6,6 @@ import javax.management.remote.{JMXConnector, JMXConnectorFactory, JMXServiceURL
 import javax.management.{JMX, MBeanServerConnection, ObjectName}
 
 import org.apache.commons.io.FileUtils
-import org.webant.commons.utils.WebantConstants
 
 object WorkerJmxClient {
   private var connector: JMXConnector = _
@@ -14,13 +13,17 @@ object WorkerJmxClient {
   private var mbeanServer: MBeanServerConnection = _
 
   def connect(): String = {
-    connect("localhost", "1099")
+    connect("localhost", "1099", "webant", "webant")
   }
 
   def connect(host: String, port: String): String = {
+    connect(host, port, "webant", "webant")
+  }
+
+  def connect(host: String, port: String, username: String, password: String): String = {
     try {
       val prop = new util.HashMap[String, AnyRef]
-      prop.put(JMXConnector.CREDENTIALS, Array[String](WebantConstants.USERNAME, WebantConstants.PASSWORD))
+      prop.put(JMXConnector.CREDENTIALS, Array[String](username, password))
 
       val jmxServerName = "WebantWorkerConsole"
       val jmxServiceUrl = s"service:jmx:rmi:///jndi/rmi://$host:$port/$jmxServerName"

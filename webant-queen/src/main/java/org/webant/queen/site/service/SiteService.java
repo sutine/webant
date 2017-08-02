@@ -14,10 +14,9 @@ import org.webant.queen.site.entity.Site;
 import org.webant.queen.site.entity.SiteConfig;
 import org.webant.queen.utils.JsonUtils;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,12 +29,26 @@ public class SiteService {
     @Autowired
     private LinkService linkService;
 
+    private ConcurrentMap<String, SiteManager> sites = new ConcurrentHashMap<>();
+
     private long nextCrawlTime = 0;
 
     public List<Link> genSeedLinks() {
         List<Link> links = new LinkedList<>();
+        if (sites.isEmpty()) {
+            List<Site> list = repository.findAll();
+            for (Site site : list) {
+                sites.put(site.getId(), new SiteManager(site));
+            }
+        }
+        for (String key : sites.keySet()) {
+            List<Link> list = sites.get(key).genSeedLinks();
+            if (!list.isEmpty())
+                links.addAll(list);
+        }
         return links;
     }
+
     public List<Link> genSeedLinks(String siteId) {
         List<Link> links = new LinkedList<>();
         if (StringUtils.isEmpty(siteId))
@@ -91,6 +104,9 @@ public class SiteService {
                 break;
             default:
         }
+        // update cache
+        sites.put(site.getId(), new SiteManager(site));
+        // update db
         repository.save(site);
     }
 

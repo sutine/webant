@@ -22,8 +22,8 @@ public class WorkerServerTest {
 
             WorkerJmxServer.start();
 
-            URL taskUrl = ClassLoader.getSystemResource(ConfigManager.getWorkerConfig().taskMonitor().dir());
-            URL siteUrl = ClassLoader.getSystemResource(ConfigManager.getWorkerConfig().siteMonitor().dir());
+            URL taskUrl = ClassLoader.getSystemResource(ConfigManager.getWorkerConfig().standalone().taskMonitor().dir());
+            URL siteUrl = ClassLoader.getSystemResource(ConfigManager.getWorkerConfig().standalone().siteMonitor().dir());
             String suffix = ".json";
 
             if (taskUrl == null) {
@@ -36,8 +36,8 @@ public class WorkerServerTest {
             }
             WorkerConsole.getWorkerConsole().loadAllSiteConfig(siteUrl.getPath(), suffix);
             WorkerConsole.getWorkerConsole().loadAllTaskConfig(taskUrl.getPath(), suffix);
-            SiteConfigFileMonitor.getFileMonitor().monitor(siteUrl.getPath(), suffix, ConfigManager.getWorkerConfig().siteMonitor().interval());
-            TaskConfigFileMonitor.getFileMonitor().monitor(taskUrl.getPath(), suffix, ConfigManager.getWorkerConfig().taskMonitor().interval());
+            SiteConfigFileMonitor.getFileMonitor().monitor(siteUrl.getPath(), suffix, ConfigManager.getWorkerConfig().standalone().siteMonitor().interval());
+            TaskConfigFileMonitor.getFileMonitor().monitor(taskUrl.getPath(), suffix, ConfigManager.getWorkerConfig().standalone().taskMonitor().interval());
         } catch (Exception e) {
             e.printStackTrace();
         }

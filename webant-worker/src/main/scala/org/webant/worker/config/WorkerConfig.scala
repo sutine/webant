@@ -18,24 +18,40 @@ class WorkerConfig extends java.io.Serializable {
   @BeanProperty
   var description: String = _
   @BeanProperty
-  var serverHost: String = "localhost"
-  @BeanProperty
-  var serverPort: Int = 1099
+  var mode: String = WorkerConfig.WORKER_RUN_MODE_STANDALONE
   @BeanProperty
   var threadNum: Int = 32
   @BeanProperty
   var dataDir: String = "./data"
   @BeanProperty
-  var queen: Queen = _
+  var standalone: Standalone = _
+  @BeanProperty
+  var server: Server = _
+  @BeanProperty
+  var node: Node = _
+}
+
+class Standalone extends java.io.Serializable {
   @BeanProperty
   var taskMonitor: ConfigMonitor = _
   @BeanProperty
   var siteMonitor: ConfigMonitor = _
 }
 
-class Queen extends java.io.Serializable {
+class Server extends java.io.Serializable {
   @BeanProperty
-  var url: String = "http://localhost"
+  var serverHost: String = "localhost"
+  @BeanProperty
+  var serverPort: Int = 1099
+  @BeanProperty
+  var username: String = "webant"
+  @BeanProperty
+  var password: String = "webant"
+}
+
+class Node extends java.io.Serializable {
+  @BeanProperty
+  var queen: Queen = _
 }
 
 class ConfigMonitor extends java.io.Serializable {
@@ -45,8 +61,17 @@ class ConfigMonitor extends java.io.Serializable {
   var interval: Int = _
 }
 
+class Queen extends java.io.Serializable {
+  @BeanProperty
+  var url: String = "http://localhost"
+}
+
 object WorkerConfig {
   private val logger = LogManager.getLogger(classOf[WorkerConfig])
+  val WORKER_VERSION = "1.0.0"
+  val WORKER_RUN_MODE_STANDALONE = "standalone"
+  val WORKER_RUN_MODE_SERVER = "server"
+  val WORKER_RUN_MODE_NODE = "node"
 
   def apply(path: String): WorkerConfig = {
     require(StringUtils.isNotBlank(path), "worker config path can not be empty.")
@@ -67,6 +92,8 @@ object WorkerConfig {
     }
 
     require(config != null, "parse worker config failed!")
+    require(config.mode == WORKER_RUN_MODE_STANDALONE || config.mode == WORKER_RUN_MODE_SERVER
+      || config.mode == WORKER_RUN_MODE_NODE, "worker mode must be standalone or server or node!")
 
     config
   }
