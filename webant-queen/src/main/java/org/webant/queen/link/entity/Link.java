@@ -5,7 +5,6 @@ import org.springframework.util.DigestUtils;
 import org.webant.queen.utils.DateFormatUtils;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -13,11 +12,7 @@ import java.util.Date;
         @Index(name = "idx_site_id", columnList = "siteId"),
         @Index(name = "idx_node_id", columnList = "nodeId"),
         @Index(name = "idx_status", columnList = "status")})
-public class Link implements Serializable {
-    public final static String LINK_STATUS_INIT = "init";
-    public final static String LINK_STATUS_PENDING = "pending";
-    public final static String LINK_STATUS_SUCCESS = "success";
-    public final static String LINK_STATUS_FAIL = "fail";
+public class Link extends org.webant.commons.entity.Link {
     @Id
     @Column(length = 64)
     private String id;

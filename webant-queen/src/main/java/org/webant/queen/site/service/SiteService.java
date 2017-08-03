@@ -11,7 +11,7 @@ import org.webant.queen.link.entity.Link;
 import org.webant.queen.link.service.LinkService;
 import org.webant.queen.site.dao.SiteRepository;
 import org.webant.queen.site.entity.Site;
-import org.webant.queen.site.entity.SiteConfig;
+import org.webant.commons.entity.SiteConfig;
 import org.webant.queen.utils.JsonUtils;
 
 import java.util.*;

@@ -46,7 +46,7 @@ class SiteManager(taskId: String, siteId: String) {
     }
 
     try {
-      submitSeeds()
+//      submitSeeds()
       run()
       isRunning = true
     } catch {

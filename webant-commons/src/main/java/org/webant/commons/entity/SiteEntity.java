@@ -1,38 +1,22 @@
-package org.webant.queen.site.entity;
+package org.webant.commons.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.webant.commons.entity.SiteEntity;
-import org.webant.queen.task.entity.Task;
-
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-public class Site extends SiteEntity implements Serializable {
+public class SiteEntity implements Serializable {
     public final static String SITE_STATUS_INIT = "init";
     public final static String SITE_STATUS_START = "start";
     public final static String SITE_STATUS_PAUSE = "pause";
     public final static String SITE_STATUS_STOP = "stop";
 
-    public Site() {
+    public SiteEntity() {
     }
 
-    @Id
-    @GenericGenerator(name="idGenerator", strategy="uuid")
-    @GeneratedValue(generator="idGenerator")
-    @Column(length = 32)
     private String id;
-
-    @Column(columnDefinition = "text")
     private String config;
-
     private String status = SITE_STATUS_INIT;
+    private TaskEntity task;
 
-    @ManyToOne
-    @JoinColumn(name = "taskId",foreignKey = @ForeignKey(name = "fk_site_task"))
-    private Task task;
-
-    public Site(String config) {
+    public SiteEntity(String config) {
         this.config = config;
     }
 
@@ -58,13 +42,5 @@ public class Site extends SiteEntity implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
     }
 }

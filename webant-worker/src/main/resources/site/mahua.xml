@@ -20,7 +20,7 @@
 	<priority>4</priority>
 
 	<!-- time interval between pages -->
-	<interval>2000</interval>
+	<timeInterval>2000</timeInterval>
 
 	<!-- time interval between incremental crawl -->
 	<incrementInterval>600000</incrementInterval>

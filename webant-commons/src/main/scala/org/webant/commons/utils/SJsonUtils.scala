@@ -1,24 +1,37 @@
 package org.webant.commons.utils
 
+import java.lang.reflect.Type
+import java.util.Date
+import reflect.ClassTag
+
+import com.google.gson.{GsonBuilder, JsonDeserializationContext, JsonDeserializer, JsonElement}
+
+import scala.reflect.ClassTag
+
 object SJsonUtils extends JsonUtils {
 
-//  val builder = new GsonBuilder();
-//  builder.registerTypeAdapter(classOf[Date], new JsonDeserializer[Date]() {
-//    def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Date = {
-//      return new Date(json.getAsJsonPrimitive().getAsLong());
-//    }
-//  })
-//
-//  val gson = builder.create()
+  val builder = new GsonBuilder();
+  builder.registerTypeAdapter(classOf[Date], new JsonDeserializer[Date]() {
+    def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Date = {
+      return new Date(json.getAsJsonPrimitive().getAsLong());
+    }
+  })
 
-//  def fromJson[T](json: String, clazz: Type): T = {
-//    gson.fromJson(json, clazz)
-//  }
-//
-//  def toJson(o: AnyRef): String = {
-//    if (o == null) return ""
-//    gson.toJson(o)
-//  }
+  val gson = builder.create()
+
+  def fromJson[T : ClassTag](json: String, clazz: Type): T = {
+    gson.fromJson(json, clazz)
+  }
+
+  def fromJson[T : ClassTag](json: String): T = {
+    val clazz = implicitly[ClassTag[T]].runtimeClass
+    gson.fromJson(json, clazz)
+  }
+
+  def toJson(o: AnyRef): String = {
+    if (o == null) return ""
+    gson.toJson(o)
+  }
 
 //  class TimestampTypeAdapter extends JsonSerializer[Timestamp] with JsonDeserializer[Timestamp] {
 //    def serialize(src: Timestamp, arg1: Type, arg2: JsonSerializationContext): JsonElement = {

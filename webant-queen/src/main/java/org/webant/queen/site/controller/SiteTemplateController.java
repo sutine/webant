@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.webant.queen.commons.vo.ErrorCode;
 import org.webant.queen.commons.vo.Response;
-import org.webant.queen.site.entity.SiteConfig;
+import org.webant.commons.entity.SiteConfig;
 import org.webant.queen.site.entity.SiteTemplate;
 import org.webant.queen.site.service.SiteTemplateService;
 import org.webant.queen.utils.JsonUtils;

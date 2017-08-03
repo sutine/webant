@@ -1,27 +1,17 @@
-package org.webant.queen.task.entity;
+package org.webant.worker.config;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.webant.commons.entity.TaskEntity;
-import org.webant.queen.site.entity.Site;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-public class Task extends TaskEntity implements Serializable {
+public class HttpTaskConfig implements Serializable {
     public final static String TASK_STATUS_INIT = "init";
     public final static String TASK_STATUS_START = "start";
     public final static String TASK_STATUS_PAUSE = "pause";
     public final static String TASK_STATUS_STOP = "stop";
 
-    public Task() {
+    public HttpTaskConfig() {
     }
 
-    @Id
-    @GenericGenerator(name="idGenerator", strategy="uuid")
-    @GeneratedValue(generator="idGenerator")
-    @Column(length = 32)
     private String id;
     private String name;
     private String description;
@@ -29,9 +19,7 @@ public class Task extends TaskEntity implements Serializable {
     private String status = TASK_STATUS_INIT;
     private String fingerPrint;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "taskId")
-    private List<Site> sites;
+    private List<SiteConfig> sites;
 
     public String getId() {
         return id;
@@ -65,11 +53,11 @@ public class Task extends TaskEntity implements Serializable {
         this.priority = priority;
     }
 
-    public List<Site> getSites() {
+    public List<SiteConfig> getSites() {
         return sites;
     }
 
-    public void setSites(List<Site> sites) {
+    public void setSites(List<SiteConfig> sites) {
         this.sites = sites;
     }
 

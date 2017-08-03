@@ -3,7 +3,7 @@ package org.webant.queen.site.service;
 import org.springframework.util.StringUtils;
 import org.webant.queen.link.entity.Link;
 import org.webant.queen.site.entity.Site;
-import org.webant.queen.site.entity.SiteConfig;
+import org.webant.commons.entity.SiteConfig;
 import org.webant.queen.utils.JsonUtils;
 
 import java.util.Arrays;

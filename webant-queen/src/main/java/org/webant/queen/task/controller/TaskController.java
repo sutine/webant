@@ -58,10 +58,10 @@ public class TaskController {
             return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
         }
 
-        Task link = service.get(id);
-        if (link == null)
+        Task task = service.get(id);
+        if (task == null)
             return Response.failure(ErrorCode.BAD_REQUEST, "请求的数据不存在");
-        return Response.success(link);
+        return Response.success(TaskVo.fromTask(task));
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

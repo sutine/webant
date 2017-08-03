@@ -54,7 +54,7 @@
 	<node>
 		<!-- queen node address -->
 		<queen>
-			<url>url</url>
+			<url>http://localhost:8080/</url>
 		</queen>
 	</node>
 

@@ -5,6 +5,7 @@ import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.utils.HttpUtils
 import org.webant.worker.manager.TaskManager
 
 import scala.collection.mutable
@@ -106,6 +107,11 @@ object ConfigManager {
 
   def getTaskManager(taskId: String): TaskManager = {
     require(tasks.contains(taskId), s"the task manager $taskId has not found!")
+    if (!tasks.contains(taskId)) {
+      val task = HttpUtils.getTaskConfig(taskId)
+      if (task != null)
+        tasks += (task.getId, task)
+    }
 
     tasks(taskId)
   }
