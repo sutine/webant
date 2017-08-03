@@ -4,16 +4,16 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class SiteConfig implements Serializable {
-    String id;
-    String name;
-    String description;
-    String[] seeds;
-    Integer priority = 4;
-    Long timeInterval = 0L;
-    Long incrementInterval = 0L;
-    HttpConfig http;
-    LinkProvider linkProvider;
-    ProcessorConfig[] processors;
+    public String id;
+    public String name;
+    public String description;
+    public String[] seeds;
+    public Integer priority = 4;
+    public Long timeInterval = 0L;
+    public Long incrementInterval = 0L;
+    public HttpConfig http;
+    public LinkProvider linkProvider;
+    public ProcessorConfig[] processors;
 
     public String getId() {
         return id;

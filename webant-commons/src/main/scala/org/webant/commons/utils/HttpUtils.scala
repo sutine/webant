@@ -5,7 +5,7 @@ import java.nio.charset.Charset
 import com.google.gson.reflect.TypeToken
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.entity.ContentType
-import org.webant.commons.entity.{Link, TaskEntity}
+import org.webant.commons.entity.{Link, TaskConfig, TaskEntity}
 import org.webant.commons.http.HttpDataResponse
 
 import scala.reflect.ClassTag
@@ -66,7 +66,7 @@ object HttpUtils {
     response.getData
   }
 
-  def getTaskConfig(taskId: String): TaskEntity = {
+  def getTaskConfig(taskId: String): TaskConfig = {
     val host = "http://localhost:8080/"
 
     val url = s"$host/site/start?siteId=$taskId"
@@ -78,7 +78,7 @@ object HttpUtils {
     if (StringUtils.isBlank(result))
       return null
 
-    val response = JsonUtils.fromJson[HttpDataResponse[TaskEntity]](result, new TypeToken[HttpDataResponse[Array[TaskEntity]]] {}.getType)
+    val response = JsonUtils.fromJson[HttpDataResponse[TaskConfig]](result, new TypeToken[HttpDataResponse[Array[TaskConfig]]] {}.getType)
     response.getData
   }
 

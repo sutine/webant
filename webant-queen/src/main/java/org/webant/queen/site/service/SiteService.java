@@ -5,16 +5,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.webant.commons.entity.SiteConfig;
 import org.webant.queen.commons.entity.Progress;
 import org.webant.queen.commons.exception.QueenException;
 import org.webant.queen.link.entity.Link;
 import org.webant.queen.link.service.LinkService;
 import org.webant.queen.site.dao.SiteRepository;
 import org.webant.queen.site.entity.Site;
-import org.webant.commons.entity.SiteConfig;
-import org.webant.queen.utils.JsonUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -60,7 +62,7 @@ public class SiteService {
 
         long now = System.currentTimeMillis();
         if (now >= nextCrawlTime) {
-            SiteConfig config = JsonUtils.fromJson(site.getConfig(), SiteConfig.class);
+            SiteConfig config = site.toSiteConfig();
             if (config == null)
                 return links;
 

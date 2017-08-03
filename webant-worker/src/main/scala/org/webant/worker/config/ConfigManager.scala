@@ -5,6 +5,7 @@ import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.TaskEntity
 import org.webant.commons.utils.HttpUtils
 import org.webant.worker.manager.TaskManager
 
@@ -108,9 +109,13 @@ object ConfigManager {
   def getTaskManager(taskId: String): TaskManager = {
     require(tasks.contains(taskId), s"the task manager $taskId has not found!")
     if (!tasks.contains(taskId)) {
-      val task = HttpUtils.getTaskConfig(taskId)
-      if (task != null)
-        tasks += (task.getId, task)
+      val taskConfig = HttpUtils.getTaskConfig(taskId)
+      if (taskConfig != null) {
+        val task = new TaskEntity(taskConfig)
+        val sites = taskConfig.getSites
+        tasks += (taskConfig.getId -> new TaskManager(task.getId))
+//        sites.foreach(site => siteConfigs.put(site.id, site))
+      }
     }
 
     tasks(taskId)

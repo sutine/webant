@@ -3,17 +3,17 @@ package org.webant.commons.entity;
 import java.io.Serializable;
 
 public class TaskConfig implements Serializable {
-    private Integer id;
+    private String id;
     private String name;
     private String description;
     private Integer priority;
-//    private String[] sites;
+    private SiteConfig[] sites;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -41,13 +41,11 @@ public class TaskConfig implements Serializable {
         this.priority = priority;
     }
 
-/*
-    public String[] getSites() {
+    public SiteConfig[] getSites() {
         return sites;
     }
 
-    public void setSites(String[] sites) {
+    public void setSites(SiteConfig[] sites) {
         this.sites = sites;
     }
-*/
 }

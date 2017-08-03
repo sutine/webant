@@ -1,7 +1,10 @@
 package org.webant.queen.site.entity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
+import org.webant.commons.entity.SiteConfig;
 import org.webant.commons.entity.SiteEntity;
+import org.webant.commons.utils.JsonUtils;
 import org.webant.queen.task.entity.Task;
 
 import javax.persistence.*;
@@ -15,6 +18,20 @@ public class Site extends SiteEntity implements Serializable {
     public final static String SITE_STATUS_STOP = "stop";
 
     public Site() {
+    }
+
+    public Site(SiteConfig siteConfig) {
+        name = siteConfig.getName();
+        description = siteConfig.getDescription();
+        priority = siteConfig.getPriority();
+        config = JsonUtils.toJson(siteConfig);
+    }
+
+    public SiteConfig toSiteConfig() {
+        if (StringUtils.isBlank(config))
+            return null;
+
+        return JsonUtils.fromJson(config, SiteConfig.class);
     }
 
     @Id
