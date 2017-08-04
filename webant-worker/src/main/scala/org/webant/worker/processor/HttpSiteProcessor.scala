@@ -52,7 +52,7 @@ class HttpSiteProcessor(linkProvider: ILinkProvider, siteConfig: SiteConfig) ext
         if (accepts.nonEmpty)
           linkProvider.write(accepts)
 
-        logger.info(s"[${link.getTaskId}, ${link.getSiteId}]. crawl success. link: ${link.getUrl}, id: ${if (resp.data == null) "" else resp.data.id}, " +
+        logger.info(s"[${link.getTaskId}, ${link.getSiteId}, ${link.getId}]. status: success, url: ${link.getUrl}, dataId: ${if (resp.data == null) "" else resp.data.id}, " +
           s"srcId: ${if (resp.data == null) "" else resp.data.srcId}, data list number: ${resp.list.size}, link number: ${accepts.size}, " +
           s"elapse: ${DurationFormatUtils.formatDuration(System.currentTimeMillis() - start, "HH:mm:ss.SSS")}.")
       } else {

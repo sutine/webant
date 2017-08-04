@@ -95,26 +95,39 @@ object ConfigManager {
   def getWorkerConfig: WorkerConfig = workerConfig
 
   def getTaskConfig(taskId: String): TaskConfig = {
-    require(taskConfigs.contains(taskId), s"the task config $taskId has not found!")
+//    require(taskConfigs.contains(taskId), s"the task config $taskId has not found!")
 
     taskConfigs(taskId)
   }
 
+/*
   def getSiteConfig(siteId: String): SiteConfig = {
     require(siteConfigs.contains(siteId), s"the site config $siteId has not found!")
 
     siteConfigs(siteId)
   }
+*/
+
+  def getSiteConfig(taskId: String, siteId: String): SiteConfig = {
+    require(taskConfigs.contains(taskId), s"the task config $taskId has not found!")
+    taskConfigs(taskId).getSites.find(_.id == siteId).get
+  }
 
   def getTaskManager(taskId: String): TaskManager = {
-    require(tasks.contains(taskId), s"the task manager $taskId has not found!")
+//    require(tasks.contains(taskId), s"the task manager $taskId has not found!")
     if (!tasks.contains(taskId)) {
       val taskConfig = HttpUtils.getTaskConfig(taskId)
       if (taskConfig != null) {
-        val task = new TaskEntity(taskConfig)
+        submit(taskConfig)
         val sites = taskConfig.getSites
-        tasks += (taskConfig.getId -> new TaskManager(task.getId))
-//        sites.foreach(site => siteConfigs.put(site.id, site))
+        sites.foreach(site => submit(site))
+
+        /*
+                val task = new TaskEntity(taskConfig)
+                val sites = taskConfig.getSites
+                taskConfigs += (taskConfig.getId -> taskConfig)
+                tasks += (taskConfig.getId -> new TaskManager(task.getId))
+        */
       }
     }
 

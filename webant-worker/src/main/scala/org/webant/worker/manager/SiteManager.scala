@@ -8,8 +8,8 @@ import org.apache.log4j.LogManager
 import org.webant.commons.entity.Link
 import org.webant.commons.link.{ILinkProvider, Progress}
 import org.webant.worker.WorkerReactor
-import org.webant.worker.config.ConfigManager
-import org.webant.worker.link.H2LinkProvider
+import org.webant.worker.config.{ConfigManager, WorkerConfig}
+import org.webant.worker.link.{H2LinkProvider, HttpLinkProvider}
 import org.webant.worker.processor.HttpSiteProcessor
 import org.webant.worker.store.StoreFactory
 
@@ -21,10 +21,10 @@ class SiteManager(taskId: String, siteId: String) {
   var isRunning = false
 
   private val linkProvider: ILinkProvider = getLinkProvider
-  ConfigManager.getSiteConfig(siteId).processors.foreach(StoreFactory.load)
+  ConfigManager.getSiteConfig(taskId, siteId).processors.foreach(StoreFactory.load)
 
   def list(): String = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     val status = if (isRunning) "running" else if (isStopped) "stopped" else if (isPaused) "paused" else "inited"
     s"${siteConfig.id}  ${siteConfig.name}  ${siteConfig.description} $status"
   }
@@ -36,7 +36,7 @@ class SiteManager(taskId: String, siteId: String) {
     if (isPaused)
       isPaused = !isPaused
 
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     var info = ""
 
     if (isRunning) {
@@ -63,7 +63,7 @@ class SiteManager(taskId: String, siteId: String) {
   }
 
   def pause(): String = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     var info = ""
     if (!isRunning) {
       info = s"the site ${siteConfig.name}(${siteConfig.id}) is not running!"
@@ -86,7 +86,7 @@ class SiteManager(taskId: String, siteId: String) {
   }
 
   def stop(): String = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     var info = ""
     if (isStopped) {
       info = s"the site ${siteConfig.name}(${siteConfig.id}) has already stopped!"
@@ -114,7 +114,7 @@ class SiteManager(taskId: String, siteId: String) {
   }
 
   def reset(): String = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     var info = ""
     try {
       linkProvider.reset(Link.LINK_STATUS_PENDING)
@@ -133,7 +133,7 @@ class SiteManager(taskId: String, siteId: String) {
   }
 
   def exit(): String = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     var info = ""
     try {
       stop()
@@ -150,13 +150,17 @@ class SiteManager(taskId: String, siteId: String) {
   }
 
   def getSiteProcessor: HttpSiteProcessor = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     new HttpSiteProcessor(linkProvider, siteConfig)
   }
 
   private def getLinkProvider: ILinkProvider = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     var provider: ILinkProvider = null
+    if (WorkerConfig.WORKER_RUN_MODE_NODE == ConfigManager.getWorkerConfig.getMode) {
+      provider = new HttpLinkProvider
+      return provider
+    }
     if (siteConfig.linkProvider != null && StringUtils.isNotBlank(siteConfig.linkProvider.getClassName)) {
       try {
         provider = Class.forName(siteConfig.linkProvider.getClassName).newInstance().asInstanceOf[ILinkProvider]
@@ -180,7 +184,7 @@ class SiteManager(taskId: String, siteId: String) {
   }
 
   private def submitSeeds(): Unit = {
-    val siteConfig = ConfigManager.getSiteConfig(siteId)
+    val siteConfig = ConfigManager.getSiteConfig(taskId, siteId)
     val seeds = siteConfig.seeds.map(seed => new Link(DigestUtils.md5Hex(seed), taskId, siteConfig.id, seed, null, new Date()))
     WorkerReactor.submit(seeds)
   }
@@ -196,11 +200,11 @@ class SiteManager(taskId: String, siteId: String) {
 
     var lastDeltaTime = System.currentTimeMillis()
 
-    new Thread() {
+    new Thread(s"[$siteId], site manager thread") {
       override def run(): Unit = {
         while (!isStopped) {
           try {
-            val site = ConfigManager.getSiteConfig(siteId)
+            val site = ConfigManager.getSiteConfig(taskId, siteId)
 
             if (!isPaused) {
               val links = linkProvider.read()

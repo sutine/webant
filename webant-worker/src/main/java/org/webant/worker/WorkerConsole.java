@@ -68,6 +68,21 @@ public class WorkerConsole {
             console.submit(taskConfig);
         }
     }
+    public void loadHttpTaskConfig(String... urls) {
+        if (urls == null || urls.length == 0)
+            return;
+
+        for (String url : urls) {
+            TaskConfig taskConfig = loadHttpTaskConfig(url);
+            console.submit(taskConfig);
+        }
+    }
+
+    private TaskConfig loadHttpTaskConfig(String url) {
+        return new HttpTaskConfigBuilder()
+                .loadTaskConfig(url)
+                .build();
+    }
 
     private TaskConfig loadTaskConfig(String configPath) {
         return new TaskConfigBuilder()

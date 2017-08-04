@@ -17,6 +17,10 @@ public class TaskService {
     @Autowired
     private TaskRepository repository;
 
+    public List<Task> list() {
+        return repository.findAll();
+    }
+
     public Task get(String id) {
         return repository.findById(id).get();
     }

@@ -69,7 +69,7 @@ object HttpUtils {
   def getTaskConfig(taskId: String): TaskConfig = {
     val host = "http://localhost:8080/"
 
-    val url = s"$host/site/start?siteId=$taskId"
+    val url = s"$host/task/get?id=$taskId"
 
     val resp = org.apache.http.client.fluent.Request.Get(url)
       .addHeader("User-Agent", UA)
@@ -78,7 +78,7 @@ object HttpUtils {
     if (StringUtils.isBlank(result))
       return null
 
-    val response = JsonUtils.fromJson[HttpDataResponse[TaskConfig]](result, new TypeToken[HttpDataResponse[Array[TaskConfig]]] {}.getType)
+    val response = JsonUtils.fromJson[HttpDataResponse[TaskConfig]](result, new TypeToken[HttpDataResponse[TaskConfig]] {}.getType)
     response.getData
   }
 

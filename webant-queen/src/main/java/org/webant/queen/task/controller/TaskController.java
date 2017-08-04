@@ -16,6 +16,36 @@ public class TaskController {
     @Autowired
     TaskService service;
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public Response list() {
+        return Response.success(service.list());
+    }
+
+    @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Response<?> get(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
+        if (StringUtils.isEmpty(id))
+            return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
+
+        Task task = service.get(id);
+        if (task == null)
+            return Response.failure(ErrorCode.BAD_REQUEST, "请求的数据不存在");
+        return Response.success(task.toTaskConfig());
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public Response add(@RequestBody TaskConfig taskConfig) {
+        if (StringUtils.isEmpty(taskConfig))
+            return Response.failure(ErrorCode.BAD_REQUEST, "请求不能为空");
+
+        Task task = new Task(taskConfig);
+        String id = service.save(task);
+
+        return Response.success(id);
+    }
+
     @RequestMapping(value = "/start", method = RequestMethod.GET)
     @ResponseBody
     public Response start(@RequestParam(value = "taskId", required = false, defaultValue = "") String taskId,
@@ -49,29 +79,5 @@ public class TaskController {
     public Response reset(@RequestParam(value = "taskId", required = false, defaultValue = "") String taskId,
                           @RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
         return Response.success();
-    }
-
-    @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Response<?> get(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
-        if (StringUtils.isEmpty(id))
-            return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
-
-        Task task = service.get(id);
-        if (task == null)
-            return Response.failure(ErrorCode.BAD_REQUEST, "请求的数据不存在");
-        return Response.success(task.toTaskConfig());
-    }
-
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseBody
-    public Response add(@RequestBody TaskConfig taskConfig) {
-        if (StringUtils.isEmpty(taskConfig))
-            return Response.failure(ErrorCode.BAD_REQUEST, "请求不能为空");
-
-        Task task = new Task(taskConfig);
-        String id = service.save(task);
-
-        return Response.success(id);
     }
 }

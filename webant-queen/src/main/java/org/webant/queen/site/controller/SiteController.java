@@ -23,6 +23,25 @@ public class SiteController {
     @Autowired
     private SiteService service;
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public Response list(@PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
+        return Response.success();
+    }
+
+    @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Response<?> get(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
+        if (StringUtils.isEmpty(id)) {
+            return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
+        }
+
+        Site link = service.get(id);
+        if (link == null)
+            return Response.failure(ErrorCode.BAD_REQUEST, "请求的数据不存在");
+        return Response.success(link);
+    }
+
     @RequestMapping(value = "/start", method = RequestMethod.GET)
     @ResponseBody
     public Response start(@RequestParam(value = "siteId", required = false, defaultValue = "") String siteId) {
@@ -95,24 +114,5 @@ public class SiteController {
         }
 
         return Response.success(affectRowsNum);
-    }
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public Response list(@PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
-        return Response.success();
-    }
-
-    @RequestMapping(value = {"/get"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Response<?> get(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
-        if (StringUtils.isEmpty(id)) {
-            return Response.failure(ErrorCode.BAD_REQUEST, "参数 id 不能为空");
-        }
-
-        Site link = service.get(id);
-        if (link == null)
-            return Response.failure(ErrorCode.BAD_REQUEST, "请求的数据不存在");
-        return Response.success(link);
     }
 }

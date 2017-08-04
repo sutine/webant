@@ -13,7 +13,9 @@ import org.webant.worker.config.ConfigManager
 object WorkerJmxServer {
   private val logger = LogManager.getLogger(WorkerJmxServer.getClass)
   private val JMX_SERVER_NAME = "WebantWorkerConsole"
-  private val JMX_SERVICE_URL = s"service:jmx:rmi:///jndi/rmi://${ConfigManager.getWorkerConfig.server.serverHost}:${ConfigManager.getWorkerConfig.server.serverPort}/$JMX_SERVER_NAME"
+  private val JMX_SERVER_HOST = ConfigManager.getWorkerConfig.server.serverHost
+  private val JMX_SERVER_PORT = ConfigManager.getWorkerConfig.server.serverPort
+  private val JMX_SERVICE_URL = s"service:jmx:rmi:///jndi/rmi://$JMX_SERVER_HOST:$JMX_SERVER_PORT/$JMX_SERVER_NAME"
   private val JMX_WORKER_OBJECT_NAME = s"$JMX_SERVER_NAME:name=WorkerJmxConsole"
 
   @throws[MalformedObjectNameException]
@@ -40,7 +42,7 @@ object WorkerJmxServer {
       """.stripMargin
     logger.info(webant)
 
-    LocateRegistry.createRegistry(ConfigManager.getWorkerConfig.server.serverPort)
+    LocateRegistry.createRegistry(JMX_SERVER_PORT)
     val mbeanServer = MBeanServerFactory.createMBeanServer
     val prop = new util.HashMap[String, AnyRef]
     prop.put(JMXConnectorServer.AUTHENTICATOR, new JMXAuthenticator() {

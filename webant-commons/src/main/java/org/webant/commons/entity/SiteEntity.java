@@ -17,7 +17,7 @@ public class SiteEntity implements Serializable {
     protected Integer priority;
     protected String config;
     protected String status = SITE_STATUS_INIT;
-    protected TaskEntity task;
+//    protected TaskEntity task;
 
     public SiteEntity() {
     }

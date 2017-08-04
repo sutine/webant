@@ -34,7 +34,7 @@ trait JdbcLinkProvider extends ILinkProvider {
     batch = MapUtils.getInteger(params, "batch", 20)
     taskId = MapUtils.getString(params, "taskId")
     siteId = MapUtils.getString(params, "siteId")
-    table = s"${taskId}_${siteId}_link"
+    table = s"link_${taskId}_${siteId}"
 
     conn = getConnection(url, username, password)
 

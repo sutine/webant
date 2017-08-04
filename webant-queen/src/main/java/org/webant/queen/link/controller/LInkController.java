@@ -24,7 +24,7 @@ public class LInkController {
 
     @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
-    public Response select(@RequestParam(value = "nodeId", required = false, defaultValue = Link.LINK_STATUS_INIT) String nodeId,
+    public Response select(@RequestParam(value = "nodeId", required = false, defaultValue = "") String nodeId,
             @RequestParam(value = "status", required = false, defaultValue = Link.LINK_STATUS_INIT) String status,
             @PageableDefault(value = 20, sort = { "dataCreateTime" }, direction = Sort.Direction.ASC) Pageable pageable) {
         List<Link> list = service.select(nodeId, status, pageable);

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.webant.commons.entity.SiteConfig;
 import org.webant.queen.commons.entity.Progress;
 import org.webant.queen.commons.exception.QueenException;
 import org.webant.queen.link.entity.Link;
@@ -13,13 +12,11 @@ import org.webant.queen.link.service.LinkService;
 import org.webant.queen.site.dao.SiteRepository;
 import org.webant.queen.site.entity.Site;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 @Service
 public class SiteService {
@@ -33,7 +30,24 @@ public class SiteService {
 
     private ConcurrentMap<String, SiteManager> sites = new ConcurrentHashMap<>();
 
-    private long nextCrawlTime = 0;
+    public int save(Site entity) {
+        if (entity == null)
+            return 0;
+        repository.save(entity);
+        return 1;
+    }
+
+    public Site get(String id) {
+        return repository.findById(id).get();
+    }
+
+    public int save(List<Site> list) {
+        if (list == null || list.isEmpty())
+            return 0;
+
+        Iterable<Site> affectRows = repository.saveAll(list);
+        return list.size();
+    }
 
     public List<Link> genSeedLinks() {
         List<Link> links = new LinkedList<>();
@@ -47,31 +61,6 @@ public class SiteService {
             List<Link> list = sites.get(key).genSeedLinks();
             if (!list.isEmpty())
                 links.addAll(list);
-        }
-        return links;
-    }
-
-    public List<Link> genSeedLinks(String siteId) {
-        List<Link> links = new LinkedList<>();
-        if (StringUtils.isEmpty(siteId))
-            return links;
-
-        Site site = repository.getOne(siteId);
-        if (site == null)
-            return links;
-
-        long now = System.currentTimeMillis();
-        if (now >= nextCrawlTime) {
-            SiteConfig config = site.toSiteConfig();
-            if (config == null)
-                return links;
-
-            if (config.getTimeInterval() == null || config.getTimeInterval() > 0)
-                nextCrawlTime = now + config.getTimeInterval();
-
-            links = Arrays.stream(config.getSeeds())
-                    .map(seed -> new Link("taskId", site.getId(), seed, Link.LINK_STATUS_INIT))
-                    .collect(Collectors.toList());
         }
         return links;
     }
@@ -124,24 +113,5 @@ public class SiteService {
             throw new QueenException("site id can not be empty!");
 
         return linkService.reset(siteId);
-    }
-
-    public int save(Site entity) {
-        if (entity == null)
-            return 0;
-        repository.save(entity);
-        return 1;
-    }
-
-    public Site get(String id) {
-        return repository.findById(id).get();
-    }
-
-    public int save(List<Site> list) {
-        if (list == null || list.isEmpty())
-            return 0;
-
-        Iterable<Site> affectRows = repository.saveAll(list);
-        return list.size();
     }
 }

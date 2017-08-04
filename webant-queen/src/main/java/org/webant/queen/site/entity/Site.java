@@ -31,7 +31,9 @@ public class Site extends SiteEntity implements Serializable {
         if (StringUtils.isBlank(config))
             return null;
 
-        return JsonUtils.fromJson(config, SiteConfig.class);
+        SiteConfig siteConfig = JsonUtils.fromJson(config, SiteConfig.class);
+        siteConfig.setId(getId());
+        return siteConfig;
     }
 
     @Id
