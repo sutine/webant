@@ -5,6 +5,7 @@ import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.{SiteConfig, TaskConfig}
 import org.webant.commons.utils.JsonUtils
 
 class TaskConfigBuilder {
@@ -21,41 +22,41 @@ class TaskConfigBuilder {
 
     if (StringUtils.isNotBlank(content)) {
       taskConfig = JsonUtils.fromJson(content, classOf[TaskConfig])
-      logger.info(s"loading task config ${taskConfig.id}(${taskConfig.name}) from ${file.getAbsolutePath}")
+      logger.info(s"loading task config ${taskConfig.getId}(${taskConfig.getName}) from ${file.getAbsolutePath}")
     }
 
     this
   }
 
   def build(): TaskConfig = {
-    require(StringUtils.isNotBlank(taskConfig.id), "id can not be empty!")
-    require(taskConfig.sites != null && taskConfig.sites.nonEmpty, "sites can not be empty!")
+    require(StringUtils.isNotBlank(taskConfig.getId), "id can not be empty!")
+    require(taskConfig.getSites != null && taskConfig.getSites.nonEmpty, "sites can not be empty!")
 
     taskConfig
   }
 
   def id(id: String): TaskConfigBuilder = {
-    taskConfig.id = id
+    taskConfig.setId(id)
     this
   }
 
   def name(name: String): TaskConfigBuilder = {
-    taskConfig.name = name
+    taskConfig.setName(name)
     this
   }
 
   def description(description: String): TaskConfigBuilder = {
-    taskConfig.description = description
+    taskConfig.setDescription(description)
     this
   }
 
   def priority(priority: Integer): TaskConfigBuilder = {
-    taskConfig.priority = priority
+    taskConfig.setPriority(priority)
     this
   }
 
-  def sites(sites: Array[String]): TaskConfigBuilder = {
-    taskConfig.sites = sites
+  def sites(sites: Array[SiteConfig]): TaskConfigBuilder = {
+    taskConfig.setSites(sites)
     this
   }
 }

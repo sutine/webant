@@ -157,18 +157,18 @@ class SiteManager(taskId: String, siteId: String) {
   private def getLinkProvider: ILinkProvider = {
     val siteConfig = ConfigManager.getSiteConfig(siteId)
     var provider: ILinkProvider = null
-    if (siteConfig.linkProvider != null && StringUtils.isNotBlank(siteConfig.linkProvider.className)) {
+    if (siteConfig.linkProvider != null && StringUtils.isNotBlank(siteConfig.linkProvider.getClassName)) {
       try {
-        provider = Class.forName(siteConfig.linkProvider.className).newInstance().asInstanceOf[ILinkProvider]
+        provider = Class.forName(siteConfig.linkProvider.getClassName).newInstance().asInstanceOf[ILinkProvider]
       } catch {
         case e: Exception =>
           e.printStackTrace()
       }
     }
 
-    siteConfig.linkProvider.params.put("taskId", taskId)
-    siteConfig.linkProvider.params.put("siteId", siteConfig.id)
-    if(provider == null || !provider.init(siteConfig.linkProvider.params)) {
+    siteConfig.linkProvider.getParams.put("taskId", taskId)
+    siteConfig.linkProvider.getParams.put("siteId", siteConfig.id)
+    if(provider == null || !provider.init(siteConfig.linkProvider.getParams)) {
       logger.error("init link provider failed! user default H2LinkProvider.")
       val h2Provider = new H2LinkProvider()
       h2Provider.init()
@@ -205,10 +205,10 @@ class SiteManager(taskId: String, siteId: String) {
             if (!isPaused) {
               val links = linkProvider.read()
               if (links.nonEmpty) {
-                if (site.interval > 0) {
+                if (site.timeInterval > 0) {
                   links.foreach(link => {
                     WorkerReactor.submit(link)
-                    Thread.sleep(site.interval)
+                    Thread.sleep(site.timeInterval)
                   })
                 } else {
                   WorkerReactor.submit(links)

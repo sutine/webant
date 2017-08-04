@@ -5,6 +5,8 @@ import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.SiteConfig
+import org.webant.commons.entity.SiteConfig.{HttpConfig, LinkProvider, ProcessorConfig, StoreProvider}
 import org.webant.commons.utils.JsonUtils
 import org.webant.worker.store.StoreFactory
 
@@ -63,7 +65,7 @@ class SiteConfigBuilder {
   }
 
   def interval(interval: Long): SiteConfigBuilder = {
-    siteConfig.interval = interval
+    siteConfig.setTimeInterval(interval)
     this
   }
 
@@ -101,47 +103,47 @@ class HttpConfigBuilder {
   }
 
   def method(method: String): HttpConfigBuilder = {
-    httpConfig.method = method
+    httpConfig.setMethod(method)
     this
   }
 
   def connectTimeout(connectTimeout: Integer): HttpConfigBuilder = {
-    httpConfig.connectTimeout = connectTimeout
+    httpConfig.setConnectTimeout(connectTimeout)
     this
   }
 
   def socketTimeout(socketTimeout: Integer): HttpConfigBuilder = {
-    httpConfig.socketTimeout = socketTimeout
+    httpConfig.setSocketTimeout(socketTimeout)
     this
   }
 
   def encoding(encoding: String): HttpConfigBuilder = {
-    httpConfig.encoding = encoding
+    httpConfig.setEncoding(encoding)
     this
   }
 
   def retryTimes(retryTimes: Integer): HttpConfigBuilder = {
-    httpConfig.retryTimes = retryTimes
+    httpConfig.setRetryTimes(retryTimes)
     this
   }
 
   def cycleRetryTimes(cycleRetryTimes: Integer): HttpConfigBuilder = {
-    httpConfig.cycleRetryTimes = cycleRetryTimes
+    httpConfig.setCycleRetryTimes(cycleRetryTimes)
     this
   }
 
   def contentType(contentType: String): HttpConfigBuilder = {
-    httpConfig.contentType = contentType
+    httpConfig.setContentType(contentType)
     this
   }
 
   def proxy(proxy: Boolean): HttpConfigBuilder = {
-    httpConfig.proxy = proxy
+    httpConfig.setProxy(proxy)
     this
   }
 
   def headers(headers: java.util.Map[String, String]): HttpConfigBuilder = {
-    httpConfig.headers = headers
+    httpConfig.setHeaders(headers)
     this
   }
 }
@@ -154,28 +156,28 @@ class PageProcessorBuilder {
   var store: Array[java.util.Map[String, String]] = _
 
   def build(): ProcessorConfig = {
-    require(StringUtils.isNotBlank(processorConfig.regex))
+    require(StringUtils.isNotBlank(processorConfig.getRegex))
 
     processorConfig
   }
 
   def http(http: HttpConfig): PageProcessorBuilder = {
-    processorConfig.http = http
+    processorConfig.setHttp(http)
     this
   }
 
   def regex(regex: String): PageProcessorBuilder = {
-    processorConfig.regex = regex
+    processorConfig.setRegex(regex)
     this
   }
 
   def className(className: String): PageProcessorBuilder = {
-    processorConfig.className = className
+    processorConfig.setClassName(className)
     this
   }
 
   def store(store: Array[StoreProvider]): PageProcessorBuilder = {
-    processorConfig.store = store
+    processorConfig.setStore(store)
     this
   }
 }
@@ -186,18 +188,18 @@ class LinkProviderBuilder {
   var params: java.util.Map[String, Object] = _
 
   def build(): LinkProvider = {
-    require(StringUtils.isNotBlank(linkProvider.className))
+    require(StringUtils.isNotBlank(linkProvider.getClassName))
 
     linkProvider
   }
 
   def className(className: String): LinkProviderBuilder = {
-    linkProvider.className = className
+    linkProvider.setClassName(className)
     this
   }
 
   def params(params: java.util.Map[String, Object]): LinkProviderBuilder = {
-    linkProvider.params = params
+    linkProvider.setParams(params)
     this
   }
 }

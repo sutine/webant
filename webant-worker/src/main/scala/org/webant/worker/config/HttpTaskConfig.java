@@ -1,5 +1,7 @@
 package org.webant.worker.config;
 
+import org.webant.commons.entity.SiteConfig;
+
 import java.io.Serializable;
 import java.util.List;
 

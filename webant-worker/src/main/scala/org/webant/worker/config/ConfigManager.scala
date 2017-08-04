@@ -5,7 +5,7 @@ import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
-import org.webant.commons.entity.TaskEntity
+import org.webant.commons.entity.{SiteConfig, TaskConfig, TaskEntity}
 import org.webant.commons.utils.HttpUtils
 import org.webant.worker.manager.TaskManager
 
@@ -38,12 +38,12 @@ object ConfigManager {
   }
 
   def submit(taskConfig: TaskConfig): Unit = {
-    require(StringUtils.isNotBlank(taskConfig.id), "task id can not be empty!")
-    require(taskConfig.sites != null && taskConfig.sites.nonEmpty, "sites can not be empty!")
+    require(StringUtils.isNotBlank(taskConfig.getId), "task id can not be empty!")
+    require(taskConfig.getSites != null && taskConfig.getSites.nonEmpty, "sites can not be empty!")
 
-    taskConfigs.put(taskConfig.id, taskConfig)
-    tasks.put(taskConfig.id, new TaskManager(taskConfig.id))
-    logger.info(s"submit task ${taskConfig.id}(${taskConfig.name}) success!")
+    taskConfigs.put(taskConfig.getId, taskConfig)
+    tasks.put(taskConfig.getId, new TaskManager(taskConfig.getId))
+    logger.info(s"submit task ${taskConfig.getId}(${taskConfig.getName}) success!")
   }
 
   def loadContent(path: String): String = {

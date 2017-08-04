@@ -1,6 +1,7 @@
 package org.webant.worker.processor
 
-import org.webant.worker.config.{HttpConfig, ProcessorConfig, SiteConfig}
+import org.webant.commons.entity.SiteConfig
+import org.webant.commons.entity.SiteConfig.{HttpConfig, ProcessorConfig}
 
 class HttpSiteProcessorBuilder {
   private val siteConfig: SiteConfig = new SiteConfig
@@ -30,7 +31,7 @@ class HttpSiteProcessorBuilder {
   }
 
   def interval(interval: Long): HttpSiteProcessorBuilder = {
-    siteConfig.interval = interval
+    siteConfig.setTimeInterval(interval)
     this
   }
 

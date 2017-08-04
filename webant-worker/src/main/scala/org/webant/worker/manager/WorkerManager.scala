@@ -1,16 +1,17 @@
 package org.webant.worker.manager
 
+import org.webant.commons.entity.{SiteConfig, TaskConfig}
 import org.webant.commons.link.Progress
 import org.webant.commons.utils.JsonUtils
 import org.webant.worker.WorkerReactor
-import org.webant.worker.config.{ConfigManager, SiteConfig, TaskConfig}
+import org.webant.worker.config.ConfigManager
 
 class WorkerManager {
   var isRunning = false
   WorkerReactor.start()
 
   def list(): Iterable[Iterable[String]] = {
-    ConfigManager.getTaskConfigs.values.map(taskConfig => list(taskConfig.id))
+    ConfigManager.getTaskConfigs.values.map(taskConfig => list(taskConfig.getId))
   }
 
   def start(): Iterable[Iterable[String]] = {
@@ -18,7 +19,7 @@ class WorkerManager {
     if (isRunning) return result
 
     try {
-      result = ConfigManager.getTaskConfigs.values.map(taskConfig => start(taskConfig.id))
+      result = ConfigManager.getTaskConfigs.values.map(taskConfig => start(taskConfig.getId))
 
       isRunning = true
     } catch {
@@ -34,7 +35,7 @@ class WorkerManager {
     var result = Iterable.empty[Iterable[String]]
 
     try {
-      result = ConfigManager.getTaskConfigs.values.map(taskConfig => pause(taskConfig.id))
+      result = ConfigManager.getTaskConfigs.values.map(taskConfig => pause(taskConfig.getId))
 
       isRunning = false
     } catch {
@@ -50,7 +51,7 @@ class WorkerManager {
     var result = Iterable.empty[Iterable[String]]
 
     try {
-      result = ConfigManager.getTaskConfigs.values.map(taskConfig => stop(taskConfig.id))
+      result = ConfigManager.getTaskConfigs.values.map(taskConfig => stop(taskConfig.getId))
 
       isRunning = false
     } catch {
@@ -66,7 +67,7 @@ class WorkerManager {
     var result = Iterable.empty[Iterable[String]]
 
     try {
-      result = ConfigManager.getTaskConfigs.values.map(taskConfig => reset(taskConfig.id))
+      result = ConfigManager.getTaskConfigs.values.map(taskConfig => reset(taskConfig.getId))
 
       isRunning = true
     } catch {
@@ -82,7 +83,7 @@ class WorkerManager {
     var result = Iterable.empty[Iterable[String]]
 
     try {
-      result = ConfigManager.getTaskConfigs.values.map(taskConfig => exit(taskConfig.id))
+      result = ConfigManager.getTaskConfigs.values.map(taskConfig => exit(taskConfig.getId))
       WorkerReactor.exit()
       new Thread() {
         override def run(): Unit = {

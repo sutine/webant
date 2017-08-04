@@ -3,8 +3,8 @@ package org.webant.worker.store
 import org.apache.commons.lang3.StringUtils
 import org.apache.log4j.LogManager
 import org.webant.commons.entity.HttpDataEntity
+import org.webant.commons.entity.SiteConfig.{ProcessorConfig, StoreProvider}
 import org.webant.commons.store.IStore
-import org.webant.worker.config.{ProcessorConfig, StoreProvider}
 
 import scala.collection.parallel.immutable
 
@@ -20,11 +20,11 @@ object StoreFactory {
 
   def load(processorConfig: ProcessorConfig): Unit = {
     require(processorConfig != null)
-    if (stores.contains(processorConfig.className)) return
+    if (stores.contains(processorConfig.getClassName)) return
 
-    if (processorConfig.store != null) {
-      val list = getStoreList(processorConfig.store)
-      stores += (processorConfig.className, list)
+    if (processorConfig.getStore != null) {
+      val list = getStoreList(processorConfig.getStore)
+      stores += (processorConfig.getClassName, list)
     }
   }
 
@@ -40,16 +40,16 @@ object StoreFactory {
 
   private def getStoreProvider(config: StoreProvider): IStore[HttpDataEntity] = {
     var provider: IStore[HttpDataEntity] = null
-    if (config != null && StringUtils.isNotBlank(config.className)) {
+    if (config != null && StringUtils.isNotBlank(config.getClassName)) {
       try {
-        provider = Class.forName(config.className).newInstance().asInstanceOf[IStore[HttpDataEntity]]
+        provider = Class.forName(config.getClassName).newInstance().asInstanceOf[IStore[HttpDataEntity]]
       } catch {
         case e: Exception =>
           e.printStackTrace()
       }
     }
 
-    if(provider == null || !provider.init(config.params)) {
+    if(provider == null || !provider.init(config.getParams)) {
       logger.error("init link provider failed! use default H2Store.")
       val h2Provider = new H2Store[HttpDataEntity]()
       h2Provider.init()

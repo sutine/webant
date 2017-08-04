@@ -7,9 +7,9 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.apache.log4j.LogManager
-import org.webant.commons.entity.{HttpDataEntity, Link}
+import org.webant.commons.entity.SiteConfig.ProcessorConfig
+import org.webant.commons.entity.{HttpDataEntity, Link, SiteConfig}
 import org.webant.commons.link.ILinkProvider
-import org.webant.worker.config.{ProcessorConfig, SiteConfig}
 import org.webant.worker.exception.{HttpRequestException, ParseContentException}
 import org.webant.worker.http.HttpResponse
 import org.webant.worker.store.StoreFactory
@@ -84,16 +84,16 @@ class HttpSiteProcessor(linkProvider: ILinkProvider, siteConfig: SiteConfig) ext
     require(processorConfig != null && processorConfig.nonEmpty)
     processorConfig.map(config => {
       val processor =
-        if (StringUtils.isBlank(config.className))
+        if (StringUtils.isBlank(config.getClassName))
           new HtmlPageProcessor[HttpDataEntity]
         else
-          Class.forName(config.className).newInstance().asInstanceOf[HttpPageProcessor[HttpDataEntity]]
+          Class.forName(config.getClassName).newInstance().asInstanceOf[HttpPageProcessor[HttpDataEntity]]
 
-      if (StringUtils.isNotBlank(config.regex))
-        processor.regex = config.regex
+      if (StringUtils.isNotBlank(config.getRegex))
+        processor.regex = config.getRegex
 
-      processor.http = if (config.http != null) config.http else siteConfig.http
-      processor.stores = StoreFactory.getStores(config.className)
+      processor.http = if (config.getHttp != null) config.getHttp else siteConfig.http
+      processor.stores = StoreFactory.getStores(config.getClassName)
 
       processor
     })

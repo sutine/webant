@@ -9,10 +9,10 @@ import org.apache.http.client.fluent.Request
 import org.apache.http.entity.ContentType
 import org.apache.http.util.EntityUtils
 import org.apache.log4j.LogManager
+import org.webant.commons.entity.SiteConfig.HttpConfig
 import org.webant.commons.entity.{HttpDataEntity, Link}
 import org.webant.commons.store.IStore
 import org.webant.commons.utils.Retry
-import org.webant.worker.config.HttpConfig
 import org.webant.worker.http.HttpResponse
 
 import scala.collection.JavaConverters._
@@ -78,39 +78,39 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
     var retryTimes = 0
 
     if (http != null) {
-      if ("GET".equalsIgnoreCase(http.method))
+      if ("GET".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Get(url)
-      else if ("POST".equalsIgnoreCase(http.method))
+      else if ("POST".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Post(url)
-      else if ("PUT".equalsIgnoreCase(http.method))
+      else if ("PUT".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Put(url)
-      else if ("DELETE".equalsIgnoreCase(http.method))
+      else if ("DELETE".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Delete(url)
-      else if ("OPTIONS".equalsIgnoreCase(http.method))
+      else if ("OPTIONS".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Options(url)
-      else if ("HEAD".equalsIgnoreCase(http.method))
+      else if ("HEAD".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Head(url)
-      else if ("PATCH".equalsIgnoreCase(http.method))
+      else if ("PATCH".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Patch(url)
-      else if ("TRACE".equalsIgnoreCase(http.method))
+      else if ("TRACE".equalsIgnoreCase(http.getMethod))
         request = org.apache.http.client.fluent.Request.Trace(url)
       else
         request = org.apache.http.client.fluent.Request.Post(url)
 
-      if (http.socketTimeout >= 0)
-        request.socketTimeout(http.socketTimeout)
-      if (http.connectTimeout >= 0)
-        request.connectTimeout(http.connectTimeout)
+      if (http.getSocketTimeout >= 0)
+        request.socketTimeout(http.getSocketTimeout)
+      if (http.getConnectTimeout >= 0)
+        request.connectTimeout(http.getConnectTimeout)
 
-      if (StringUtils.isNotBlank(http.encoding))
-        encoding = http.encoding
+      if (StringUtils.isNotBlank(http.getEncoding))
+        encoding = http.getEncoding
 
-      if (StringUtils.isNotBlank(http.body))
-        request.bodyString(http.body, ContentType.create(http.contentType))
+      if (StringUtils.isNotBlank(http.getBody))
+        request.bodyString(http.getBody, ContentType.create(http.getContentType))
 
-      retryTimes = if (http.retryTimes < 0 || http.retryTimes > 10) 3 else http.retryTimes
+      retryTimes = if (http.getRetryTimes < 0 || http.getRetryTimes > 10) 3 else http.getRetryTimes
 
-      http.headers.asScala.foreach(item => {
+      http.getHeaders.asScala.foreach(item => {
         request.addHeader(item._1, item._2)
       })
     } else

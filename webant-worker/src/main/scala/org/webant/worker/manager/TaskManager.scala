@@ -9,7 +9,7 @@ class TaskManager(taskId: String) {
   private val siteManagers = getSites
 
   def getSites: Map[String, SiteManager] = {
-    ConfigManager.getTaskConfig(taskId).sites.map(siteId => (siteId, new SiteManager(taskId, siteId))).toMap
+    ConfigManager.getTaskConfig(taskId).getSites.map(_.id).map(siteId => (siteId, new SiteManager(taskId, siteId))).toMap
   }
 
   def getSiteManager(siteId: String): SiteManager = {
@@ -20,39 +20,39 @@ class TaskManager(taskId: String) {
   }
 
   def list(): Iterable[String] = {
-    ConfigManager.getTaskConfig(taskId).sites.map(list)
+    ConfigManager.getTaskConfig(taskId).getSites.map(_.id).map(list)
   }
 
   def start(): Iterable[String] = {
-    val results = ConfigManager.getTaskConfig(taskId).sites.map(start)
+    val results = ConfigManager.getTaskConfig(taskId).getSites.map(_.id).map(start)
     isRunning = true
 
     results
   }
 
   def pause(): Iterable[String] = {
-    val results = ConfigManager.getTaskConfig(taskId).sites.map(pause)
+    val results = ConfigManager.getTaskConfig(taskId).getSites.map(_.id).map(pause)
     isRunning = false
 
     results
   }
 
   def stop(): Iterable[String] = {
-    val results = ConfigManager.getTaskConfig(taskId).sites.map(stop)
+    val results = ConfigManager.getTaskConfig(taskId).getSites.map(_.id).map(stop)
     isRunning = false
 
     results
   }
 
   def reset(): Iterable[String] = {
-    val results = ConfigManager.getTaskConfig(taskId).sites.map(reset)
+    val results = ConfigManager.getTaskConfig(taskId).getSites.map(_.id).map(reset)
     isRunning = true
 
     results
   }
 
   def exit(): Iterable[String] = {
-    val results = ConfigManager.getTaskConfig(taskId).sites.map(exit)
+    val results = ConfigManager.getTaskConfig(taskId).getSites.map(_.id).map(exit)
     isRunning = true
 
     results

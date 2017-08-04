@@ -1,7 +1,7 @@
 package org.webant.worker.console
 
+import org.webant.commons.entity.{SiteConfig, TaskConfig}
 import org.webant.commons.link.Progress
-import org.webant.worker.config.{SiteConfig, TaskConfig}
 
 trait ConsoleOperationMBean {
   def list(): Iterable[Iterable[String]]

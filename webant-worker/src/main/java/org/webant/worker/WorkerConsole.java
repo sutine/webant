@@ -2,12 +2,13 @@ package org.webant.worker;
 
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.webant.commons.entity.SiteConfig;
+import org.webant.commons.entity.TaskConfig;
 import org.webant.worker.config.*;
 import org.webant.worker.console.ConsoleOperation;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 
 public class WorkerConsole {
     private static WorkerConsole workerConsole;
@@ -89,7 +90,7 @@ public class WorkerConsole {
                 .name("麻花笑话网")
                 .description("麻花笑话网")
                 .priority(4)
-                .sites(new String[] {siteConfig.id()})
+                .sites(new SiteConfig[] {siteConfig})
                 .build();
     }
 
@@ -114,7 +115,7 @@ public class WorkerConsole {
                         .proxy(false)
                         .headers(new HashMap<>())
                         .build())
-                .processors(new ProcessorConfig[]{
+                .processors(new SiteConfig.ProcessorConfig[]{
                         new PageProcessorBuilder().regex("http://www.mahua.com/newjokes/index_\\d*.htm")
                                 .build(),
                         new PageProcessorBuilder().regex("http://www.mahua.com/xiaohua/\\d*.htm")

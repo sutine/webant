@@ -12,7 +12,8 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.junit.{After, Before, Test}
 import org.scalatest.junit.AssertionsForJUnit
-import org.webant.worker.config.{SiteConfig, SiteConfigBuilder, WorkerConfig}
+import org.webant.commons.entity.SiteConfig
+import org.webant.worker.config.{SiteConfigBuilder, WorkerConfig}
 
 import scala.beans.BeanProperty
 
