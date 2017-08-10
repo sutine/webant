@@ -97,6 +97,11 @@ object ConfigManager {
   def getTaskConfig(taskId: String): TaskConfig = {
 //    require(taskConfigs.contains(taskId), s"the task config $taskId has not found!")
 
+    if (!taskConfigs.contains(taskId)) {
+      val taskConfig = HttpUtils.getTaskConfig(taskId)
+      if (taskConfig != null)
+        taskConfigs += (taskId -> taskConfig)
+    }
     taskConfigs(taskId)
   }
 

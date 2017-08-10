@@ -1,5 +1,6 @@
 package org.webant.queen.site.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.webant.commons.entity.SiteConfig;
@@ -49,6 +50,7 @@ public class Site extends SiteEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "taskId",foreignKey = @ForeignKey(name = "fk_site_task"))
+    @JsonIgnore
     private Task task;
 
     public Site(String config) {

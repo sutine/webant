@@ -82,4 +82,20 @@ object HttpUtils {
     response.getData
   }
 
+  def getTaskConfigList(): Array[TaskConfig] = {
+    val host = "http://localhost:8080/"
+
+    val url = s"$host/task/list"
+
+    val resp = org.apache.http.client.fluent.Request.Get(url)
+      .addHeader("User-Agent", UA)
+      .execute
+    val result = resp.returnContent.asString(Charset.forName("UTF-8"))
+    if (StringUtils.isBlank(result))
+      return null
+
+    val response = JsonUtils.fromJson[HttpDataResponse[Array[TaskConfig]]](result, new TypeToken[HttpDataResponse[Array[TaskConfig]]] {}.getType)
+    response.getData
+  }
+
 }

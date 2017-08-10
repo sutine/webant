@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = {"/link"})
-public class LInkController {
+public class LinkController {
     @Autowired
     LinkService service;
 

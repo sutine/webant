@@ -4,6 +4,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.webant.commons.entity.SiteConfig;
 import org.webant.commons.entity.TaskConfig;
+import org.webant.commons.utils.HttpUtils;
 import org.webant.worker.config.*;
 import org.webant.worker.console.ConsoleOperation;
 
@@ -68,6 +69,15 @@ public class WorkerConsole {
             console.submit(taskConfig);
         }
     }
+
+    public void loadHttpTaskConfigList() {
+        TaskConfig[] taskConfigs = HttpUtils.getTaskConfigList();
+
+        for (TaskConfig taskConfig : taskConfigs) {
+            console.submit(taskConfig);
+        }
+    }
+
     public void loadHttpTaskConfig(String... urls) {
         if (urls == null || urls.length == 0)
             return;
