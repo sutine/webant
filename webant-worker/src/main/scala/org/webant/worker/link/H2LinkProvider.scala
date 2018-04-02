@@ -21,11 +21,13 @@ class H2LinkProvider extends JdbcLinkProvider {
   //    user = "webant"
   //    password = "webant"
 
-  def init(): Boolean = {
+  def init(taskId: String, siteId: String): Boolean = {
     val params = new util.HashMap[String, Object]()
     params.put("url", "jdbc:h2:./data/h2/webant;MODE=MYSQL")
     params.put("username", "webant")
     params.put("password", "webant")
+    params.put("taskId", taskId)
+    params.put("siteId", siteId)
 
     init(params)
   }

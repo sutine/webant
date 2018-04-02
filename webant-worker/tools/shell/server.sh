@@ -120,7 +120,7 @@ if [ -z "$daemonized" ] ; then
       -Dapp.pid="$$" \
       -Dapp.repo="$REPO" \
       -Dbasedir="$BASEDIR" \
-      org.webant.worker.app.WorkerServer \
+      org.webant.worker.app.WebantWorker \
       "$@"
 else
     exec "$JAVACMD" $JAVA_OPTS \
@@ -130,7 +130,7 @@ else
       -Dapp.pid="$$" \
       -Dapp.repo="$REPO" \
       -Dbasedir="$BASEDIR" \
-      org.webant.worker.app.WorkerServer \
+      org.webant.worker.app.WebantWorker \
       "$@" > /dev/null &
 
     retval=$?

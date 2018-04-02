@@ -8,6 +8,10 @@
   "priority": 4,
   "interval": 2000,
   "incrementInterval": 600000,
+  "plugin": {
+    "type": "java",
+    "urls": ["./plugin/webant-plugin-1.0.0.jar"]
+  },
   "http": {
     "method": "GET",
     "connectTimeout": 15000,
@@ -26,15 +30,6 @@
       "Proxy-Connection": "keep-alive",
       "Upgrade-Insecure-Requests": "1",
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
-    }
-  },
-  "linkProvider": {
-    "className": "org.webant.worker.link.HttpLinkProvider",
-    "params": {
-      "url": "http://localhost:8080",
-      "username": "webant",
-      "password": "webant",
-      "batch": 20
     }
   },
   "processors": [

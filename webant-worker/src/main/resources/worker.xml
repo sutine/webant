@@ -18,7 +18,7 @@
 	<dataDir>./data</dataDir>
 
 	<!-- must be standalone or server or node -->
-	<mode>node</mode>
+	<mode>standalone</mode>
 
 	<!-- standalone mode, run as a single process application -->
 	<standalone>
@@ -55,6 +55,9 @@
 		<!-- queen node address -->
 		<queen>
 			<url>http://localhost:8080/</url>
+			<username>webant</username>
+			<password>webant</password>
+			<batch>20</batch>
 		</queen>
 	</node>
 

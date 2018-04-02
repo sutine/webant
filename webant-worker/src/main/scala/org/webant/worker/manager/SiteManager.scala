@@ -46,7 +46,7 @@ class SiteManager(taskId: String, siteId: String) {
     }
 
     try {
-//      submitSeeds()
+      submitSeeds()
       run()
       isRunning = true
     } catch {
@@ -164,18 +164,18 @@ class SiteManager(taskId: String, siteId: String) {
     if (siteConfig.linkProvider != null && StringUtils.isNotBlank(siteConfig.linkProvider.getClassName)) {
       try {
         provider = Class.forName(siteConfig.linkProvider.getClassName).newInstance().asInstanceOf[ILinkProvider]
+        siteConfig.linkProvider.getParams.put("taskId", taskId)
+        siteConfig.linkProvider.getParams.put("siteId", siteConfig.id)
       } catch {
         case e: Exception =>
           e.printStackTrace()
       }
     }
 
-    siteConfig.linkProvider.getParams.put("taskId", taskId)
-    siteConfig.linkProvider.getParams.put("siteId", siteConfig.id)
     if(provider == null || !provider.init(siteConfig.linkProvider.getParams)) {
-      logger.error("init link provider failed! user default H2LinkProvider.")
+      logger.error("init link provider failed! use default H2LinkProvider.")
       val h2Provider = new H2LinkProvider()
-      h2Provider.init()
+      h2Provider.init(taskId, siteConfig.id)
 
       provider = h2Provider
     }

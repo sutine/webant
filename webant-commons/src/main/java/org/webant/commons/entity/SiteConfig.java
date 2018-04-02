@@ -11,9 +11,31 @@ public class SiteConfig implements Serializable {
     public Integer priority = 4;
     public Long timeInterval = 0L;
     public Long incrementInterval = 0L;
+    public Plugin plugin;
     public HttpConfig http;
     public LinkProvider linkProvider;
     public ProcessorConfig[] processors;
+
+    public static class Plugin implements Serializable {
+        String type;
+        String[] urls;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String[] getUrls() {
+            return urls;
+        }
+
+        public void setUrls(String[] urls) {
+            this.urls = urls;
+        }
+    }
 
     public static class HttpConfig implements Serializable {
         String method;
@@ -243,6 +265,14 @@ public class SiteConfig implements Serializable {
 
     public void setIncrementInterval(Long incrementInterval) {
         this.incrementInterval = incrementInterval;
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
+    public void setPlugin(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     public HttpConfig getHttp() {
