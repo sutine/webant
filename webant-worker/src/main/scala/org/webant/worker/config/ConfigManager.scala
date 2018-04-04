@@ -56,6 +56,25 @@ object ConfigManager {
     FileUtils.readFileToString(file, "UTF-8")
   }
 
+  def webant(): Unit = {
+    val webant =
+      """
+        |****************************************************************
+        | _          __  _____   _____       ___   __   _   _____
+        || |        / / | ____| |  _  \     /   | |  \ | | |_   _|
+        || |  __   / /  | |__   | |_| |    / /| | |   \| |   | |
+        || | /  | / /   |  __|  |  _  {   / /_| | | |\   |   | |
+        || |/   |/ /    | |___  | |_| |  / /__| | | | \  |   | |
+        ||___/|___/     |_____| |_____/ /_/   |_| |_|  \_|   |_|
+        |
+        |
+        |                        Version 1.0.0
+        |
+        |****************************************************************
+      """.stripMargin
+    logger.info(webant)
+  }
+
   def loadWorkerConfig(path: String): Unit = {
     workerConfig = WorkerConfig(path)
   }

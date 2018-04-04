@@ -1,5 +1,6 @@
 package org.webant.worker.app;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.webant.worker.WorkerConsole;
@@ -20,6 +21,7 @@ public class WebantWorker {
 
     public static void main(String[] args) {
         try {
+            ConfigManager.webant();
             ConfigManager.loadWorkerConfig("worker.xml");
 
             URL taskUrl = ClassLoader.getSystemResource(ConfigManager.getWorkerConfig().standalone().taskMonitor().dir());
@@ -30,14 +32,13 @@ public class WebantWorker {
                 logger.error("invalid task config directory!");
                 return;
             }
-            if (siteUrl == null) {
-                logger.error("invalid site config directory!");
-                return;
+
+            if (StringUtils.isNotBlank(taskUrl.toExternalForm())) {
+//            WorkerConsole.getWorkerConsole().loadAllSiteConfig(siteUrl.getPath(), suffix);
+                WorkerConsole.getWorkerConsole().loadAllTaskConfig(taskUrl.getPath(), suffix);
+                SiteConfigFileMonitor.getFileMonitor().monitor(siteUrl.getPath(), suffix, ConfigManager.getWorkerConfig().standalone().siteMonitor().interval());
+                TaskConfigFileMonitor.getFileMonitor().monitor(taskUrl.getPath(), suffix, ConfigManager.getWorkerConfig().standalone().taskMonitor().interval());
             }
-            WorkerConsole.getWorkerConsole().loadAllSiteConfig(siteUrl.getPath(), suffix);
-            WorkerConsole.getWorkerConsole().loadAllTaskConfig(taskUrl.getPath(), suffix);
-            SiteConfigFileMonitor.getFileMonitor().monitor(siteUrl.getPath(), suffix, ConfigManager.getWorkerConfig().standalone().siteMonitor().interval());
-            TaskConfigFileMonitor.getFileMonitor().monitor(taskUrl.getPath(), suffix, ConfigManager.getWorkerConfig().standalone().taskMonitor().interval());
 
             String mode = ConfigManager.getWorkerConfig().getMode();
             if (mode.equalsIgnoreCase(WorkerConfig.WORKER_RUN_MODE_STANDALONE())) {

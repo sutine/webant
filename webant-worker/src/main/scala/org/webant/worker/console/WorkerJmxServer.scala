@@ -25,23 +25,6 @@ object WorkerJmxServer {
   @throws[NotCompliantMBeanException]
   @throws[IOException]
   def start() {
-    val webant =
-      """
-        |****************************************************************
-        | _          __  _____   _____       ___   __   _   _____
-        || |        / / | ____| |  _  \     /   | |  \ | | |_   _|
-        || |  __   / /  | |__   | |_| |    / /| | |   \| |   | |
-        || | /  | / /   |  __|  |  _  {   / /_| | | |\   |   | |
-        || |/   |/ /    | |___  | |_| |  / /__| | | | \  |   | |
-        ||___/|___/     |_____| |_____/ /_/   |_| |_|  \_|   |_|
-        |
-        |
-        |                        Version 1.0.0
-        |
-        |****************************************************************
-      """.stripMargin
-    logger.info(webant)
-
     LocateRegistry.createRegistry(JMX_SERVER_PORT)
     val mbeanServer = MBeanServerFactory.createMBeanServer
     val prop = new util.HashMap[String, AnyRef]

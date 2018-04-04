@@ -1,6 +1,7 @@
 package org.webant.worker.processor
 
 import java.net.URL
+import java.util
 import java.util.Date
 
 import org.apache.commons.codec.digest.DigestUtils
@@ -16,9 +17,8 @@ import org.webant.commons.utils.Retry
 import org.webant.worker.http.HttpResponse
 
 import scala.collection.JavaConverters._
-import scala.reflect.ClassTag
 
-class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
+class HttpPageProcessor[T <: HttpDataEntity] {
   private val logger = LogManager.getLogger(classOf[HttpPageProcessor[HttpDataEntity]])
 
   var regex: String = _
@@ -41,7 +41,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
       parse(response.content)
 
       response.list = list()
-      response.list.foreach(data => {
+      response.list.asScala.foreach(data => {
         data.id = DigestUtils.md5Hex(s"${link.getTaskId}_${link.getSiteId}_${data.srcId}")
         data.srcUrl = link.getUrl
         data.taskId = link.getTaskId
@@ -65,7 +65,7 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
     } catch {
       case e: Exception =>
         response.data = null.asInstanceOf[T]
-        response.links = Iterable.empty
+        response.links = new util.LinkedList[String]()
         e.printStackTrace()
     }
 
@@ -141,15 +141,15 @@ class HttpPageProcessor[T <: HttpDataEntity : ClassTag] {
 
   protected def data(): T = null.asInstanceOf[T]
 
-  protected def list(): Iterable[T] = Iterable.empty
+  protected def list(): util.Collection[T] = new util.LinkedList[T]()
 
-  protected def links(): Iterable[String] = Iterable.empty
+  protected def links(): util.Collection[String] = new util.LinkedList[String]()
 
-  private def write(list: Iterable[T]): Int = {
+  private def write(list: util.Collection[T]): Int = {
     var affectRowCount = 0
     if (stores == null || stores.isEmpty || list == null || list.isEmpty) return affectRowCount
     try {
-      affectRowCount = stores.map(store => store.upsert(list)).sum
+      affectRowCount = stores.map(store => store.upsert(list.asScala)).sum
     } catch {
       case e: Exception =>
         logger.error(e.getMessage)

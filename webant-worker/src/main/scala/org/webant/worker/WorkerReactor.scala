@@ -64,7 +64,7 @@ class Master(workerNum: Int, listener: ActorRef) extends Actor {
 class Listener extends Actor {
   def receive = {
     case ResultMessage(srcLink, resp) =>
-      if (resp != null && resp.links != null && resp.links.nonEmpty) {
+      if (resp != null && resp.links != null && !resp.links.isEmpty) {
         srcLink.setStatus(Link.LINK_STATUS_SUCCESS)
       } else {
         srcLink.setStatus(Link.LINK_STATUS_FAIL)

@@ -13,6 +13,7 @@ import org.webant.commons.link.ILinkProvider
 import org.webant.worker.exception.{HttpRequestException, ParseContentException}
 import org.webant.worker.http.HttpResponse
 import org.webant.worker.store.StoreFactory
+import scala.collection.JavaConverters._
 
 import scala.util.control.NonFatal
 
@@ -48,7 +49,7 @@ class HttpSiteProcessor(linkProvider: ILinkProvider, siteConfig: SiteConfig) ext
         link.setStatus(Link.LINK_STATUS_SUCCESS)
         linkProvider.write(link)
         // save accept links
-        val accepts = resp.links.filter(accept).map(url => new Link(DigestUtils.md5Hex(url), link.getTaskId, link.getSiteId, url, link.getUrl, new Date()))
+        val accepts = resp.links.asScala.filter(accept).map(url => new Link(DigestUtils.md5Hex(url), link.getTaskId, link.getSiteId, url, link.getUrl, new Date()))
         if (accepts.nonEmpty)
           linkProvider.write(accepts)
 
